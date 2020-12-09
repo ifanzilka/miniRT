@@ -13,6 +13,8 @@
 # ifndef FT_MINIRT_H
 #define FT_MINIRT_H
 
+#include <stdint.h>
+
 typedef struct	s_rgb
 {
                 uint8_t RED;
@@ -56,7 +58,7 @@ typedef struct	s_ambient_lightning
 { 
                 double light;
                 t_rgb  rgb;
-}				t_ambient_lightning
+}				t_ambient_lightning;
 
 /*
 **  Camera
