@@ -57,12 +57,15 @@ OBJS	= $(SRCS:.c=.o)
 
 .c.o:
 	$(CC) $(FLAGS) -c -I$(HEADER) $< -o $(<:.c=.o)
+	@echo "$(F_BLUE)Object files in ready! $(F_NONE)"
 
 
 all:	$(NAME)
 
 $(NAME):	$(OBJS)
 		$(AR) $(NAME) $(OBJS)
+		@echo "$(F_YELLOW)libft.a COMPILE! $(F_NONE)"
+
 
 clean:
 		$(RM) $(OBJS) $(OBJBNS)
@@ -70,7 +73,7 @@ clean:
 
 fclean:		clean
 			$(RM) $(NAME)
-			@echo "$(F_ORANGE)FCleaned! $(F_NONE)"
+			@echo "$(F_GREEN)FCleaned! $(F_NONE)"
 
 re:	fclean all
 

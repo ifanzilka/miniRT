@@ -26,7 +26,7 @@ OBJS	= $(SRCS:.c=.o)
 
 DIR		= ./srcs/
 
-SRCS = $(DIR)main.c
+SRCS = $(DIR)main.c $(DIR)get_next_line.c $(DIR)get_next_line_utils.c
 
 AR		= ar rc
 
@@ -41,24 +41,28 @@ F_BLUE		= \033[34m
 
 .c.o:
 	$(CC) $(FLAGS) -c  -I$(HEADER) $< -o $(<:.c=.o)
+	@echo "$(F_BLUE)Object files miniRT in ready! $(F_NONE)"
 
 all: $(LIBFT) $(NAME_MINIRT)
 
 bonus : $(LIBFT) $(NAME_MINIRT)
 
 $(LIBFT):
-		@echo "Compile libft.a"
+		@echo "$(F_YELLOW)START RUN Makefile in libft $(F_NONE)"
 		@$(MAKE) -C $(LIB_DIR)
-		@echo "Compile OK"
+		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
 $(NAME_MINIRT): $(OBJS) 
+		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
 		$(CC) $(FLAGS) -I$(HEADER) $(OBJS) -L. $(LIB_NAME) -o $(NAME_MINIRT)
-		
+		@echo "$(F_GREEN)minRT in Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
 	rm -rf $(OBJS)
+	@echo "$(F_GREEN)Cleaned! $(F_NONE)"
 fclean: clean
 	make fclean -C $(LIB_DIR)
 	rm -rf $(NAME_MINIRT)
+	@echo "$(F_GREEN)FCleaned! $(F_NONE)"
 
 re: fclean all
 
