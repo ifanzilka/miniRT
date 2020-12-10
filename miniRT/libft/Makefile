@@ -57,7 +57,7 @@ OBJS	= $(SRCS:.c=.o)
 
 .c.o:
 	$(CC) $(FLAGS) -c -I$(HEADER) $< -o $(<:.c=.o)
-	@echo "$(F_BLUE)Object files in ready! $(F_NONE)"
+	@echo "$(F_BLUE)Object files libft in ready! $(F_NONE)"
 
 
 all:	$(NAME)

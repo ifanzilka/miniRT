@@ -54,7 +54,7 @@ $(LIBFT):
 $(NAME_MINIRT): $(OBJS) 
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
 		$(CC) $(FLAGS) -I$(HEADER) $(OBJS) -L. $(LIB_NAME) -o $(NAME_MINIRT)
-		@echo "$(F_GREEN)minRT in Ready! GOOD LUCK:) $(F_NONE)"		
+		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
 	rm -rf $(OBJS)
