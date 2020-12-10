@@ -13,6 +13,9 @@
 # ifndef FT_MINIRT_H
 #define FT_MINIRT_H
 
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <libft.h>
 #include <get_next_line.h>
@@ -203,7 +206,7 @@ typedef struct	s_triangle
 
 typedef struct	s_cnt_object
 { 
-                int R;
+                int R ;
                 int A;
                 int c;
                 int l;
@@ -234,5 +237,7 @@ typedef struct	s_all_obj
 
 }               t_all_obj;
 
+
+int         ft_parse_rt(char *file);
 
 #endif

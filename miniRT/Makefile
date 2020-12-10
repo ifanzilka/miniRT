@@ -26,7 +26,8 @@ OBJS	= $(SRCS:.c=.o)
 
 DIR		= ./srcs/
 
-SRCS = $(DIR)main.c $(DIR)get_next_line.c $(DIR)get_next_line_utils.c
+SRCS = $(DIR)main.c $(DIR)get_next_line.c $(DIR)get_next_line_utils.c\
+		$(DIR)ft_parse_rt.c
 
 AR		= ar rc
 

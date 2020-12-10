@@ -14,17 +14,21 @@
 #include <libft.h>
 #include <get_next_line.h>
 
+/*
+**  checking the validity of an argument
+*/
+
 static int ft_check_argv(int argc, char **argv)
 {
 	if (argc == 1)
 	{
 		write(1,"Error\nDon't find .rt file\n",26);
-		return (0);
+		exit(0);
 	}
 	else if (argc > 2)
 	{
 		write(1,"Error\nlots of arguments\n",24);
-		return (0);
+		exit(0);
 	}
 	if (ft_strlen(argv[1]) > 3 && ft_strnstr(argv[1] + ft_strlen(argv[1]) - 3,
 		".rt",ft_strlen(argv[1])))
@@ -32,7 +36,7 @@ static int ft_check_argv(int argc, char **argv)
 	else
 	{
 		write(1,"Error\nDon't find .rt file\n",26);
-		return (0);
+		exit(0);
 	}
 	return (1);
 }
@@ -40,7 +44,9 @@ static int ft_check_argv(int argc, char **argv)
 int main(int argc, char **argv)
 {	
 
-	if (!ft_check_argv(argc, argv))
-		return (0);
+	if (!ft_check_argv(argc, argv) || !ft_parse_rt(argv[1]))
+		exit(0);
+	while (1)
+		;	
 	return (1);
 }
