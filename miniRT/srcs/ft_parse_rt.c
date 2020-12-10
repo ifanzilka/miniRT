@@ -16,16 +16,44 @@
 ** strerror(error) -> pointer in str with error  
 */
 
+int            ft_parse_R(t_all_obj *my,char *str)
+{
+    int width;
+    int height;
+
+    width = -1;
+    height = -1;
+    write(1,"FIND R\n",7);
+    str++;
+    width = ft_atoi(str);
+    while (*str && (*str == ' '))
+        str++;    
+    while (*str && ft_isdigit(*str))
+        str++;    
+    printf("s: %s\n",str);    
+    height = ft_atoi(str);    
+    printf("w: %d\n",width);
+    printf("h: %d\n",height);
+    my->reso.width = width;
+    my->reso.height = height;
+    if (width <= 0 || height <= 0)
+        return (0);
+    return (1);
+}
+
 int           ft_parse_str(char *str, t_all_obj *my)
 {
     (void) my;
     int len;
 
     len = ft_strlen(str);
+
+    if (ft_strnstr(str," ",1) || ft_strnstr(str,"\n",1))
+        return (1);
     if (len < 5)
         return (0);
     if (ft_strnstr(str,"R",1))
-        write(1,"FIND R\n",7);
+        return (ft_parse_R(my,str));    
     else if (ft_strnstr(str,"cy",2))
         write(1,"FIND cy\n",8);    
     else if (ft_strnstr(str,"A",1))
@@ -42,9 +70,7 @@ int           ft_parse_str(char *str, t_all_obj *my)
         write(1,"FIND sq\n",8);
     else if (ft_strnstr(str,"tr",2))
         write(1,"FIND tr\n",8);
-    else if (ft_strnstr(str," ",2) || ft_strnstr(str,"\n",1))
-        return (1);
-    return (0);        
+    return (1);        
 }
 
 void         ft_init_t_cnt_obj(t_cnt_object *my)
