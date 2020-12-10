@@ -14,6 +14,7 @@
 #define FT_MINIRT_H
 
 #include <stdint.h>
+#include <libft.h>
 
 typedef struct	s_rgb
 {
@@ -194,5 +195,43 @@ typedef struct	s_triangle
                 t_xyz third_point;
                 t_rgb  rgb;
 }	            t_triangle;
+
+/*
+**  Struct for cnt_object  
+*/
+
+typedef struct	s_cnt_object
+{ 
+                int R;
+                int A;
+                int c;
+                int l;
+                int sp;
+                int pl;
+                int sq;
+                int cy;
+                int tr;
+}	            t_cnt_object;
+
+/*
+**  Struct for all_objc 
+*/
+
+typedef struct	s_all_obj
+{ 
+                t_cnt_object cnt;
+                t_resolution reso;
+                t_ambient_lightning al;
+                t_camera camera;
+                //t_light light;
+                t_list light;
+                t_list sphere;
+                t_list plane;
+                t_list square;
+                t_list cylinder;
+                t_list triangle;
+
+}               t_all_obj;
+
 
 #endif
