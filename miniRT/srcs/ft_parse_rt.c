@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include <ft_minirt.h>
-
+#define eps 1e-7
 /*
 ** perror-> write string and last error
 ** strerror(error) -> pointer in str with error  
@@ -36,8 +36,20 @@ int            ft_parse_R(t_all_obj *my,char *str)
     printf("h: %d\n",height);
     my->reso.width = width;
     my->reso.height = height;
+    my->cnt.R += 1;
     if (width <= 0 || height <= 0)
         return (0);
+    return (1);
+}
+
+int            ft_parse_A(t_all_obj *my,char *str)
+{
+    write(1,"FIND A\n",7);
+    str++;
+    my->al.light = ft_atoi_double(str);
+    if (fabs(my->al.light + 1.0 ) < eps)
+        return (0);
+
     return (1);
 }
 
@@ -57,7 +69,7 @@ int           ft_parse_str(char *str, t_all_obj *my)
     else if (ft_strnstr(str,"cy",2))
         write(1,"FIND cy\n",8);    
     else if (ft_strnstr(str,"A",1))
-        write(1,"FIND A\n",7);
+        return (ft_parse_A(my,str));
     else if (ft_strnstr(str,"c",1))
         write(1,"FIND c\n",7);
     else if (ft_strnstr(str,"l",1))
