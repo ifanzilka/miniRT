@@ -14,6 +14,7 @@ NAME_MINIRT = miniRT
 
 LIB_DIR =  ./libft/
 LIB_NAME =	libft/libft.a
+LIB_HEADER = libft/includes
 LIBFT = libft.a
 
 CC		= gcc
@@ -22,12 +23,18 @@ HEADER	= ./includes
 
 FLAGS	= -Wall -Wextra -Werror 
 
-OBJS	= $(SRCS:.c=.o)
+OBJS	 = $(SRCS:.c=.o)
+OBJS_GNL = $(GNL_SRCS:.c=.o)
+OBJS_PARSER = $(PARSER_SRCS:.c=.o)
 
 DIR		= ./srcs/
+DIR_PARSER = ./srcs/parser/
+DIR_GNL = ./srcs/gnl/
 
-SRCS = $(DIR)main.c $(DIR)get_next_line.c $(DIR)get_next_line_utils.c\
-		$(DIR)ft_parse_rt.c
+SRCS = $(DIR)main.c 
+GNL_SRCS = $(DIR_GNL)get_next_line.c $(DIR_GNL)get_next_line_utils.c
+PARSER_SRCS = $(DIR_PARSER)ft_parse_rt.c
+
 
 AR		= ar rc
 
@@ -41,7 +48,7 @@ F_CYAN		= \033[36m
 F_BLUE		= \033[34m
 
 .c.o:
-	$(CC) $(FLAGS) -c  -I$(HEADER) $< -o $(<:.c=.o)
+	$(CC) $(FLAGS) -c  -I$(HEADER) -I$(LIB_HEADER) $< -o $(<:.c=.o)
 	@echo "$(F_BLUE)Object files miniRT in ready! $(F_NONE)"
 
 all: $(LIBFT) $(NAME_MINIRT)
@@ -52,13 +59,13 @@ $(LIBFT):
 		@echo "$(F_YELLOW)START RUN Makefile in libft $(F_NONE)"
 		@$(MAKE) -C $(LIB_DIR)
 		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
-$(NAME_MINIRT): $(OBJS) 
+$(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER)
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
-		$(CC) $(FLAGS) -I$(HEADER) $(OBJS) -L. $(LIB_NAME) -o $(NAME_MINIRT)
+		$(CC) $(FLAGS) -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) -L. $(LIB_NAME) -o $(NAME_MINIRT)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
-	rm -rf $(OBJS)
+	rm -rf $(OBJS) $(OBJS_GNL) $(OBJS_PARSER)
 	@echo "$(F_GREEN)Cleaned! $(F_NONE)"
 fclean: clean
 	make fclean -C $(LIB_DIR)
