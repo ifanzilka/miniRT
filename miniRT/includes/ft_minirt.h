@@ -20,6 +20,7 @@
 #include <libft.h>
 #include <get_next_line.h>
 #include <math.h>
+#include "parse.h"
 
 typedef struct	s_rgb
 {
@@ -237,8 +238,5 @@ typedef struct	s_all_obj
                 t_list triangle;
 
 }               t_all_obj;
-
-
-int         ft_parse_rt(char *file);
 
 #endif
