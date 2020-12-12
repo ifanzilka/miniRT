@@ -34,7 +34,7 @@ double		ft_atoi_double(char *str)
 	int		anreal;
 
 	sign = 1;
-	res = -1.0;
+	res = 1.0 / 0.0;
 	while ((9 <= *str && *str <= 13) || *str == 32)
 		str++;
 	if (*str == '-')

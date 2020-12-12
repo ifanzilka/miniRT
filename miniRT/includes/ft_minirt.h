@@ -24,9 +24,9 @@
 
 typedef struct	s_rgb
 {
-                uint8_t RED;
-                uint8_t GREEN;
-                uint8_t BLUE;
+                int RED;
+                int GREEN;
+                int BLUE;
 }				t_rgb;
 
 typedef struct	s_xyz
@@ -230,6 +230,7 @@ typedef struct	s_all_obj
                 t_ambient_lightning al;
                 t_camera camera;
                 //t_light light;
+                t_list objects;
                 t_list light;
                 t_list sphere;
                 t_list plane;
@@ -238,5 +239,7 @@ typedef struct	s_all_obj
                 t_list triangle;
 
 }               t_all_obj;
+
+void    ft_error(int n);
 
 #endif

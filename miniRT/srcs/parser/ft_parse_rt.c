@@ -21,6 +21,8 @@ int            ft_parse_R(t_all_obj *my,char *str)
     int width;
     int height;
 
+    if ((*my).cnt.R > 1)
+         ft_error(4);
     width = -1;
     height = -1;
     write(1,"FIND R\n",7);
@@ -29,7 +31,7 @@ int            ft_parse_R(t_all_obj *my,char *str)
     while (*str && (*str == ' '))
         str++;    
     while (*str && ft_isdigit(*str))
-        str++;    
+        str++;
     printf("s: %s\n",str);    
     height = ft_atoi(str);    
     printf("w: %d\n",width);
@@ -38,7 +40,7 @@ int            ft_parse_R(t_all_obj *my,char *str)
     my->reso.height = height;
     my->cnt.R += 1;
     if (width <= 0 || height <= 0)
-        return (0);
+        ft_error(4);
     return (1);
 }
 
@@ -46,10 +48,17 @@ int            ft_parse_A(t_all_obj *my,char *str)
 {
     write(1,"FIND A\n",7);
     str++;
-    my->al.light = ft_atoi_double(str);
-    if (fabs(my->al.light + 1.0 ) < eps)
-        return (0);
-
+    (*my).al.light = ft_atoi_double(str);
+    if (my->al.light ==  1.0 / 0.0 || my->al.light > 1.0 || my->al.light < 0.0)
+        ft_error(5);
+    while (ft_isdigit(*str))
+        str++;
+    if (*str != '.')
+        ft_error(5);
+    while (ft_isdigit(*str))
+        str++;
+    (*my).al.rgb.RED = ft_atoi(str);
+    while()        
     return (1);
 }
 
@@ -100,6 +109,8 @@ void         ft_init_t_cnt_obj(t_cnt_object *my)
 void        ft_init_t_all_obj(t_all_obj *my)
 {
         ft_init_t_cnt_obj(&(my->cnt));
+        (*my).reso.height = -1;
+        (*my).reso.width = -1;
 
 }
 
@@ -129,9 +140,7 @@ int         ft_parse_rt(char *file)
 
     if ((fd = open(file,O_RDONLY)) > 0)
     {
-
         write(1,"OK\n",3);
-      
         ft_parse_file_rt(fd);
     }
     else 
