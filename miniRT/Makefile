@@ -19,7 +19,7 @@ LIBFT = libft.a
 
 CC		= gcc
 
-HEADER	= ./includes
+HEADER	= includes
 
 FLAGS	= -Wall -Wextra -Werror 
 
@@ -35,7 +35,7 @@ DIR_ERROR = ./srcs/error/
 
 SRCS = $(DIR)main.c 
 GNL_SRCS = $(DIR_GNL)get_next_line.c $(DIR_GNL)get_next_line_utils.c
-PARSER_SRCS = $(DIR_PARSER)ft_parse_rt.c
+PARSER_SRCS = $(DIR_PARSER)ft_parse_rt.c $(DIR_PARSER)ft_atoirgb.c $(DIR_PARSER)ft_atoi_xyz.c
 ERROR_SRCS = $(DIR_ERROR)ft_error.c
 
 AR		= ar rc
@@ -67,7 +67,7 @@ $(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
-	rm -rf $(OBJS) $(OBJS_GNL) $(OBJS_PARSER)
+	rm -rf $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)
 	@echo "$(F_GREEN)Cleaned! $(F_NONE)"
 fclean: clean
 	make fclean -C $(LIB_DIR)

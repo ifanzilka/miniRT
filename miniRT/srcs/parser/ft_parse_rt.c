@@ -11,41 +11,14 @@
 /* ************************************************************************** */
 
 #include <ft_minirt.h>
-#define eps 1e-7
+#include <parse.h>
 
+#define eps 1e-7
+#define inf 1.0 / 0.0
 /*
 ** perror-> write string and last error
 ** strerror(error) -> pointer in str with error  
 */
-
-t_rgb           ft_atoirgb(char *str)
-{
-    t_rgb rgb;
-
-    rgb.RED = -1;
-    rgb.GREEN = -1;
-    rgb.BLUE = -1;
-    rgb.RED = ft_atoi(str);
-    while (ft_isspace(*str))
-        str++;
-    while (*str && (*str == '-' || *str == '+'))
-        str++;
-    while(ft_isdigit(*str))
-        str++;  
-    if (!(*str && (*str == ',') && (str++)))
-        return(rgb);
-    rgb.GREEN = ft_atoi(str);
-    while (ft_isspace(*str))
-        str++;
-    while (*str && (*str == '-' || *str == '+'))
-        str++;
-    while(ft_isdigit(*str))
-        str++;  
-    if (!(*str && (*str == ',') && (str++)))
-        return(rgb);
-    rgb.BLUE = ft_atoi(str);      
-    return(rgb);
-}
 
 int            ft_parse_R(t_all_obj *my,char *str)
 {
@@ -59,7 +32,7 @@ int            ft_parse_R(t_all_obj *my,char *str)
     write(1,"FIND R\n",7);
     str++;
     width = ft_atoi(str);
-    while (*str && (*str == ' '))
+    while (*str && (ft_isspace(*str)))
         str++;    
     while (*str && ft_isdigit(*str))
         str++;
@@ -90,10 +63,31 @@ int            ft_parse_A(t_all_obj *my,char *str)
         || (*my).al.rgb.GREEN > 255 || (*my).al.rgb.BLUE < 0 || 
             (*my).al.rgb.BLUE > 255)
         ft_error(5);
-    printf("r:%d\n",my->al.rgb.RED);
-    printf("g:%d\n",my->al.rgb.GREEN);   
-    printf("b:%d\n",my->al.rgb.BLUE);    
+    //printf("r:%d\n",my->al.rgb.RED);
+    //printf("g:%d\n",my->al.rgb.GREEN);   
+    //printf("b:%d\n",my->al.rgb.BLUE);    
     my->cnt.A+=1;    
+    return (1);
+}
+
+int            ft_parse_c(t_all_obj *my,char *str)
+{
+    //write(1,"FIND c\n",7);
+    int i;
+    
+    i = 1;
+    (*my).camera.coord_pointer = ft_atoi_xyz(str,&i);
+    if ((*my).camera.coord_pointer.x == inf || (*my).camera.coord_pointer.y == inf
+        || (*my).camera.coord_pointer.z == inf)
+        ft_error(7);
+    (*my).camera.normal_orientr_vec = ft_atoi_xyz(str,&i);
+    if ((*my).camera.normal_orientr_vec.x == inf || (*my).camera.normal_orientr_vec.y == inf
+        || (*my).camera.normal_orientr_vec.z == inf)
+        ft_error(7);
+    (*my).camera.FOV = ft_atof(str + i);
+    //printf("FOV: %f\n",(*my).camera.FOV);
+    if (((*my).camera.FOV < 0.0) || ((*my).camera.FOV) > 180.0)
+        ft_error(7);
     return (1);
 }
 
@@ -107,7 +101,7 @@ int           ft_parse_str(char *str, t_all_obj *my)
     if (ft_strnstr(str," ",1) || ft_strnstr(str,"\n",1))
         return (1);
     if (len < 5)
-        return (0);
+        ft_error(6);
     if (ft_strnstr(str,"R",1))
         return (ft_parse_R(my,str));    
     else if (ft_strnstr(str,"cy",2))
@@ -115,7 +109,7 @@ int           ft_parse_str(char *str, t_all_obj *my)
     else if (ft_strnstr(str,"A",1))
         return (ft_parse_A(my,str));
     else if (ft_strnstr(str,"c",1))
-        write(1,"FIND c\n",7);
+        return(ft_parse_c(my,str));
     else if (ft_strnstr(str,"l",1))
         write(1,"FIND l\n",7);
     else if (ft_strnstr(str,"sp",2))

@@ -12,7 +12,14 @@
 
 #include <libft.h>
 
-static	int	ft_cnt_anreal(char *str)
+static	int	ft_check_an(char *str)
+{
+	if (*str && !ft_isdigit(*str))
+		return (0);
+	return (1);
+}
+
+static	int	ft_c_an(char *str)
 {
 	int n;
 
@@ -28,7 +35,6 @@ static	int	ft_cnt_anreal(char *str)
 double		ft_atof(char *str)
 {
 	double	res;
-	int		cnt;
 	int		sign;
 	int		real;
 	int		anreal;
@@ -41,15 +47,16 @@ double		ft_atof(char *str)
 		sign = -1;
 	if (*str == '-' || *str == '+')
 		str++;
+	if (*str && !ft_isspace(*str) && !ft_isdigit(*str))
+		return (res);
 	real = ft_atoi(str);
 	while (*str && ft_isdigit(*str))
 		str++;
-	if (!(*str && *str == '.' && (str++)))
-		return (res);
+	if (!(*str && *str == '.' && (str++) && !ft_check_an(str)))
+		return ((double)(sign * real));
 	anreal = ft_atoi(str);
-	cnt = ft_cnt_anreal(str);
-	if (cnt == 0)
+	if (ft_c_an(str) == 0)
 		return (res);
-	res = sign * (real + (anreal / (double)(ft_pow(10, cnt))));
+	res = sign * (real + (anreal / (double)(ft_pow(10, ft_c_an(str)))));
 	return (res);
 }

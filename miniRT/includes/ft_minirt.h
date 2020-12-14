@@ -18,9 +18,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <libft.h>
-#include <get_next_line.h>
 #include <math.h>
-#include "parse.h"
+#include "get_next_line.h"
 
 typedef struct	s_rgb
 {
@@ -82,7 +81,7 @@ typedef struct	s_camera
 { 
                 t_xyz coord_pointer;
                 t_xyz normal_orientr_vec;
-                uint8_t FOV;
+                double FOV;
 }	            t_camera;
 
 /*
@@ -240,6 +239,5 @@ typedef struct	s_all_obj
 
 }               t_all_obj;
 
-void    ft_error(int n);
-
+void        ft_error(int n);
 #endif
