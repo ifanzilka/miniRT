@@ -48,17 +48,19 @@ int            ft_parse_R(t_all_obj *my,char *str)
 int            ft_parse_A(t_all_obj *my,char *str)
 {
     write(1,"FIND A\n",7);
-    str++;
-    (*my).al.light = ft_atof(str);
+    int i;
+
+    i = 1;
+    (*my).al.light = ft_atof(str + i);
     if (my->al.light ==  1.0 / 0.0 || my->al.light > 1.0 || my->al.light < 0.0)
         ft_error(5);
-    while (ft_isspace(*str) || ft_isdigit(*str))
-        str++;
-    if (*str != '.' || !(str++))
+    while (ft_isspace(str[i]) || ft_isdigit(str[i]))
+        i++;
+    if (str[i] != '.' || !(i++))
         ft_error(5);
-    while (ft_isdigit(*str))
-        str++;
-    (*my).al.rgb = ft_atoirgb(str);
+    while (ft_isdigit(str[i]))
+        i++;
+    (*my).al.rgb = ft_atoirgb(str, &i);
     if ((*my).al.rgb.RED < 0 || (*my).al.rgb.RED > 255 || (*my).al.rgb.GREEN < 0 
         || (*my).al.rgb.GREEN > 255 || (*my).al.rgb.BLUE < 0 || 
             (*my).al.rgb.BLUE > 255)

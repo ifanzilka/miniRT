@@ -13,31 +13,31 @@
 #include <ft_minirt.h>
 #include <parse.h>
 
-t_rgb           ft_atoirgb(char *str)
+t_rgb           ft_atoirgb(char *str, int *i)
 {
     t_rgb rgb;
 
     rgb.RED = -1;
     rgb.GREEN = -1;
     rgb.BLUE = -1;
-    rgb.RED = ft_atoi(str);
-    while (ft_isspace(*str))
-        str++;
-    while (*str && (*str == '-' || *str == '+'))
-        str++;
-    while(ft_isdigit(*str))
-        str++;  
-    if (!(*str && (*str == ',') && (str++)))
+    rgb.RED = ft_atoi(str + *i);
+    while (ft_isspace(str[*i]))
+        *i+=1;
+    while (str[*i] && (str[*i] == '-' || str[*i] == '+'))
+        *i+=1;
+    while(ft_isdigit(str[*i]))
+        *i+=1;  
+    if (!(str[*i] && (str[*i] == ',') && (*i+=1)))
         return(rgb);
-    rgb.GREEN = ft_atoi(str);
-    while (ft_isspace(*str))
-        str++;
-    while (*str && (*str == '-' || *str == '+'))
-        str++;
-    while(ft_isdigit(*str))
-        str++;  
-    if (!(*str && (*str == ',') && (str++)))
+    rgb.GREEN = ft_atoi(str + *i);
+    while (ft_isspace(str[*i]))
+        *i+=1;
+    while (str[*i] && (str[*i] == '-' || str[*i] == '+'))
+        *i+=1;
+    while(ft_isdigit(str[*i]))
+        *i+=1;  
+    if (!(str[*i] && (str[*i] == ',') && (*i+=1)))
         return(rgb);
-    rgb.BLUE = ft_atoi(str);      
+    rgb.BLUE = ft_atoi(str + *i);      
     return(rgb);
 }
