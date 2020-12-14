@@ -24,7 +24,8 @@ FLAGS	= -Wall -Wextra -Werror
 
 SRCS	= $(DIR)ft_bzero.c 		$(DIR)ft_isalnum.c 	$(DIR)ft_calloc.c \
 		  $(DIR)ft_isascii.c  	$(DIR)ft_isdigit.c 	$(DIR)ft_isalpha.c \
-		  $(DIR)ft_atoi.c 		$(DIR)ft_isprint.c 	$(DIR)ft_memcmp.c \
+		  $(DIR)ft_atoi.c 		$(DIR)ft_isprint.c 	$(DIR)ft_isspace.c\
+		  $(DIR)ft_memcmp.c \
 		  $(DIR)ft_memset.c  	$(DIR)ft_memchr.c 	$(DIR)ft_tolower.c \
 		  $(DIR)ft_memcpy.c  	$(DIR)ft_strlen.c 	$(DIR)ft_memccpy.c \
 		  $(DIR)ft_strchr.c  	$(DIR)ft_strdup.c  	$(DIR)ft_memmove.c \
@@ -39,7 +40,7 @@ SRCS	= $(DIR)ft_bzero.c 		$(DIR)ft_isalnum.c 	$(DIR)ft_calloc.c \
 		  $(DIR)ft_itoa_unsig_base.c 				$(DIR)ft_strdel.c\
 		  $(DIR)ft_create_str.c $(DIR)ft_add_forward.c\
 		  $(DIR)ft_add_back.c	$(DIR)ft_itoa_ll.c\
-		  $(DIR)ft_atoi_double.c\
+		  $(DIR)ft_atof.c\
 		  $(DIR)ft_itoa_unsigned_ll.c $(DIR)ft_itoa_base_x.c \
 		  $(DIR)ft_lstnew.c		$(DIR)ft_lstadd_front.c $(DIR)ft_lstsize.c \
 		  $(DIR)ft_lstlast.c		$(DIR)ft_lstadd_back.c

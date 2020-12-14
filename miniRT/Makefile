@@ -26,15 +26,17 @@ FLAGS	= -Wall -Wextra -Werror
 OBJS	 = $(SRCS:.c=.o)
 OBJS_GNL = $(GNL_SRCS:.c=.o)
 OBJS_PARSER = $(PARSER_SRCS:.c=.o)
+OBJS_ERROR = $(ERROR_SRCS:.c=.o)
 
 DIR		= ./srcs/
 DIR_PARSER = ./srcs/parser/
 DIR_GNL = ./srcs/gnl/
+DIR_ERROR = ./srcs/error/
 
 SRCS = $(DIR)main.c 
 GNL_SRCS = $(DIR_GNL)get_next_line.c $(DIR_GNL)get_next_line_utils.c
 PARSER_SRCS = $(DIR_PARSER)ft_parse_rt.c
-
+ERROR_SRCS = $(DIR_ERROR)ft_error.c
 
 AR		= ar rc
 
@@ -59,9 +61,9 @@ $(LIBFT):
 		@echo "$(F_YELLOW)START RUN Makefile in libft $(F_NONE)"
 		@$(MAKE) -C $(LIB_DIR)
 		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
-$(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER)
+$(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
-		$(CC) $(FLAGS) -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) -L. $(LIB_NAME) -o $(NAME_MINIRT)
+		$(CC) $(FLAGS) -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR) -L. $(LIB_NAME) -o $(NAME_MINIRT)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)

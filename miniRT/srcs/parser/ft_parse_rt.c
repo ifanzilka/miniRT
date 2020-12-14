@@ -9,12 +9,43 @@
 /*   Updated: 2020/12/10 20:54:55 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <ft_minirt.h>
 #define eps 1e-7
+
 /*
 ** perror-> write string and last error
 ** strerror(error) -> pointer in str with error  
 */
+
+t_rgb           ft_atoirgb(char *str)
+{
+    t_rgb rgb;
+
+    rgb.RED = -1;
+    rgb.GREEN = -1;
+    rgb.BLUE = -1;
+    rgb.RED = ft_atoi(str);
+    while (ft_isspace(*str))
+        str++;
+    while (*str && (*str == '-' || *str == '+'))
+        str++;
+    while(ft_isdigit(*str))
+        str++;  
+    if (!(*str && (*str == ',') && (str++)))
+        return(rgb);
+    rgb.GREEN = ft_atoi(str);
+    while (ft_isspace(*str))
+        str++;
+    while (*str && (*str == '-' || *str == '+'))
+        str++;
+    while(ft_isdigit(*str))
+        str++;  
+    if (!(*str && (*str == ',') && (str++)))
+        return(rgb);
+    rgb.BLUE = ft_atoi(str);      
+    return(rgb);
+}
 
 int            ft_parse_R(t_all_obj *my,char *str)
 {
@@ -32,10 +63,7 @@ int            ft_parse_R(t_all_obj *my,char *str)
         str++;    
     while (*str && ft_isdigit(*str))
         str++;
-    printf("s: %s\n",str);    
-    height = ft_atoi(str);    
-    printf("w: %d\n",width);
-    printf("h: %d\n",height);
+    height = ft_atoi(str);
     my->reso.width = width;
     my->reso.height = height;
     my->cnt.R += 1;
@@ -48,17 +76,24 @@ int            ft_parse_A(t_all_obj *my,char *str)
 {
     write(1,"FIND A\n",7);
     str++;
-    (*my).al.light = ft_atoi_double(str);
+    (*my).al.light = ft_atof(str);
     if (my->al.light ==  1.0 / 0.0 || my->al.light > 1.0 || my->al.light < 0.0)
         ft_error(5);
-    while (ft_isdigit(*str))
+    while (ft_isspace(*str) || ft_isdigit(*str))
         str++;
-    if (*str != '.')
+    if (*str != '.' || !(str++))
         ft_error(5);
     while (ft_isdigit(*str))
         str++;
-    (*my).al.rgb.RED = ft_atoi(str);
-    while()        
+    (*my).al.rgb = ft_atoirgb(str);
+    if ((*my).al.rgb.RED < 0 || (*my).al.rgb.RED > 255 || (*my).al.rgb.GREEN < 0 
+        || (*my).al.rgb.GREEN > 255 || (*my).al.rgb.BLUE < 0 || 
+            (*my).al.rgb.BLUE > 255)
+        ft_error(5);
+    printf("r:%d\n",my->al.rgb.RED);
+    printf("g:%d\n",my->al.rgb.GREEN);   
+    printf("b:%d\n",my->al.rgb.BLUE);    
+    my->cnt.A+=1;    
     return (1);
 }
 

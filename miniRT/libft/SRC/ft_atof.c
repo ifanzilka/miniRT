@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi_double.c                                   :+:      :+:    :+:   */
+/*   ft_atof.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/11 18:22:52 by bmarilli          #+#    #+#             */
-/*   Updated: 2020/12/11 18:34:59 by bmarilli         ###   ########.fr       */
+/*   Created: 2020/12/14 17:59:44 by bmarilli          #+#    #+#             */
+/*   Updated: 2020/12/14 18:00:28 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static	int	ft_cnt_anreal(char *str)
 	return (n);
 }
 
-double		ft_atoi_double(char *str)
+double		ft_atof(char *str)
 {
 	double	res;
 	int		cnt;
