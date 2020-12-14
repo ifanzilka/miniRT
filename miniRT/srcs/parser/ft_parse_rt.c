@@ -61,9 +61,7 @@ int            ft_parse_A(t_all_obj *my,char *str)
     while (ft_isdigit(str[i]))
         i++;
     (*my).al.rgb = ft_atoirgb(str, &i);
-    if ((*my).al.rgb.RED < 0 || (*my).al.rgb.RED > 255 || (*my).al.rgb.GREEN < 0 
-        || (*my).al.rgb.GREEN > 255 || (*my).al.rgb.BLUE < 0 || 
-            (*my).al.rgb.BLUE > 255)
+    if (!(ft_check_rgb((*my).al.rgb)))
         ft_error(5);
     //printf("r:%d\n",my->al.rgb.RED);
     //printf("g:%d\n",my->al.rgb.GREEN);   
@@ -74,7 +72,7 @@ int            ft_parse_A(t_all_obj *my,char *str)
 
 int            ft_parse_c(t_all_obj *my,char *str)
 {
-    //write(1,"FIND c\n",7);
+    write(1,"FIND c\n",7);
     int i;
     
     i = 1;
@@ -87,9 +85,48 @@ int            ft_parse_c(t_all_obj *my,char *str)
         || (*my).camera.normal_orientr_vec.z == inf)
         ft_error(7);
     (*my).camera.FOV = ft_atof(str + i);
-    //printf("FOV: %f\n",(*my).camera.FOV);
     if (((*my).camera.FOV < 0.0) || ((*my).camera.FOV) > 180.0)
         ft_error(7);
+    return (1);
+}
+
+int           ft_parse_l(t_all_obj *my,char *str)
+{
+    write(1,"FIND l\n",7);
+    int i;
+
+    i = 1;
+    (*my).light.cord_l_point = ft_atoi_xyz(str,&i);
+    if ((*my).light.cord_l_point.x == inf || (*my).light.cord_l_point.y == inf
+        || (*my).light.cord_l_point.z == inf)
+        ft_error(8);
+    (*my).light.light_brightness = ft_atof(str + i);
+    if ((*my).light.light_brightness > 1.0 || (*my).light.light_brightness < 0.0)
+        ft_error(8);
+    while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+    while (str[i] && ft_isdigit(str[i]))
+		i++;
+    if ((str[i] && str[i] == '.'))
+    {
+        i++;
+        while (str[i] && ft_isdigit(str[i]))
+		    i++;
+    }
+    (*my).light.rgb = ft_atoirgb(str, &i);
+    if (!ft_check_rgb((*my).light.rgb))
+        ft_error(8);
+    /*printf("s:%s\n",str + i);    
+    printf("x:%f\n",(*my).light.cord_l_point.x);
+    printf("y:%f\n",(*my).light.cord_l_point.y);
+    printf("z:%f\n",(*my).light.cord_l_point.z);
+    printf("lb:%f\n",(*my).light.light_brightness);
+    printf("r:%d\n",(*my).light.rgb.RED);
+    printf("g:%d\n",(*my).light.rgb.GREEN);
+    printf("b:%d\n",(*my).light.rgb.BLUE);
+    */
     return (1);
 }
 
@@ -113,7 +150,7 @@ int           ft_parse_str(char *str, t_all_obj *my)
     else if (ft_strnstr(str,"c",1))
         return(ft_parse_c(my,str));
     else if (ft_strnstr(str,"l",1))
-        write(1,"FIND l\n",7);
+        return(ft_parse_l(my,str));
     else if (ft_strnstr(str,"sp",2))
         write(1,"FIND sp\n",8);
     else if (ft_strnstr(str,"pl",2))

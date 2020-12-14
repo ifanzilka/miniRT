@@ -50,6 +50,7 @@ F_CYAN		= \033[36m
 F_BLUE		= \033[34m
 
 .c.o:
+	@echo "$(F_BLUE)Created object files miniRT ! $(F_NONE)"
 	$(CC) $(FLAGS) -c  -I$(HEADER) -I$(LIB_HEADER) $< -o $(<:.c=.o)
 	@echo "$(F_BLUE)Object files miniRT in ready! $(F_NONE)"
 

@@ -47,7 +47,7 @@ t_xyz          ft_atoi_xyz(char *str, int *j)
     if (!(str[i] && (str[i] == ',') && (i++)))
         return(xyz);
     xyz.z = ft_atof(str + i);
-    ft_miss(str,&i);    
+    ft_miss(str,&i);
     // printf("x(f): %f\n",xyz.x);
     //printf("y(f): %f\n",xyz.y);
     //printf("z(f): %f\n",xyz.z);

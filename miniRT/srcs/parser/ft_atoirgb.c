@@ -13,31 +13,55 @@
 #include <ft_minirt.h>
 #include <parse.h>
 
-t_rgb           ft_atoirgb(char *str, int *i)
+int             ft_check_rgb(t_rgb rgb)
+{
+    if (rgb.RED < 0 || rgb.RED > 255 || rgb.GREEN < 0 || rgb.GREEN > 255 ||
+        rgb.BLUE < 0 || rgb.BLUE > 255 )
+        return (0);
+    return (1);
+}
+
+static  void    ft_init_rgb(t_rgb *rgb)
+{
+    rgb->RED = -1;
+    rgb->GREEN = -1;
+    rgb->BLUE = -1;
+}
+
+static  int    ft_miss(char *str, int *i)
+{
+    int cnt;
+
+    cnt = *i;
+    while (ft_isspace(str[*i]))
+        *i+=1;
+    while (str[*i] && (str[*i] == '-' || str[*i] == '+'))
+        *i+=1;
+    while(ft_isdigit(str[*i]))
+        *i+=1;
+    if (cnt == *i)
+        return(0);
+    return (1);    
+}
+
+t_rgb           ft_atoirgb(char *str, int *j)
 {
     t_rgb rgb;
+    int i;
 
-    rgb.RED = -1;
-    rgb.GREEN = -1;
-    rgb.BLUE = -1;
-    rgb.RED = ft_atoi(str + *i);
-    while (ft_isspace(str[*i]))
-        *i+=1;
-    while (str[*i] && (str[*i] == '-' || str[*i] == '+'))
-        *i+=1;
-    while(ft_isdigit(str[*i]))
-        *i+=1;  
-    if (!(str[*i] && (str[*i] == ',') && (*i+=1)))
+    i = *j;
+    ft_init_rgb(&rgb);
+    rgb.RED = ft_atoi(str + i);
+    ft_miss(str,&i);
+    if (!(str[i] && (str[i] == ',') && (i+=1)))
         return(rgb);
-    rgb.GREEN = ft_atoi(str + *i);
-    while (ft_isspace(str[*i]))
-        *i+=1;
-    while (str[*i] && (str[*i] == '-' || str[*i] == '+'))
-        *i+=1;
-    while(ft_isdigit(str[*i]))
-        *i+=1;  
-    if (!(str[*i] && (str[*i] == ',') && (*i+=1)))
+    rgb.GREEN = ft_atoi(str + i);
+    ft_miss(str,&i);
+    if (!(str[i] && (str[i] == ',') && (i+=1)))
         return(rgb);
-    rgb.BLUE = ft_atoi(str + *i);      
+    rgb.BLUE = ft_atoi(str + i);
+    if (!(ft_miss(str,&i)))
+        ft_init_rgb(&rgb);    
+    *j = i;
     return(rgb);
 }

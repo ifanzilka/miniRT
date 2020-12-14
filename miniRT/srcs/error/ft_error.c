@@ -27,6 +27,8 @@ void    ft_error(int n)
 	else if (n == 6)
 		write(1, "Don't valid .rt file\n", 21);
 	else if (n == 7)
-		write(1, "Don't valid c\n", 14);				
+		write(1, "Don't valid c\n", 14);
+	else if (n == 8)
+		write(1, "Don't valid l\n", 14);			
     exit(n);
 }

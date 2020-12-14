@@ -52,7 +52,7 @@ double		ft_atof(char *str)
 	real = ft_atoi(str);
 	while (*str && ft_isdigit(*str))
 		str++;
-	if (!(*str && *str == '.' && (str++) && !ft_check_an(str)))
+	if (!(*str && *str == '.' && (str++) && ft_check_an(str)))
 		return ((double)(sign * real));
 	anreal = ft_atoi(str);
 	if (ft_c_an(str) == 0)
