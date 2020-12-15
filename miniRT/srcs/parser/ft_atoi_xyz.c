@@ -13,6 +13,18 @@
 #include <ft_minirt.h>
 #include <parse.h>
 
+//#define inf 1.0 / 0.0
+
+int                    ft_check_xyz(t_xyz xyz_t)
+{
+    double inf_1;
+
+    inf_1 = 1.0 / 0.0;
+    if (xyz_t.x == inf_1 || xyz_t.y == inf_1 || xyz_t.z == inf_1)
+        return (0);
+    return (1);
+}
+
 static void           ft_miss(char *str, int *i)
 {
     while (str[*i] && ft_isspace(str[*i]))

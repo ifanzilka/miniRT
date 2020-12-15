@@ -18,5 +18,6 @@ int         ft_parse_rt(char *file);
 t_rgb       ft_atoirgb(char *str,int *i);
 int         ft_check_rgb(t_rgb rgb);
 t_xyz       ft_atoi_xyz(char *str, int *i);
+int         ft_check_xyz(t_xyz xyz_t);
 
 #endif

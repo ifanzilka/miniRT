@@ -54,12 +54,7 @@ int            ft_parse_A(t_all_obj *my,char *str)
     (*my).al.light = ft_atof(str + i);
     if (my->al.light ==  1.0 / 0.0 || my->al.light > 1.0 || my->al.light < 0.0)
         ft_error(5);
-    while (ft_isspace(str[i]) || ft_isdigit(str[i]))
-        i++;
-    if (str[i] != '.' || !(i++))
-        ft_error(5);
-    while (ft_isdigit(str[i]))
-        i++;
+    ft_skip_atof(str, &i);    
     (*my).al.rgb = ft_atoirgb(str, &i);
     if (!(ft_check_rgb((*my).al.rgb)))
         ft_error(5);
@@ -97,24 +92,12 @@ int           ft_parse_l(t_all_obj *my,char *str)
 
     i = 1;
     (*my).light.cord_l_point = ft_atoi_xyz(str,&i);
-    if ((*my).light.cord_l_point.x == inf || (*my).light.cord_l_point.y == inf
-        || (*my).light.cord_l_point.z == inf)
+    if (!ft_check_xyz((*my).light.cord_l_point))
         ft_error(8);
     (*my).light.light_brightness = ft_atof(str + i);
     if ((*my).light.light_brightness > 1.0 || (*my).light.light_brightness < 0.0)
         ft_error(8);
-    while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-    while (str[i] && ft_isdigit(str[i]))
-		i++;
-    if ((str[i] && str[i] == '.'))
-    {
-        i++;
-        while (str[i] && ft_isdigit(str[i]))
-		    i++;
-    }
+    ft_skip_atof(str,&i);
     (*my).light.rgb = ft_atoirgb(str, &i);
     if (!ft_check_rgb((*my).light.rgb))
         ft_error(8);
@@ -128,6 +111,38 @@ int           ft_parse_l(t_all_obj *my,char *str)
     printf("b:%d\n",(*my).light.rgb.BLUE);
     */
     return (1);
+}
+
+
+int           ft_parse_sp(t_all_obj *my,char *str)
+{
+    write(1,"FIND sp\n",8);
+    (void) my;
+    t_sphere *sp;
+    t_list  *newel;
+    int i;
+
+    sp = malloc(sizeof(t_sphere));
+    i = 2;
+    sp->coord_sph_centr = ft_atoi_xyz(str, &i);
+    if (!ft_check_xyz(sp->coord_sph_centr))
+        ft_error(9);
+    sp->diametr = ft_atof(str + i);
+    if (sp->diametr == inf || sp->diametr < 0.0)
+        ft_error(9);
+    //printf("s1:%s\n",str + i);    
+    ft_skip_atof(str,&i);
+    //printf("s2:%s\n",str + i);
+    sp->rgb = ft_atoirgb(str, &i);
+    if (!ft_check_rgb(sp->rgb))
+        ft_error(9);
+    newel = ft_lstnew(sp);
+    ft_lstadd_back(&my->sphere,newel);   
+    //printf("x: %f\n",sp.coord_sph_centr.x);
+    //printf("y: %f\n",sp.coord_sph_centr.y);
+    //printf("z: %f\n",sp.coord_sph_centr.z);
+    //printf("di: %f\n",sp->diametr);
+    return(1);
 }
 
 int           ft_parse_str(char *str, t_all_obj *my)
@@ -152,7 +167,12 @@ int           ft_parse_str(char *str, t_all_obj *my)
     else if (ft_strnstr(str,"l",1))
         return(ft_parse_l(my,str));
     else if (ft_strnstr(str,"sp",2))
-        write(1,"FIND sp\n",8);
+    {
+        ft_parse_sp(my, str);
+        //t_sphere *a;
+        //a = my->sphere->content;
+       // printf("di:%f\n",a->diametr);
+    }
     else if (ft_strnstr(str,"pl",2))
         write(1,"FIND pl\n",8);
     else if (ft_strnstr(str,"sq",2))

@@ -12,6 +12,26 @@
 
 #include <libft.h>
 
+void        ft_skip_atof(char *str,int *j)
+{
+    int i;
+
+    i = *j; 
+    while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+    while (str[i] && ft_isdigit(str[i]))
+		i++;
+    if ((str[i] && str[i] == '.'))
+    {
+        i++;
+        while (str[i] && ft_isdigit(str[i]))
+		    i++;
+    }
+    *j = i;
+}
+
 static	int	ft_check_an(char *str)
 {
 	if (*str && !ft_isdigit(*str))

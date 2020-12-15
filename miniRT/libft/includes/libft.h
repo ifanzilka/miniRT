@@ -42,6 +42,7 @@ void				ft_strdel(char **as);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_atoi(const char *str);
 double				ft_atof(char *str);
+void				ft_skip_atof(char *str, int *j);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);
