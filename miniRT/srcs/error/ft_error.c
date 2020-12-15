@@ -31,6 +31,12 @@ void    ft_error(int n)
 	else if (n == 8)
 		write(1, "Don't valid l\n", 14);
 	else if (n == 9)
-		write(1, "Don't valid sp\n", 15);				
+		write(1, "Don't valid sp\n", 15);
+	else if (n == 10)
+		write(1, "Don't valid cy\n", 15);
+	else if (n == 11)
+		write(1, "Don't valid sq\n", 15);
+	else if (n == 12)
+		write(1, "Don't valid tr\n", 15);							
     exit(n);
 }

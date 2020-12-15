@@ -20,6 +20,15 @@
 ** strerror(error) -> pointer in str with error  
 */
 
+
+int             ft_check_normalizate(t_xyz xyz)
+{
+    if (xyz.x > 1.0 || xyz.x < -1.0 || xyz.y > 1.0 || xyz.y < -1.0
+        || xyz.z > 1.0 || xyz.z < -1.0) 
+        return(0);
+    return (1);
+}
+
 int            ft_parse_R(t_all_obj *my,char *str)
 {
     int width;
@@ -145,6 +154,146 @@ int           ft_parse_sp(t_all_obj *my,char *str)
     return(1);
 }
 
+int           ft_parse_cy(t_all_obj *my,char *str)
+{
+    (void) my;
+    (void) str;
+    int i;
+    write(1,"FIND cy\n",8);
+    t_cylinder *cy;
+
+    i = 2;
+    cy = malloc(sizeof(t_cylinder));
+    cy->cord = ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(cy->cord))
+        ft_error(10);
+    cy->normal_orientr_vec = ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(cy->cord) || !ft_check_normalizate(cy->normal_orientr_vec))
+        ft_error(10);
+   
+    cy->diameter = ft_atof(str + i);
+    ft_skip_atof(str, &i);
+    cy->height = ft_atof(str +i);
+    ft_skip_atof(str, &i);
+    if (cy->diameter < 0.0 || cy->height < 0.0)
+        ft_error(10);
+   cy->rgb = ft_atoirgb(str, &i);
+   if (!ft_check_rgb(cy->rgb))
+        ft_error(10);
+    /*
+    printf("x: %f\n",cy->cord.x);
+    printf("y: %f\n",cy->cord.y);
+    printf("z: %f\n",cy->cord.z);
+    printf("x: %f\n",cy->normal_orientr_vec.x);
+    printf("y: %f\n",cy->normal_orientr_vec.y);
+    printf("z: %f\n",cy->normal_orientr_vec.z);
+    printf("r: %d\n",cy->rgb.RED);
+    printf("g: %d\n",cy->rgb.GREEN);
+    printf("b: %d\n",cy->rgb.BLUE);
+    printf("d: %f\n",cy->diameter);
+    printf("h: %f\n",cy->height);
+    */
+
+    return (1);
+}
+
+int           ft_parse_pl(t_all_obj *my , char *str)
+{
+    write(1,"FIND pl\n",8);
+    (void) str;
+    (void) my;
+    t_plane *pl;
+    int i;
+    
+    i = 2;
+    pl = malloc((sizeof(t_plane)));
+    pl->cord = ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(pl->cord))
+        ft_error(10);
+    pl->normal_orientr_vec = ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(pl->cord) || !ft_check_normalizate(pl->normal_orientr_vec))
+        ft_error(10);
+    pl->rgb = ft_atoirgb(str, &i);
+
+    /*printf("x: %f\n",pl->cord.x);
+    printf("y: %f\n",pl->cord.y);
+    printf("z: %f\n",pl->cord.z);
+    printf("x: %f\n",pl->normal_orientr_vec.x);
+    printf("y: %f\n",pl->normal_orientr_vec.y);
+    printf("z: %f\n",pl->normal_orientr_vec.z);
+    printf("r: %d\n",pl->rgb.RED);
+    printf("g: %d\n",pl->rgb.GREEN);
+    printf("b: %d\n",pl->rgb.BLUE);
+    */
+
+    return(1);
+}
+
+int           ft_parse_sq(t_all_obj *my , char *str)
+{
+     write(1,"FIND sq\n",8);
+    (void) str;
+    (void) my;
+    t_square *sq;
+    int i;
+
+    sq = malloc(sizeof(t_square));
+    i = 2;
+    sq->cord_sq_cen= ft_atoi_xyz(str, &i);
+    if (!ft_check_xyz(sq->cord_sq_cen))
+        ft_error(11);
+    sq->normal_orientr_vec = ft_atoi_xyz(str,&i);
+    if (!ft_check_normalizate(sq->normal_orientr_vec))
+        ft_error(11);
+    sq->side = ft_atof(str + i);
+    ft_skip_atof(str,&i);
+    if (sq->side == inf)
+        ft_error(11);
+   sq->rgb = ft_atoirgb(str,&i);
+   if (!(ft_check_rgb(sq->rgb)))
+    ft_error(11); 
+    /*
+    printf("x: %f\n",sq->cord_sq_cen.x);
+    printf("y: %f\n",sq->cord_sq_cen.y);
+    printf("z: %f\n",sq->cord_sq_cen.z);
+    printf("x: %f\n",sq->normal_orientr_vec.x);
+    printf("y: %f\n",sq->normal_orientr_vec.y);
+    printf("z: %f\n",sq->normal_orientr_vec.z);
+    printf("r: %d\n",sq->rgb.RED);
+    printf("g: %d\n",sq->rgb.GREEN);
+    printf("b: %d\n",sq->rgb.BLUE);
+    printf("side: %f\n",sq->side);
+    */
+    return(1);
+}
+int           ft_parse_tr(t_all_obj *my , char *str)
+{
+    write(1,"FIND tr\n",8);
+    (void) str;
+    (void) my;
+    t_triangle *tr;
+    int i;
+
+    i = 2;
+    tr = malloc(sizeof(t_triangle));
+    tr->first_point = ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(tr->first_point))
+        ft_error(12);
+    tr->second_point = ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(tr->second_point))
+        ft_error(12);
+    tr->third_point = ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(tr->third_point))
+        ft_error(12);
+    tr->rgb = ft_atoirgb(str,&i);
+    if (!ft_check_rgb(tr->rgb))
+        ft_error(12);
+    /*printf("r: %d\n",tr->rgb.RED);
+    printf("g: %d\n",tr->rgb.GREEN);
+    printf("b: %d\n",tr->rgb.BLUE); */
+    return (1);
+}
+
 int           ft_parse_str(char *str, t_all_obj *my)
 {
     (void) my;
@@ -159,7 +308,7 @@ int           ft_parse_str(char *str, t_all_obj *my)
     if (ft_strnstr(str,"R",1))
         return (ft_parse_R(my,str));    
     else if (ft_strnstr(str,"cy",2))
-        write(1,"FIND cy\n",8);    
+        return(ft_parse_cy(my,str));
     else if (ft_strnstr(str,"A",1))
         return (ft_parse_A(my,str));
     else if (ft_strnstr(str,"c",1))
@@ -174,11 +323,11 @@ int           ft_parse_str(char *str, t_all_obj *my)
        // printf("di:%f\n",a->diametr);
     }
     else if (ft_strnstr(str,"pl",2))
-        write(1,"FIND pl\n",8);
+        return (ft_parse_pl(my,str));
     else if (ft_strnstr(str,"sq",2))
-        write(1,"FIND sq\n",8);
+       return (ft_parse_sq(my,str));
     else if (ft_strnstr(str,"tr",2))
-        write(1,"FIND tr\n",8);
+        return (ft_parse_tr(my,str));
     return (1);        
 }
 

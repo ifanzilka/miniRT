@@ -135,7 +135,7 @@ typedef struct	s_sphere
 
 typedef struct	s_plane
 { 
-                t_xyz coord;
+                t_xyz cord;
                 t_xyz normal_orientr_vec;
                 t_rgb  rgb;
 }	            t_plane;
@@ -170,7 +170,7 @@ typedef struct	s_square
 ** the cylinder height: 21.42
 ** R,G,B colors in range [0,255]: 10, 0, 255
 **  Example:
-**  "cy 50.0,0.0,20.6 0.0,0.0,1.0 10,0,255 14.2 21.42"   
+**  "cy 50.0,0.0,20.6 0.0,0.0,1.0  14.2 21.42 10,0,255"   
 */
 
 typedef struct	s_cylinder
