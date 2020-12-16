@@ -21,6 +21,22 @@
 */
 
 
+typedef struct  s_data {
+    void        *img;
+    char        *addr;
+    int         bits_per_pixel;
+    int         line_length;
+    int         endian;
+}               t_data;
+
+void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+    char    *dst;
+
+    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    *(unsigned int*)dst = color;
+}
+
 int             ft_check_normalizate(t_xyz xyz)
 {
     if (xyz.x > 1.0 || xyz.x < -1.0 || xyz.y > 1.0 || xyz.y < -1.0
@@ -91,6 +107,7 @@ int            ft_parse_c(t_all_obj *my,char *str)
     (*my).camera.FOV = ft_atof(str + i);
     if (((*my).camera.FOV < 0.0) || ((*my).camera.FOV) > 180.0)
         ft_error(7);
+    //printf("c:%f\n",(*my).camera.normal_orientr_vec.y);    
     return (1);
 }
 
@@ -110,7 +127,7 @@ int           ft_parse_l(t_all_obj *my,char *str)
     (*my).light.rgb = ft_atoirgb(str, &i);
     if (!ft_check_rgb((*my).light.rgb))
         ft_error(8);
-    /*printf("s:%s\n",str + i);    
+    printf("s:%s\n",str + i);    
     printf("x:%f\n",(*my).light.cord_l_point.x);
     printf("y:%f\n",(*my).light.cord_l_point.y);
     printf("z:%f\n",(*my).light.cord_l_point.z);
@@ -118,7 +135,7 @@ int           ft_parse_l(t_all_obj *my,char *str)
     printf("r:%d\n",(*my).light.rgb.RED);
     printf("g:%d\n",(*my).light.rgb.GREEN);
     printf("b:%d\n",(*my).light.rgb.BLUE);
-    */
+    
     return (1);
 }
 
@@ -365,8 +382,21 @@ void        ft_parse_file_rt(int fd)
                     free(str);
                     exit(0); 
                 }
+
                 free(str);
             }
+    void    *mlx;
+    void    *mlx_win;
+    t_data  img;
+
+    mlx = mlx_init();
+    mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
+    img.img = mlx_new_image(mlx, 1920, 1080);
+    img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+                                 &img.endian);
+    my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
+    mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+    mlx_loop(mlx);   
             if (str)
                  free(str);
 }

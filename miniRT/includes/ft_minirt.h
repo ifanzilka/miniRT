@@ -20,6 +20,7 @@
 #include <libft.h>
 #include <math.h>
 #include "get_next_line.h"
+#include <mlx.h>
 
 typedef struct	s_rgb
 {
