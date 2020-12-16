@@ -16,6 +16,7 @@ LIB_DIR =  ./libft/
 LIB_NAME =	libft/libft.a
 LIB_HEADER = libft/includes
 MINILIBX = minilibx/libmlx.dylib
+MINILIBXX = libmlx.dylib
 LIBFT = libft.a
 
 CC		= gcc
@@ -36,7 +37,10 @@ DIR_ERROR = ./srcs/error/
 
 SRCS = $(DIR)main.c 
 GNL_SRCS = $(DIR_GNL)get_next_line.c $(DIR_GNL)get_next_line_utils.c
-PARSER_SRCS = $(DIR_PARSER)ft_parse_rt.c $(DIR_PARSER)ft_atoirgb.c $(DIR_PARSER)ft_atoi_xyz.c
+PARSER_SRCS =	$(DIR_PARSER)ft_parse_rt.c	$(DIR_PARSER)ft_atoirgb.c 	$(DIR_PARSER)ft_atoi_xyz.c\
+				$(DIR_PARSER)ft_parse_R.c	$(DIR_PARSER)ft_parse_A.c 	$(DIR_PARSER)ft_parse_c.c\
+				$(DIR_PARSER)ft_parse_l.c	$(DIR_PARSER)ft_parse_sp.c	$(DIR_PARSER)ft_parse_cy.c\
+				$(DIR_PARSER)ft_parse_pl.c	$(DIR_PARSER)ft_parse_sq.c	$(DIR_PARSER)ft_parse_tr.c
 ERROR_SRCS = $(DIR_ERROR)ft_error.c
 
 AR		= ar rc
@@ -55,15 +59,20 @@ F_BLUE		= \033[34m
 	$(CC) $(FLAGS) -c  -I$(HEADER) -I$(LIB_HEADER) $< -o $(<:.c=.o)
 	@echo "$(F_BLUE)Object files miniRT in ready! $(F_NONE)"
 
-all: $(LIBFT) $(NAME_MINIRT)
+all: $(LIBFT) $(MINILIBXX) $(NAME_MINIRT) 
 
-bonus : $(LIBFT) $(NAME_MINIRT)
+bonus : $(LIBFT) $(MINILIBXX) $(NAME_MINIRT)	
+
+$(MINILIBXX):
+		@echo "$(F_CYAN)Copy libmlx.dylib ...$(F_NONE)"
+		cp $(MINILIBX) $(MINILIBXX)
+		@echo "$(F_CYAN)Copy libmlx.dylib END !...$(F_NONE)"
 
 $(LIBFT):
 		@echo "$(F_YELLOW)START RUN Makefile in libft $(F_NONE)"
 		@$(MAKE) -C $(LIB_DIR)
 		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
-$(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)
+$(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR) 
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
 		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR) -L. $(LIB_NAME)  -lmlx -framework OpenGL -framework AppKit $(MINILIBX) -o $(NAME_MINIRT)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
@@ -74,6 +83,7 @@ clean:
 fclean: clean
 	make fclean -C $(LIB_DIR)
 	rm -rf $(NAME_MINIRT)
+	rm $(MINILIBXX)
 	@echo "$(F_GREEN)FCleaned! $(F_NONE)"
 
 re: fclean all

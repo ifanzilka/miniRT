@@ -21,6 +21,7 @@
 #include <math.h>
 #include "get_next_line.h"
 #include <mlx.h>
+#define inf 1.0 / 0.0
 
 typedef struct	s_rgb
 {
