@@ -1,5 +1,7 @@
 # miniRT
 
+https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html
+
 https://habr.com/ru/post/342510/
 
 http://www.graph.unn.ru/rus/materials/CG/CG15_RayTracing.pdf
