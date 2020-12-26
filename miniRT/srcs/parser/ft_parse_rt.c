@@ -108,7 +108,7 @@ void        ft_parse_file_rt(int fd)
 
                 free(str);
             }
-            ft_init_disp();
+            ft_init_disp(&my_rt);
             //ft_check_t_all_obj(); (проверяю на валидность данные)
             if (str)
                  free(str);

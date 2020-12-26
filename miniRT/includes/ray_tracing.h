@@ -15,6 +15,6 @@
 
 #include "ft_minirt.h"
 
-int     ft_init_disp();
+int     ft_init_disp(t_all_obj *rt);
 
 #endif
