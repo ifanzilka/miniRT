@@ -13,7 +13,35 @@
 #include <ft_minirt.h>
 #include <parse.h>
 #include <ray_tracing.h>
-#include <mlx.h>
+#include "mlx.h"
+
+typedef struct  s_vars 
+{
+    void        *mlx;
+    void        *win;
+}                t_vars;
+
+int             key_hook(int keycode, t_vars *vars)
+{
+    (void) vars;
+    printf("Hello from key_hook!%d!\n",keycode);
+    if (keycode == 53)
+    {
+        mlx_destroy_window(vars->mlx, vars->win);
+        //clear struct
+        exit(0);
+    }
+    return(1);
+}
+
+int ft_close_win(t_vars *vars)
+{
+   (void) vars;
+
+    mlx_destroy_window(vars->mlx, vars->win);
+    exit(0);
+    return (1);
+}
 
 void    ft_check_w_h_win(void *mlx_ptr,int x, int y,t_all_obj *rt)
 {
@@ -25,21 +53,20 @@ void    ft_check_w_h_win(void *mlx_ptr,int x, int y,t_all_obj *rt)
         rt->reso.width = x;
         rt->reso.height = y;
     }
-
-    printf("x: %d",x);
-    printf("y: %d",y);
 }
 
 int     ft_init_disp(t_all_obj *rt)
 {
-    void    *mlx_ptr;
-    void    *mlx_win;
-    if (!(mlx_ptr = mlx_init()))
+    t_vars      vars;
+
+    if (!(vars.mlx = mlx_init()))
         ft_error(13);
-    ft_check_w_h_win(mlx_ptr,0,0,rt);
-    mlx_win = mlx_new_window(mlx_ptr, rt->reso.width, rt->reso.height,
+    ft_check_w_h_win(vars.mlx,0,0,rt);
+    vars.win = mlx_new_window(vars.mlx, rt->reso.width, rt->reso.height,
         "miniRT");
-    mlx_loop(mlx_ptr);
+    mlx_key_hook(vars.win, key_hook, &vars);
+    mlx_hook(vars.win,17,0L,ft_close_win,&vars);    
+    mlx_loop(vars.mlx);
 
     return (1);
 }

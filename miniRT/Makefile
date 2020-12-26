@@ -82,7 +82,7 @@ $(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTrac
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
-	rm -rf $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)
+	rm -rf $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR) $(OBJS_RayTracing)
 	@echo "$(F_GREEN)Cleaned! $(F_NONE)"
 fclean: clean
 	make fclean -C $(LIB_DIR)
