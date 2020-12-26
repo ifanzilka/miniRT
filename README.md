@@ -1,5 +1,7 @@
 # miniRT
 
+https://elearning.intra.42.fr/notions/minilibx/subnotions
+
 https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html
 
 https://habr.com/ru/post/342510/
