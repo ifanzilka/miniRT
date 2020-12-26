@@ -12,6 +12,8 @@
 
 #include <ft_minirt.h>
 #include <parse.h>
+#include <ray_tracing.h>
+
 
 #define eps 1e-7
 
@@ -106,7 +108,7 @@ void        ft_parse_file_rt(int fd)
 
                 free(str);
             }
-            
+            ft_init_disp();
             //ft_check_t_all_obj(); (проверяю на валидность данные)
             if (str)
                  free(str);

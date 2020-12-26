@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 
 	if (!ft_check_argv(argc, argv) || !ft_parse_rt(argv[1]))
 		exit(0);
-	while (1)
-		;	
+	//while (1)
+	//	;	
 	return (1);
 }
