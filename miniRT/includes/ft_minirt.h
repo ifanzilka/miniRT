@@ -241,5 +241,18 @@ typedef struct	s_all_obj
 
 }               t_all_obj;
 
+/*
+**
+**  s_vars 
+**  mlx -> pointer libary
+**  win -> link for window 
+*/
+
+typedef struct  s_vars 
+{
+    void        *mlx;
+    void        *win;
+}                t_vars;
+
 void        ft_error(int n);
 #endif

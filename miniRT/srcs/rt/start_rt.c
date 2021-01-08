@@ -15,11 +15,23 @@
 #include <ray_tracing.h>
 #include "mlx.h"
 
-typedef struct  s_vars 
-{
-    void        *mlx;
-    void        *win;
-}                t_vars;
+/*
+**  In computer programming, the term hooking covers a range of techniques
+** used to alter or augment the behaviour of an operating system,
+** of applications, or of other software components by intercepting 
+** function calls or messages or events passed between software components.
+** Code that handles such intercepted function calls,
+** events or messages is called a hook.
+*/
+
+
+
+
+/*
+** key_hook (function)
+**  
+** link for window (pointer) mlx
+*/
 
 int             key_hook(int keycode, t_vars *vars)
 {
@@ -36,8 +48,6 @@ int             key_hook(int keycode, t_vars *vars)
 
 int ft_close_win(t_vars *vars)
 {
-   (void) vars;
-
     mlx_destroy_window(vars->mlx, vars->win);
     exit(0);
     return (1);
@@ -55,6 +65,7 @@ void    ft_check_w_h_win(void *mlx_ptr,int x, int y,t_all_obj *rt)
     }
 }
 
+
 int     ft_init_disp(t_all_obj *rt)
 {
     t_vars      vars;
@@ -65,9 +76,11 @@ int     ft_init_disp(t_all_obj *rt)
     vars.win = mlx_new_window(vars.mlx, rt->reso.width, rt->reso.height,
         "miniRT");
     mlx_key_hook(vars.win, key_hook, &vars);
-    mlx_hook(vars.win,17,0L,ft_close_win,&vars);    
+    mlx_hook(vars.win,17,0L,ft_close_win,&vars);  
+    //fun trace
+    //mlx_pixel_put(vars.mlx,vars.win,10,10,create_rgb(255,255,255));
+    cicle(rt,&vars);
     mlx_loop(vars.mlx);
-
     return (1);
 }
 

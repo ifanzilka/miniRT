@@ -45,7 +45,7 @@ PARSER_SRCS =	$(DIR_PARSER)ft_parse_rt.c	$(DIR_PARSER)ft_atoirgb.c 	$(DIR_PARSER
 				$(DIR_PARSER)ft_parse_pl.c	$(DIR_PARSER)ft_parse_sq.c	$(DIR_PARSER)ft_parse_tr.c
 
 ERROR_SRCS = $(DIR_ERROR)ft_error.c
-RayTracing_SRCS = $(DIR_RayTracing)start_rt.c
+RayTracing_SRCS = $(DIR_RayTracing)start_rt.c $(DIR_RayTracing)cicle.c
 
 AR		= ar rc
 

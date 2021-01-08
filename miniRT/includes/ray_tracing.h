@@ -15,6 +15,7 @@
 
 #include "ft_minirt.h"
 
-int     ft_init_disp(t_all_obj *rt);
 
+int     ft_init_disp(t_all_obj *rt);
+int     cicle(t_all_obj *all_obj,t_vars *vars);
 #endif
