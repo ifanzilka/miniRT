@@ -40,8 +40,8 @@ int           ft_parse_str(char *str, t_all_obj *my)
 
     if (ft_strnstr(str," ",1) || ft_strnstr(str,"\n",1))
         return (1);
-    if (len < 5)
-        ft_error(6);
+    //if (len < 5)
+    //    ft_error(6);
     if (ft_strnstr(str,"R",1))
         return (ft_parse_R(my,str));    
     else if (ft_strnstr(str,"cy",2))
@@ -70,6 +70,8 @@ int           ft_parse_str(char *str, t_all_obj *my)
     else if (ft_strnstr(str," ",2))
         return (1);
     else if (ft_strnstr(str,"#",1))
+        return (1);
+    else if (ft_strlen(str) == 0)
         return (1);             
     else
         ft_error(6);    
@@ -104,7 +106,7 @@ void        ft_parse_file_rt(int fd)
 
             while ((get_next_line(fd,&str)) == 1)
             {
-                //printf("s:!%s!\n",str);
+                printf("s:!%s!\n",str);
                 if (!ft_parse_str(str,&my_rt))
                 {
                     //ft_free_struct(); (если что то уже добавили в структуры ндо очистить бдует)
