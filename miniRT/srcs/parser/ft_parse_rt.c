@@ -65,6 +65,12 @@ int           ft_parse_str(char *str, t_all_obj *my)
        return (ft_parse_sq(my,str));
     else if (ft_strnstr(str,"tr",2))
         return (ft_parse_tr(my,str));
+    else if (ft_strnstr(str,"\n",2))
+        return (1);
+    else if (ft_strnstr(str," ",2))
+        return (1);
+    else if (ft_strnstr(str,"#",1))
+        return (1);             
     else
         ft_error(6);    
     return (1);        
