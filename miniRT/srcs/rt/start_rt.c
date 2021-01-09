@@ -79,7 +79,7 @@ int     ft_init_disp(t_all_obj *rt)
     mlx_hook(vars.win,17,0L,ft_close_win,&vars);  
     //fun trace
     //mlx_pixel_put(vars.mlx,vars.win,10,10,create_rgb(255,255,255));
-    cicle(rt,&vars);
+    cicle_for_pixel(rt,&vars);
     mlx_loop(vars.mlx);
     return (1);
 }

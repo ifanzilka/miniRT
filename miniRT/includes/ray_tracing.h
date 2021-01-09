@@ -17,5 +17,5 @@
 
 
 int     ft_init_disp(t_all_obj *rt);
-int     cicle(t_all_obj *all_obj,t_vars *vars);
+int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars);
 #endif
