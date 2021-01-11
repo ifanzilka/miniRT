@@ -35,27 +35,38 @@
 int           ft_parse_l(t_all_obj *my,char *str)
 {
     write(1,"FIND l\n",7);
+    t_light *light;
+    t_list  *newel;
+    t_list *all;
     int i;
 
+    light = malloc(sizeof(t_light));
     i = 1;
-    (*my).light.cord_l_point = ft_atoi_xyz(str,&i);
-    if (!ft_check_xyz((*my).light.cord_l_point))
+    light->cord_l_point = ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(light->cord_l_point))
         ft_error(8);
-    (*my).light.light_brightness = ft_atof(str + i);
-    if ((*my).light.light_brightness > 1.0 || (*my).light.light_brightness < 0.0)
+    light->light_brightness = ft_atof(str + i);
+    if (light->light_brightness > 1.0 || light->light_brightness < 0.0)
         ft_error(8);
     ft_skip_atof(str,&i);
-    (*my).light.rgb = ft_atoirgb(str, &i);
-    if (!ft_check_rgb((*my).light.rgb))
+    light->rgb = ft_atoirgb(str, &i);
+    if (!ft_check_rgb(light->rgb))
         ft_error(8);
-    printf("s:%s\n",str + i);    
+    newel = ft_lstnew(light);
+    if (!newel)
+        write(1,"CRASH\n",6);
+    write(1,"TYT\n",4);
+    all = my->light;
+    ft_lstadd_front(&all,newel);
+     write(1,"TYT\n",4);       
+    /*printf("s:%s\n",str + i);    
     printf("x:%f\n",(*my).light.cord_l_point.x);
     printf("y:%f\n",(*my).light.cord_l_point.y);
     printf("z:%f\n",(*my).light.cord_l_point.z);
     printf("lb:%f\n",(*my).light.light_brightness);
     printf("r:%d\n",(*my).light.rgb.RED);
     printf("g:%d\n",(*my).light.rgb.GREEN);
-    printf("b:%d\n",(*my).light.rgb.BLUE);
+    printf("b:%d\n",(*my).light.rgb.BLUE);*/
     my->cnt.l+=1;
     return (1);
 }

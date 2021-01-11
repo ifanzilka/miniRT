@@ -95,7 +95,10 @@ void        ft_init_t_all_obj(t_all_obj *my)
         ft_init_t_cnt_obj(&(my->cnt));
         (*my).reso.height = -1;
         (*my).reso.width = -1;
-
+        //(*my).light = malloc(sizeof(t_list));
+        //(*my).light->content = NULL;
+        //(*my).sphere = malloc(sizeof(t_list));
+        //(*my).sphere->content = NULL;
 }
 
 void        ft_parse_file_rt(int fd)

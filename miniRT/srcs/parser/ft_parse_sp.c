@@ -55,7 +55,9 @@ int           ft_parse_sp(t_all_obj *my,char *str)
     if (!ft_check_rgb(sp->rgb))
         ft_error(9);
     newel = ft_lstnew(sp);
-    ft_lstadd_back(&my->sphere,newel);   
+    write(1,"TYT\n",4); 
+    ft_lstadd_front(&my->sphere,newel);
+    write(1,"TYT\n",4);    
     //printf("x: %f\n",sp.coord_sph_centr.x);
     //printf("y: %f\n",sp.coord_sph_centr.y);
     //printf("z: %f\n",sp.coord_sph_centr.z);

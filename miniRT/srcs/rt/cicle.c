@@ -337,6 +337,7 @@ double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n)
 
 int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
 {
+   
     double color;
     t_rgb rgb;
     double t;
@@ -360,13 +361,13 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
     v = ft_create_v(x, y, all_obj->reso.width, all_obj->reso.height, 1.0);
     d = ft_xyz_minus(v,o);
     
+    spher = NULL;
     t = INFINITY;
-
+   
     while (sp)
     {
-                
+              
                 spher = sp->content;
-
                 c.x =   spher->coord_sph_centr.x;
                 c.y =   spher->coord_sph_centr.y;
                 c.z =   spher->coord_sph_centr.z;
@@ -409,7 +410,9 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
                 //}
                 sp = sp->next;
     }
+    
     sp = all_obj->sphere;
+   
     if (t == INFINITY)
         return (color);
     p = ft_xyz_plus(o,ft_xyz_mult(d,t));
@@ -417,6 +420,7 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
     n = ft_xyz_div_doub(n,ft_len_vect(n));
 
     rgb = ft_rgb_mult_db(rgb,0.751);
+
     //ft_compute_lighting(p,n,all_obj);
     color = create_rgb(rgb.RED,rgb.GREEN,rgb.BLUE);
     return (color);

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-
+#include <stdio.h>
 /*
 ** ENG
 */
@@ -39,3 +39,4 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		cur->next = new;
 	}
 }
+
