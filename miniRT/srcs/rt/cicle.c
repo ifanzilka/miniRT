@@ -29,21 +29,6 @@ int		create_rgb( int r, int g, int b)
 ** 0xFF -> all bits (1)
 */
 
-int		get_r(int rgb)
-{
-	return (rgb & (0xFF << 16));
-}
-
-int		get_g(int rgb)
-{
-	return (rgb & (0xFF << 8));
-}
-
-int		get_b(int rgb)
-{
-	return (rgb & 0xFF);
-}
-
 
 
 /*
@@ -256,6 +241,20 @@ t_xyz   ft_vect_two_point(t_xyz a, t_xyz b)
     return (res);
 }
 
+t_rgb   ft_rgb_mult_db(t_rgb rgb, double a)
+{
+    rgb.RED = (int)((double)rgb.RED * a);
+    rgb.GREEN = (int)((double)rgb.GREEN * a);
+    rgb.BLUE = (int)((double)rgb.BLUE * a);
+    if (rgb.RED > 255)
+        rgb.RED = 255;
+    if (rgb.GREEN > 255)
+        rgb.GREEN = 255;
+    if (rgb.BLUE > 255)
+        rgb.BLUE = 255;
+    return (rgb);           
+}
+
 /*
 **  the quadratic equation 
 **  D = B^2 - 4 * A * C 
@@ -301,6 +300,17 @@ double mind(double a, double b)
 }
 
 
+double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n)
+{
+    double i;
+    (void) p;
+    (void) n;
+
+    i = all_obj->al.light;
+    return (i);
+}
+
+
 /*
 **  Sphere:
 ** P - point lutch
@@ -324,19 +334,23 @@ double mind(double a, double b)
 **  return (int) color in pixel
 */
 
-int ft_ray_trace(t_all_obj *all_obj, double x, double y)
+
+int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
 {
     double color;
+    t_rgb rgb;
     double t;
     t_xyz v;
     t_xyz o;
     t_xyz d;
     t_xyz c;
     t_list *sp;
+    t_sphere *spher;
     t_xyz oc;
-    //t_xyz p;
-    //t_xyz n;
-    //t_sphere *spher;
+
+    t_xyz p;
+    t_xyz n;
+
     double k1;
     double k2;
     double k3;
@@ -345,57 +359,66 @@ int ft_ray_trace(t_all_obj *all_obj, double x, double y)
     o = ft_create_xyz(0.0,0.0,0.0);
     v = ft_create_v(x, y, all_obj->reso.width, all_obj->reso.height, 1.0);
     d = ft_xyz_minus(v,o);
-
+    
     t = INFINITY;
+
     while (sp)
     {
-    t_sphere *spher;
-    spher = sp->content;
+                
+                spher = sp->content;
 
-    c.x = spher->coord_sph_centr.x;
-    c.y = spher->coord_sph_centr.y;
-    c.z = spher->coord_sph_centr.z;
+                c.x =   spher->coord_sph_centr.x;
+                c.y =   spher->coord_sph_centr.y;
+                c.z =   spher->coord_sph_centr.z;
 
-    //printf("x: %f\n",c.x);
-    //printf("y: %f\n",c.y );
-    //printf("z: %f\n", c.z);
-    oc = ft_xyz_minus(c,o);
-    k1 = ft_xyz_mult_xyz(d,d);
-    k2 = 2 * ft_xyz_mult_xyz(oc,d);
-    k3 = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr,2);
+                //printf("x: %f\n",c.x);
+                //printf("y: %f\n",c.y );
+                //printf("z: %f\n", c.z); 
+                oc = ft_xyz_minus(c,o);    
+                k1 = ft_xyz_mult_xyz(d,d);
+                k2 = 2 * ft_xyz_mult_xyz(oc,d);
+                k3 = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr,2);
 
-    //printf("K1: %f\n",k1);
-    //printf("K2: %f\n",k2);
-    //printf("K3: %f\n",k3);
+                //printf("K1: %f\n",k1);
+                //printf("K2: %f\n",k2);
+                //printf("K3: %f\n",k3);
 
-    if (t > ft_quadrat_equat(k1,k2,k3))
-    {
-    t = ft_quadrat_equat(k1,k2,k3);
-    color = create_rgb(spher->rgb.RED,spher->rgb.GREEN,spher->rgb.BLUE);
-    }
-
-    if (t == INFINITY )//&& t < t_prev)
-    {
-    //color = color;//create_rgb(spher->rgb.RED,spher->rgb.GREEN,spher->rgb.BLUE);
-    //printf("1!\n");
-    color = create_rgb(255,255,255);
-    }
-    // else
-    //{
-    // color = create_rgb(255,255,255);
-    //printf("3!\n");
-
-    //}
-    sp = sp->next;
+                if (t > ft_quadrat_equat(k1,k2,k3))
+                {
+                    t = ft_quadrat_equat(k1,k2,k3);
+                    rgb = (spher->rgb);
+                    color = create_rgb(spher->rgb.RED,spher->rgb.GREEN,spher->rgb.BLUE);
+                }
+                
+                if (t == INFINITY )//&& t < t_prev)
+                {
+                    //color = color;//create_rgb(spher->rgb.RED,spher->rgb.GREEN,spher->rgb.BLUE);
+                    //printf("1!\n");
+                    t_rgb white;
+                    white.RED = 255;
+                    white.GREEN = 255;
+                    white.BLUE = 255;
+                    rgb =  white;
+                    color = create_rgb(255,255,255);
+                }
+               // else 
+                //{
+                  //   color = create_rgb(255,255,255);
+                    //printf("3!\n");
+                    
+                //}
+                sp = sp->next;
     }
     sp = all_obj->sphere;
-    //if (t == INFINITY)
-    // return (color);
-    //sp = all_obj->sphere;
-    //p = ft_xyz_plus(o,ft_xyz_mult(d,t));
-    //n = ft_xyz_minus(p,spher->coord_sph_centr);
-    //n = ft_xyz_div_doub(n,ft_len_vect(n));
+    if (t == INFINITY)
+        return (color);
+    p = ft_xyz_plus(o,ft_xyz_mult(d,t));
+    n = ft_xyz_minus(p,spher->coord_sph_centr);
+    n = ft_xyz_div_doub(n,ft_len_vect(n));
+
+    rgb = ft_rgb_mult_db(rgb,0.751);
     //ft_compute_lighting(p,n,all_obj);
+    color = create_rgb(rgb.RED,rgb.GREEN,rgb.BLUE);
     return (color);
 }
 
