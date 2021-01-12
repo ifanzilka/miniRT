@@ -342,8 +342,8 @@ double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n)
     (void) p;
     (void) n;
 
-    //t_list *light_all;
-    //t_light *li;    
+    t_list *light_all;
+    t_light *li;    
     i = all_obj->al.light;
     
     t_xyz  a;
@@ -357,33 +357,22 @@ double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n)
 
     //printf("p  x:%f y:%f z: %f\n",p.x,p.y,p.z);
     //printf("n  x:%f y:%f z: %f\n",n.x,n.y,n.z);
-    double li;
-
-    li = 0.6;
-   
-    //write(1,"TyT\n,",4);
-    //light_all = all_obj->light;
-   // while (light_all)
-    //{
-        //write(1,"TyT\n,",4);
-      //  li = light_all->content;
-
-       //write(1,"Ty1\n,",4);
-        //printf("r! : %f\n",li->cord_l_point.x);
-        l =  ft_xyz_minus(a,p);//li->cord_l_point,p);
-        //write(1,"Ty2\n,",4);
+    light_all = all_obj->light;
+    while(light_all)
+    {
+        li = light_all->content;
+    
+        l =  ft_xyz_minus(li->cord_l_point,p);
         n_don_l = ft_xyz_mult_xyz(n,l);
         
         //printf("n_d : %f \n",n_don_l);
         if (n_don_l > 0.0)
         {
             //printf("n_d : %f \n",n_don_l);
-            i +=  li * n_don_l /( ft_len_vect(n) * ft_len_vect(l));
+            i +=  li->light_brightness * n_don_l /( ft_len_vect(n) * ft_len_vect(l));
         }
-        //light_all = light_all->next;
-    //}
-    //printf()
-     //printf("i : %f \n",i);
+        light_all = light_all->next;
+    }    
     return (i);
 }
 
