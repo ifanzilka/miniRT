@@ -337,38 +337,22 @@ double mind(double a, double b)
 double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n)
 {
     double i;
-    t_xyz l;
     double n_don_l;
-    (void) p;
-    (void) n;
-
+    t_xyz l;
     t_list *light_all;
-    t_light *li;    
+    t_light *li;   
+
     i = all_obj->al.light;
-    
-    t_xyz  a;
-    a.x = 0.0;
-    a.y = -1.0;
-    a.z = 1.0;
-
-    a.x = 2.0;
-    a.y = 1.0;
-    a.z = 0.0;
-
     //printf("p  x:%f y:%f z: %f\n",p.x,p.y,p.z);
     //printf("n  x:%f y:%f z: %f\n",n.x,n.y,n.z);
     light_all = all_obj->light;
     while(light_all)
     {
         li = light_all->content;
-    
         l =  ft_xyz_minus(li->cord_l_point,p);
         n_don_l = ft_xyz_mult_xyz(n,l);
-        
-        //printf("n_d : %f \n",n_don_l);
         if (n_don_l > 0.0)
         {
-            //printf("n_d : %f \n",n_don_l);
             i +=  li->light_brightness * n_don_l /( ft_len_vect(n) * ft_len_vect(l));
         }
         light_all = light_all->next;
@@ -403,11 +387,6 @@ double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n)
 
 int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
 {
-   
-    double color;
-    //t_rgb rgb;
-    //double t;
-
     t_xyz v;
     t_xyz o;
     t_xyz d;
@@ -416,11 +395,9 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
     t_sphere *spher;
     t_xyz oc;
 
-    //t_sphere my;
-
     t_xyz p;
     t_xyz n;
-    //color = 255;
+    
     double k1;
     double k2;
     double k3;
@@ -430,36 +407,23 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
     o = ft_create_xyz(0.0,0.0,0.0);
     v = ft_create_v(x, y, all_obj->reso.width, all_obj->reso.height, 1.0);
     d = ft_xyz_minus(v,o);
-
-    t_rgb white;
-    white.RED = 255;
-    white.GREEN = 255;
-    white.BLUE = 255;
                    
     t_pixel pixel;
     pixel.t = MAX_DB;
-    pixel.rgb = white;
+    pixel.rgb = all_obj->al.rgb;
 
-    color = create_rgb(pixel.rgb.RED,pixel.rgb.GREEN,pixel.rgb.BLUE);
     
-    spher = NULL;
-   //printf("fun\n");
     while (sp)
     {
-              //printf("fun2\n");
                 spher = sp->content;
                 c.x =   spher->coord_sph_centr.x;
                 c.y =   spher->coord_sph_centr.y;
                 c.z =   spher->coord_sph_centr.z;
 
-                //printf("x: %f\n",c.x);
-                //printf("y: %f\n",c.y );
-                //printf("z: %f\n", c.z); 
                 oc = ft_xyz_minus(o,c);    
                 k1 = ft_xyz_mult_xyz(d,d);
                 k2 = 2 * ft_xyz_mult_xyz(oc,d);
                 k3 = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr,2);
-
 
                 ft_quadrat_equat(k1,k2,k3,&pixel,spher);
 
@@ -467,23 +431,15 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
     }
     
     sp = all_obj->sphere;
-   
-    //printf("t : %f\n",pixel.t);
     if (pixel.t == MAX_DB)
-        return (color);
-        //printf("fun3\n");
+        return (create_rgb(pixel.rgb.RED,pixel.rgb.GREEN,pixel.rgb.BLUE));
+
     p = ft_xyz_plus(o,ft_xyz_mult(d,pixel.t));
     n = ft_xyz_minus(p,pixel.spher_cor);
     n = ft_xyz_div_doub(n,ft_len_vect(n));
-
     kf = ft_compute_lighting(all_obj,p,n);
-    //kf = 1.0;
     pixel.rgb = ft_rgb_mult_db(pixel.rgb,kf);
-    
-    color = create_rgb(pixel.rgb.RED,pixel.rgb.GREEN,pixel.rgb.BLUE);
-    //if (pixel.t > 0.0)
-        //printf("t : %f\n",pixel.t);
-    return (color);
+    return (create_rgb(pixel.rgb.RED,pixel.rgb.GREEN,pixel.rgb.BLUE));
 }
 
 int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
