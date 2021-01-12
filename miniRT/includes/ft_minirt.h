@@ -231,13 +231,15 @@ typedef struct	s_all_obj
                 t_ambient_lightning al;
                 t_camera camera;
 
-                //t_list objects; crash!!!
-                t_list *light;
+                //t_list *objects;
                 t_list *sphere;
-                t_list *plane;
-                t_list *square;
-                t_list *cylinder;
-                t_list *triangle;
+                t_list *light;
+                
+                //t_list *plane;
+                //t_list *square;
+                //t_list *cylinder;
+                //t_list *triangle;
+                //t_list objects; crash!!!
 
 }               t_all_obj;
 

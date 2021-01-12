@@ -51,19 +51,19 @@ int           ft_parse_str(char *str, t_all_obj *my)
     else if (ft_strnstr(str,"c",1))
         return(ft_parse_c(my,str));
     else if (ft_strnstr(str,"l",1))
-        return(ft_parse_l(my,str));
+        ft_parse_l(my,str);
     else if (ft_strnstr(str,"sp",2))
     {
         ft_parse_sp(my, str);
         //t_sphere *a;
         //a = my->sphere->content;
-       // printf("di:%f\n",a->diametr);
+        //printf("di:%f\n",a->diametr);
     }
     else if (ft_strnstr(str,"pl",2))
         return (ft_parse_pl(my,str));
     else if (ft_strnstr(str,"sq",2))
        return (ft_parse_sq(my,str));
-    else if (ft_strnstr(str,"tr",2))
+    else if (ft_strnstr(str,"tr",2)) 
         return (ft_parse_tr(my,str));
     else if (ft_strnstr(str,"\n",2))
         return (1);
@@ -95,22 +95,26 @@ void        ft_init_t_all_obj(t_all_obj *my)
         ft_init_t_cnt_obj(&(my->cnt));
         (*my).reso.height = -1;
         (*my).reso.width = -1;
-        //(*my).light = malloc(sizeof(t_list));
-        //(*my).light->content = NULL;
+        //(*my).light = NULL;
+        //(*my).sphere = NULL;
         //(*my).sphere = malloc(sizeof(t_list));
-        //(*my).sphere->content = NULL;
+        //(*my).light= malloc(sizeof(t_list));
 }
 
 void        ft_parse_file_rt(int fd)
 {
             char *str;
-            t_all_obj my_rt;
-            ft_init_t_all_obj(&my_rt);
+            t_all_obj *my_rt;
+
+            my_rt = malloc(sizeof(t_all_obj));
+            if (!my_rt)
+                ft_error(14);
+            ft_init_t_all_obj(my_rt);
 
             while ((get_next_line(fd,&str)) == 1)
             {
                 printf("s:!%s!\n",str);
-                if (!ft_parse_str(str,&my_rt))
+                if (!ft_parse_str(str,my_rt))
                 {
                     //ft_free_struct(); (если что то уже добавили в структуры ндо очистить бдует)
                     free(str);
@@ -119,7 +123,28 @@ void        ft_parse_file_rt(int fd)
 
                 free(str);
             }
-            ft_init_disp(&my_rt);
+            t_list  *tmp;
+            t_light *tmp_l;
+            tmp = my_rt->light;
+            while (tmp)
+            {
+                tmp_l = tmp->content;
+                printf("%f BRIGHTNESS\n", tmp_l->light_brightness);
+                tmp = tmp->next;
+            }
+
+            t_list  *tmps;
+            t_sphere *tmps_sp;
+            tmps = my_rt->sphere;
+            while (tmps)
+            {
+                tmps_sp = tmps->content;
+                printf("%f SPHERE\n", tmps_sp->diametr);
+                tmps = tmps->next;
+            }
+
+
+            ft_init_disp(my_rt);
             //ft_check_t_all_obj(); (проверяю на валидность данные)
             if (str)
                  free(str);

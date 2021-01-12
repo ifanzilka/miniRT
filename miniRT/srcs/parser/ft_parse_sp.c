@@ -56,8 +56,11 @@ int           ft_parse_sp(t_all_obj *my,char *str)
         ft_error(9);
     newel = ft_lstnew(sp);
     write(1,"TYT\n",4); 
-    ft_lstadd_front(&my->sphere,newel);
-    write(1,"TYT\n",4);    
+    
+    ft_lstadd_back(&my->sphere,newel);
+    write(1,"TYT\n",4);
+    if (my->sphere == NULL) 
+        printf("PZDC2\n");
     //printf("x: %f\n",sp.coord_sph_centr.x);
     //printf("y: %f\n",sp.coord_sph_centr.y);
     //printf("z: %f\n",sp.coord_sph_centr.z);

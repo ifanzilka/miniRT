@@ -37,10 +37,9 @@ int           ft_parse_l(t_all_obj *my,char *str)
     write(1,"FIND l\n",7);
     t_light *light;
     t_list  *newel;
-    t_list *all;
     int i;
 
-    light = malloc(sizeof(t_light));
+     light = malloc(sizeof(t_light));
     i = 1;
     light->cord_l_point = ft_atoi_xyz(str,&i);
     if (!ft_check_xyz(light->cord_l_point))
@@ -55,10 +54,14 @@ int           ft_parse_l(t_all_obj *my,char *str)
     newel = ft_lstnew(light);
     if (!newel)
         write(1,"CRASH\n",6);
+    t_light *a;
+    a = newel->content;    
+    //printf(newel->content)    
+    write(1,"TY!\n",4);
+    ft_lstadd_front(&my->light,newel);
     write(1,"TYT\n",4);
-    all = my->light;
-    ft_lstadd_front(&all,newel);
-     write(1,"TYT\n",4);       
+    if (my->light == NULL)
+        printf("PZDC\n");       
     /*printf("s:%s\n",str + i);    
     printf("x:%f\n",(*my).light.cord_l_point.x);
     printf("y:%f\n",(*my).light.cord_l_point.y);

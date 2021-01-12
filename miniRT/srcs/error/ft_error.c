@@ -39,6 +39,8 @@ void    ft_error(int n)
 	else if (n == 12)
 		write(1, "Don't valid tr\n", 15);
 	else if (n == 13)
-		ft_putstr_fd("MLX ERROR\n",1);								
+		ft_putstr_fd("MLX ERROR\n",1);
+	else if (n == 14)
+		ft_putstr_fd("MALLOC ERROR\n",1);									
     exit(n);
 }
