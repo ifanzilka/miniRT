@@ -269,6 +269,8 @@ t_rgb   ft_rgb_mult_db(t_rgb rgb, double a)
     return (rgb);           
 }
 
+
+
 /*
 **  the quadratic equation 
 **  D = B^2 - 4 * A * C 
@@ -288,7 +290,7 @@ void  ft_quadrat_equat(double k1, double k2 , double k3 ,t_pixel *pixel,t_sphere
     t1 = (-k2 + sqrt(discr)) / (2*k1);
     t2 = (-k2 - sqrt(discr)) / (2*k1);
     
-    if ((t1 < t2) && (t1 < pixel->t) && (t1 > 1.0))
+    if ((t1 < t2) && (t1 < pixel->t) && (t1 > 0.0))
     {
         //printf("!!!!\n");
         pixel->rgb = spher->rgb;
@@ -297,7 +299,46 @@ void  ft_quadrat_equat(double k1, double k2 , double k3 ,t_pixel *pixel,t_sphere
         pixel->specular = spher->specular;
         //return (t1);
     }
-    else if ((t2 <= t1) && (t2 < pixel->t) && (t2 > 1.0))
+    else if ((t2 <= t1) && (t2 < pixel->t) && (t2 > 0.0))
+    {
+       // printf("!!!!\n");
+        pixel->rgb = spher->rgb;
+        pixel->t = t2;
+        pixel->spher_cor = spher->coord_sph_centr;
+        pixel->specular = spher->specular;
+        //return (t2);
+    }
+    /*if (t1 < 0.0 && t2 > 0.0)
+        return(t2);
+    if (t2 < 0.0 && t1 > 0.0)
+        return(t1);    
+    if (t1 < t2)
+        return (t1);
+    return (t2);*/    
+}
+
+void  ft_quadrat_equat2(double k1, double k2 , double k3 ,t_pixel *pixel,t_sphere *spher)
+{
+    double discr;
+    double t1;
+    double t2;
+
+    discr = k2 * k2 - 4 * k1 * k3;
+    if (discr < 0)
+        return ;//(INFINITY);
+    t1 = (-k2 + sqrt(discr)) / (2*k1);
+    t2 = (-k2 - sqrt(discr)) / (2*k1);
+    
+    if ((t1 < t2) && (t1 < pixel->t) && (t1 > 0.00001) && t1 < 1.0)
+    {
+        //printf("!!!!\n");
+        pixel->rgb = spher->rgb;
+        pixel->t = t1;
+        pixel->spher_cor = spher->coord_sph_centr;
+        pixel->specular = spher->specular;
+        //return (t1);
+    }
+    else if ((t2 <= t1) && (t2 < pixel->t) && (t2 > 0.00001) && t2 < 1.0)
     {
        // printf("!!!!\n");
         pixel->rgb = spher->rgb;
@@ -321,6 +362,51 @@ void  ft_quadrat_equat(double k1, double k2 , double k3 ,t_pixel *pixel,t_sphere
 
 }
 */
+
+
+double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz v)
+{
+    //double t = MAX_DB;
+    t_pixel pixel;
+
+    pixel.t = MAX_DB;
+     double k1;
+    double k2;
+    double k3;
+
+    //t_xyz o;
+    t_xyz d;
+    t_xyz c;
+    t_xyz oc;
+
+    d = v; 
+
+    t_list *sp;
+    t_sphere *spher;
+
+    sp = all_obj->sphere;
+
+    //printf("Hello\n");
+    while (sp)
+    {
+                spher = sp->content;
+                c.x =   spher->coord_sph_centr.x;
+                c.y =   spher->coord_sph_centr.y;
+                c.z =   spher->coord_sph_centr.z;
+
+                oc = ft_xyz_minus(o,c);    
+                k1 = ft_xyz_mult_xyz(d,d);
+                k2 = 2 * ft_xyz_mult_xyz(oc,d);
+                k3 = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr ,2);
+
+                ft_quadrat_equat2(k1,k2,k3,&pixel,spher);
+
+                sp = sp->next;
+    }
+    
+    sp = all_obj->sphere;
+    return (pixel.t);
+}
 
 /*
 **  Cicle for all pixel
@@ -354,8 +440,23 @@ double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s)
     while(light_all)
     {
         li = light_all->content;
+
+
         l =  ft_xyz_minus(li->cord_l_point,p);
+
+        if (li->rgb.red == 245)
+        {
+            l = li->cord_l_point;
+        }
+
         n_don_l = ft_xyz_mult_xyz(n,l);
+        //checks ten
+        //ClosestIntersection
+        if (ClosestIntersection(all_obj,p,l) != MAX_DB)
+        {
+             light_all = light_all->next;
+            continue;
+        }
         if (n_don_l > 0.0)
         {
             i +=  li->light_brightness * n_don_l /( ft_len_vect(n) * ft_len_vect(l));
@@ -375,6 +476,8 @@ double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s)
     }    
     return (i);
 }
+
+
 
 
 /*
@@ -420,7 +523,7 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
     double kf;
 
     sp = all_obj->sphere;
-    o = ft_create_xyz(0.0,0.0,0.0);
+    o = ft_create_xyz(all_obj->camera.coord_pointer.x,all_obj->camera.coord_pointer.y,all_obj->camera.coord_pointer.z);
     v = ft_create_v(x, y, all_obj->reso.width, all_obj->reso.height, 1.0);
     d = ft_xyz_minus(v,o);
                    
