@@ -87,7 +87,7 @@ clean:
 fclean: clean
 	make fclean -C $(LIB_DIR)
 	rm -rf $(NAME_MINIRT)
-	rm $(MINILIBXX)
+	rm -rf $(MINILIBXX)
 	@echo "$(F_GREEN)FCleaned! $(F_NONE)"
 
 re: fclean all
