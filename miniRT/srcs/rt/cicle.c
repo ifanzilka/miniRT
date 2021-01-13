@@ -28,6 +28,7 @@ typedef struct  s_pixel
     double          t;
     t_rgb           rgb;
     t_xyz           spher_cor;
+    int             specular;
 
 }                t_pixel;
 
@@ -256,15 +257,15 @@ t_xyz   ft_vect_two_point(t_xyz a, t_xyz b)
 
 t_rgb   ft_rgb_mult_db(t_rgb rgb, double a)
 {
-    rgb.RED = (int)((double)rgb.RED * a);
-    rgb.GREEN = (int)((double)rgb.GREEN * a);
-    rgb.BLUE = (int)((double)rgb.BLUE * a);
-    if (rgb.RED > 255)
-        rgb.RED = 255;
-    if (rgb.GREEN > 255)
-        rgb.GREEN = 255;
-    if (rgb.BLUE > 255)
-        rgb.BLUE = 255;
+    rgb.red = (int)((double)rgb.red * a);
+    rgb.green = (int)((double)rgb.green * a);
+    rgb.blue = (int)((double)rgb.blue * a);
+    if (rgb.red > 255)
+        rgb.red = 255;
+    if (rgb.green > 255)
+        rgb.green = 255;
+    if (rgb.blue > 255)
+        rgb.blue = 255;
     return (rgb);           
 }
 
@@ -287,20 +288,22 @@ void  ft_quadrat_equat(double k1, double k2 , double k3 ,t_pixel *pixel,t_sphere
     t1 = (-k2 + sqrt(discr)) / (2*k1);
     t2 = (-k2 - sqrt(discr)) / (2*k1);
     
-    if ((t1 < t2) && (t1 < pixel->t) && (t1 > 0.0))
+    if ((t1 < t2) && (t1 < pixel->t) && (t1 > 1.0))
     {
         //printf("!!!!\n");
         pixel->rgb = spher->rgb;
         pixel->t = t1;
         pixel->spher_cor = spher->coord_sph_centr;
+        pixel->specular = spher->specular;
         //return (t1);
     }
-    else if ((t2 <= t1) && (t2 < pixel->t) && (t2 > 0))
+    else if ((t2 <= t1) && (t2 < pixel->t) && (t2 > 1.0))
     {
        // printf("!!!!\n");
         pixel->rgb = spher->rgb;
         pixel->t = t2;
         pixel->spher_cor = spher->coord_sph_centr;
+        pixel->specular = spher->specular;
         //return (t2);
     }
     /*if (t1 < 0.0 && t2 > 0.0)
@@ -334,17 +337,19 @@ double mind(double a, double b)
 }
 
 
-double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n)
+double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s)
 {
     double i;
     double n_don_l;
+    double r_dot_v;
     t_xyz l;
     t_list *light_all;
-    t_light *li;   
+    t_light *li;
+    t_xyz r;   
 
     i = all_obj->al.light;
     //printf("p  x:%f y:%f z: %f\n",p.x,p.y,p.z);
-    //printf("n  x:%f y:%f z: %f\n",n.x,n.y,n.z);
+    //printf("n  x:%f y:%f z: %fs\n",n.x,n.y,n.z);
     light_all = all_obj->light;
     while(light_all)
     {
@@ -355,6 +360,17 @@ double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n)
         {
             i +=  li->light_brightness * n_don_l /( ft_len_vect(n) * ft_len_vect(l));
         }
+        if (s > 0)
+        {
+            r = ft_xyz_mult(n,2.0);
+            r = ft_xyz_mult(r,ft_xyz_mult_xyz(n,l));
+            r = ft_xyz_minus(r,l);
+            //r = ft_xyz_div_doub( ft_xyz_mult( 2*ft_xyz_mult_xyz(n,l));
+            r_dot_v = ft_xyz_mult_xyz(r, v);
+            if (r_dot_v > 0.0)
+                    i += li->light_brightness * pow(r_dot_v/(ft_len_vect(r) * ft_len_vect(v)), s);
+        }
+
         light_all = light_all->next;
     }    
     return (i);
@@ -423,7 +439,7 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
                 oc = ft_xyz_minus(o,c);    
                 k1 = ft_xyz_mult_xyz(d,d);
                 k2 = 2 * ft_xyz_mult_xyz(oc,d);
-                k3 = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr,2);
+                k3 = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr ,2);
 
                 ft_quadrat_equat(k1,k2,k3,&pixel,spher);
 
@@ -432,14 +448,17 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
     
     sp = all_obj->sphere;
     if (pixel.t == MAX_DB)
-        return (create_rgb(pixel.rgb.RED,pixel.rgb.GREEN,pixel.rgb.BLUE));
+        return (create_rgb(pixel.rgb.red,pixel.rgb.green,pixel.rgb.blue));
 
     p = ft_xyz_plus(o,ft_xyz_mult(d,pixel.t));
     n = ft_xyz_minus(p,pixel.spher_cor);
     n = ft_xyz_div_doub(n,ft_len_vect(n));
-    kf = ft_compute_lighting(all_obj,p,n);
+    //double d2;
+    //d = ft_xyz_mult
+    kf = ft_compute_lighting(all_obj,p,n,ft_xyz_mult(d,-1.0),pixel.specular);
+    //printf("speculer  pixel: %d\n",pixel.specular);    
     pixel.rgb = ft_rgb_mult_db(pixel.rgb,kf);
-    return (create_rgb(pixel.rgb.RED,pixel.rgb.GREEN,pixel.rgb.BLUE));
+    return (create_rgb(pixel.rgb.red,pixel.rgb.green,pixel.rgb.blue));
 }
 
 int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)

@@ -48,12 +48,15 @@ int           ft_parse_sp(t_all_obj *my,char *str)
     sp->diametr = ft_atof(str + i);
     if (sp->diametr == inf || sp->diametr < 0.0)
         ft_error(9);
+    sp->diametr = sp->diametr / 2.0;    
     //printf("s1:%s\n",str + i);    
     ft_skip_atof(str,&i);
     //printf("s2:%s\n",str + i);
     sp->rgb = ft_atoirgb(str, &i);
     if (!ft_check_rgb(sp->rgb))
         ft_error(9);
+    sp->specular = ft_atoi(str + i);
+    printf("speculer : %d\n",sp->specular);    
     newel = ft_lstnew(sp);
     write(1,"TYT\n",4); 
     

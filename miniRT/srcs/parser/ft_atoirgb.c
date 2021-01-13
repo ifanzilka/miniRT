@@ -15,17 +15,17 @@
 
 int             ft_check_rgb(t_rgb rgb)
 {
-    if (rgb.RED < 0 || rgb.RED > 255 || rgb.GREEN < 0 || rgb.GREEN > 255 ||
-        rgb.BLUE < 0 || rgb.BLUE > 255 )
+    if (rgb.red < 0 || rgb.red > 255 || rgb.green < 0 || rgb.green > 255 ||
+        rgb.blue < 0 || rgb.blue > 255 )
         return (0);
     return (1);
 }
 
 static  void    ft_init_rgb(t_rgb *rgb)
 {
-    rgb->RED = -1;
-    rgb->GREEN = -1;
-    rgb->BLUE = -1;
+    rgb->red = -1;
+    rgb->green = -1;
+    rgb->blue = -1;
 }
 
 static  int    ft_miss(char *str, int *i)
@@ -51,15 +51,15 @@ t_rgb           ft_atoirgb(char *str, int *j)
 
     i = *j;
     ft_init_rgb(&rgb);
-    rgb.RED = ft_atoi(str + i);
+    rgb.red = ft_atoi(str + i);
     ft_miss(str,&i);
     if (!(str[i] && (str[i] == ',') && (i+=1)))
         return(rgb);
-    rgb.GREEN = ft_atoi(str + i);
+    rgb.green = ft_atoi(str + i);
     ft_miss(str,&i);
     if (!(str[i] && (str[i] == ',') && (i+=1)))
         return(rgb);
-    rgb.BLUE = ft_atoi(str + i);
+    rgb.blue = ft_atoi(str + i);
     if (!(ft_miss(str,&i)))
         ft_init_rgb(&rgb);    
     *j = i;

@@ -25,9 +25,9 @@
 
 typedef struct	s_rgb
 {
-                int RED;
-                int GREEN;
-                int BLUE;
+                int red;
+                int green;
+                int blue;
 }				t_rgb;
 
 typedef struct	s_xyz
@@ -122,6 +122,7 @@ typedef struct	s_sphere
                 t_xyz coord_sph_centr;
                 double diametr;
                 t_rgb  rgb;
+                int     specular;
 }	            t_sphere;
 
 /*
