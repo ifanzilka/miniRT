@@ -57,10 +57,10 @@ int           ft_parse_sp(t_all_obj *my,char *str)
         ft_error(9);
     sp->specular = ft_atoi(str + i);
     printf("speculer : %d\n",sp->specular);    
-    newel = ft_lstnew(sp);
+    if ( !(newel = ft_lstnew(sp)))
+        ft_error(14);
     write(1,"TYT\n",4); 
-    
-    ft_lstadd_back(&my->sphere,newel);
+    ft_lstadd_front(&my->sphere,newel);
     write(1,"TYT\n",4);
     if (my->sphere == NULL) 
         printf("PZDC2\n");

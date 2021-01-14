@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cicle.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/13 22:42:10 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/01/13 22:42:12 by bmarilli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <ft_minirt.h>
 #include <parse.h>
 #include <ray_tracing.h>
@@ -39,11 +27,20 @@ typedef struct  s_pixel
 {
     double          t;
     t_rgb           rgb;
-    t_xyz           spher_cor;
+    t_xyz           cor;
     int             specular;
 
 }                t_pixel;
 
+typedef struct  s_kf_abc 
+{
+    double          a;
+    double          b;
+    double          c;
+    double          t1;
+    double         t2;
+    double         discr;
+}                t_kf_abc;
 
 int		create_rgb( int r, int g, int b)
 {
@@ -281,8 +278,35 @@ t_rgb   ft_rgb_mult_db(t_rgb rgb, double a)
     return (rgb);           
 }
 
+t_rgb   ft_rgb_plus_rgb(t_rgb a, t_rgb b)
+{
+    t_rgb rgb;
+
+    rgb.red = a.red + b.red;
+    rgb.green = a.green + b.green;
+    rgb.blue = a.blue + b.blue;
+    if (rgb.red > 255)
+        rgb.red = 255;
+    if (rgb.green > 255)
+        rgb.green = 255;
+    if (rgb.blue > 255)
+        rgb.blue = 255;
+    return (rgb); 
+}
 
 
+
+ t_xyz   ft_reflect_ray(t_xyz r, t_xyz n) 
+ {
+    t_xyz res;
+
+    res = ft_xyz_mult(n,2);
+    res = ft_xyz_mult(res,ft_xyz_mult_xyz(n,r));
+    res = ft_xyz_minus(res,r);
+
+    return (res);
+    //return 2*N*dot(N, R) - R;
+}
 /*
 **  the quadratic equation 
 **  D = B^2 - 4 * A * C 
@@ -290,90 +314,42 @@ t_rgb   ft_rgb_mult_db(t_rgb rgb, double a)
 **  return -> MINIMAL X OR INFINITY
 */
 
-void  ft_quadrat_equat(double k1, double k2 , double k3 ,t_pixel *pixel,t_sphere *spher)
-{
-    double discr;
-    double t1;
-    double t2;
 
-    discr = k2 * k2 - 4 * k1 * k3;
-    if (discr < 0)
-        return ;//(INFINITY);
-    t1 = (-k2 + sqrt(discr)) / (2*k1);
-    t2 = (-k2 - sqrt(discr)) / (2*k1);
-    
-    if ((t1 < t2) && (t1 < pixel->t) && (t1 > 0.0))
+double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,double t_min,double t_max)
+{
+    t_xyz oc;
+    t_kf_abc abc;
+    (void) pixel;
+
+    oc = ft_xyz_minus(o,spher->coord_sph_centr);    
+    abc.a = ft_xyz_mult_xyz(d,d);
+    abc.b = 2 * ft_xyz_mult_xyz(oc,d);
+    abc.c = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr ,2);
+    if ((abc.discr = abc.b * abc.b - 4 * abc.a * abc.c ) < 0.0)
+        return(MAX_DB);
+    abc.t1 = (-abc.b + sqrt(abc.discr)) / (2*abc.a);
+    abc.t2 = (-abc.b - sqrt(abc.discr)) / (2*abc.a);
+    if ((abc.t1 < abc.t2) && (abc.t1 < pixel->t) && (abc.t1 > t_min)  && (abc.t1 < t_max))
     {
         //printf("!!!!\n");
         pixel->rgb = spher->rgb;
-        pixel->t = t1;
-        pixel->spher_cor = spher->coord_sph_centr;
+        pixel->t = abc.t1;
+        pixel->cor = spher->coord_sph_centr;
         pixel->specular = spher->specular;
         //return (t1);
     }
-    else if ((t2 <= t1) && (t2 < pixel->t) && (t2 > 0.0))
+    else if ((abc.t2 <= abc.t1) && (abc.t2 < pixel->t) && (abc.t2 > t_min) && (abc.t2 < t_max))
     {
        // printf("!!!!\n");
         pixel->rgb = spher->rgb;
-        pixel->t = t2;
-        pixel->spher_cor = spher->coord_sph_centr;
+        pixel->t = abc.t2;
+        pixel->cor = spher->coord_sph_centr;
         pixel->specular = spher->specular;
         //return (t2);
-    }
-    /*if (t1 < 0.0 && t2 > 0.0)
-        return(t2);
-    if (t2 < 0.0 && t1 > 0.0)
-        return(t1);    
-    if (t1 < t2)
-        return (t1);
-    return (t2);*/    
+    } 
+    return (0.0);  
 }
 
-void  ft_quadrat_equat2(double k1, double k2 , double k3 ,t_pixel *pixel,t_sphere *spher)
-{
-    double discr;
-    double t1;
-    double t2;
-
-    discr = k2 * k2 - 4 * k1 * k3;
-    if (discr < 0)
-        return ;//(INFINITY);
-    t1 = (-k2 + sqrt(discr)) / (2*k1);
-    t2 = (-k2 - sqrt(discr)) / (2*k1);
-    
-    if ((t1 < t2) && (t1 < pixel->t) && (t1 > 0.00001) && t1 < 1.0)
-    {
-        //printf("!!!!\n");
-        pixel->rgb = spher->rgb;
-        pixel->t = t1;
-        pixel->spher_cor = spher->coord_sph_centr;
-        pixel->specular = spher->specular;
-        //return (t1);
-    }
-    else if ((t2 <= t1) && (t2 < pixel->t) && (t2 > 0.00001) && t2 < 1.0)
-    {
-       // printf("!!!!\n");
-        pixel->rgb = spher->rgb;
-        pixel->t = t2;
-        pixel->spher_cor = spher->coord_sph_centr;
-        pixel->specular = spher->specular;
-        //return (t2);
-    }
-    /*if (t1 < 0.0 && t2 > 0.0)
-        return(t2);
-    if (t2 < 0.0 && t1 > 0.0)
-        return(t1);    
-    if (t1 < t2)
-        return (t1);
-    return (t2);*/    
-}
-
-/*int     ft_fun_color()
-{
-
-
-}
-*/
 
 
 double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz v)
@@ -382,9 +358,7 @@ double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz v)
     t_pixel pixel;
 
     pixel.t = MAX_DB;
-     double k1;
-    double k2;
-    double k3;
+    t_kf_abc abc;
 
     //t_xyz o;
     t_xyz d;
@@ -402,21 +376,19 @@ double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz v)
     while (sp)
     {
                 spher = sp->content;
-                c.x =   spher->coord_sph_centr.x;
-                c.y =   spher->coord_sph_centr.y;
-                c.z =   spher->coord_sph_centr.z;
+                c  =   spher->coord_sph_centr;
 
                 oc = ft_xyz_minus(o,c);    
-                k1 = ft_xyz_mult_xyz(d,d);
-                k2 = 2 * ft_xyz_mult_xyz(oc,d);
-                k3 = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr ,2);
-
-                ft_quadrat_equat2(k1,k2,k3,&pixel,spher);
+                abc.a = ft_xyz_mult_xyz(d,d);
+                abc.b = 2 * ft_xyz_mult_xyz(oc,d);
+                abc.c = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr ,2);
+                
+                ft_intersect_ray_sphere(o,d,&pixel,spher,0.0001,0.99);
+                //ft_quadrat_equat(abc.a,abc.b,abc.c,&pixel,spher,0.0001,1.0);
+                //ft_quadrat_equat2(k1,k2,k3,&pixel,spher);
 
                 sp = sp->next;
     }
-    
-    sp = all_obj->sphere;
     return (pixel.t);
 }
 
@@ -427,15 +399,9 @@ double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz v)
 ** 600 600
 */
 
-double mind(double a, double b)
-{
-    if (a < b)
-        return (a);
-    return(b);    
-}
 
 
-double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s)
+double  ft_compute_lighting_sp(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s)
 {
     double i;
     double n_don_l;
@@ -452,27 +418,28 @@ double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s)
     while(light_all)
     {
         li = light_all->content;
-
-
         l =  ft_xyz_minus(li->cord_l_point,p);
-
         if (li->rgb.red == 245)
         {
             l = li->cord_l_point;
         }
 
         n_don_l = ft_xyz_mult_xyz(n,l);
-        //checks ten
+
         //ClosestIntersection
+        // проверяем доходит ли цвет
         if (ClosestIntersection(all_obj,p,l) != MAX_DB)
         {
-             light_all = light_all->next;
+            light_all = light_all->next;
             continue;
         }
+        // просто цвет
         if (n_don_l > 0.0)
         {
             i +=  li->light_brightness * n_don_l /( ft_len_vect(n) * ft_len_vect(l));
         }
+
+        // отражения
         if (s > 0)
         {
             r = ft_xyz_mult(n,2.0);
@@ -508,6 +475,13 @@ double  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s)
 */
 
 /*
+**  Vectors 
+**  point a anb b
+**  vector ab = b - a
+*/
+
+
+/*
 **  ft_ray_trace
 **  
 **  
@@ -521,17 +495,18 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
     t_xyz v;
     t_xyz o;
     t_xyz d;
-    t_xyz c;
+    //t_xyz c;
     t_list *sp;
     t_sphere *spher;
-    t_xyz oc;
+   // t_xyz oc;
 
     t_xyz p;
     t_xyz n;
     
-    double k1;
-    double k2;
-    double k3;
+    //t_kf_abc abc;
+    //double k1;
+    //double k2;
+    //double k3;
     double kf;
 
     sp = all_obj->sphere;
@@ -542,38 +517,38 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
     t_pixel pixel;
     pixel.t = MAX_DB;
     pixel.rgb = all_obj->al.rgb;
-
     
     while (sp)
     {
-                spher = sp->content;
-                c.x =   spher->coord_sph_centr.x;
-                c.y =   spher->coord_sph_centr.y;
-                c.z =   spher->coord_sph_centr.z;
-
-                oc = ft_xyz_minus(o,c);    
-                k1 = ft_xyz_mult_xyz(d,d);
-                k2 = 2 * ft_xyz_mult_xyz(oc,d);
-                k3 = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr ,2);
-
-                ft_quadrat_equat(k1,k2,k3,&pixel,spher);
-
-                sp = sp->next;
+            spher = sp->content;
+            ft_intersect_ray_sphere(o,d,&pixel,spher,0.0,MAX_DB);
+            sp = sp->next;
     }
-    
-    sp = all_obj->sphere;
     if (pixel.t == MAX_DB)
         return (create_rgb(pixel.rgb.red,pixel.rgb.green,pixel.rgb.blue));
 
     p = ft_xyz_plus(o,ft_xyz_mult(d,pixel.t));
-    n = ft_xyz_minus(p,pixel.spher_cor);
+    n = ft_xyz_minus(p,pixel.cor);
     n = ft_xyz_div_doub(n,ft_len_vect(n));
-    //double d2;
-    //d = ft_xyz_mult
-    kf = ft_compute_lighting(all_obj,p,n,ft_xyz_mult(d,-1.0),pixel.specular);
-    //printf("speculer  pixel: %d\n",pixel.specular);    
+
+    kf = ft_compute_lighting_sp(all_obj,p,n,ft_xyz_mult(d,-1.0),pixel.specular);
     pixel.rgb = ft_rgb_mult_db(pixel.rgb,kf);
-    return (create_rgb(pixel.rgb.red,pixel.rgb.green,pixel.rgb.blue));
+
+    //if (rec <= 0)
+        return (create_rgb(pixel.rgb.red,pixel.rgb.green,pixel.rgb.blue));
+   /* t_xyz r;
+    r = ft_reflect_ray(ft_xyz_mult(d,-1.0),n);
+
+    t_pixel pixel2;
+    pixel2.t = MAX_DB;
+    pixel2.rgb = all_obj->al.rgb;
+    int ref_color;
+    ref_color = ft_intersect_ray_sphere(p,r,&pixel,spher,0.00001,MAX_DB,rec - 1);
+
+    t_rgb new;
+    new = ft_rgb_mult_db(pixel.rgb,1.0 - 0.5);
+    new = ft_rgb_plus_rgb(new, ft_rgb_mult_db(ref_color,r));
+    return ( create_rgb(new.rgb.red,new.green,new.rgb.blue) );*/
 }
 
 int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
@@ -581,7 +556,6 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
     int cx;
     int cy;
     int color;
-
     double x;
     double y;
 
@@ -591,10 +565,8 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
     {
         while(cx < all_obj->reso.width)
         {
-            //cx cy -> x y
             x = ft_convert_scr_to_dec_x(cx,all_obj->reso.width,-(all_obj->reso.width/2),all_obj->reso.width/2);
             y = ft_convert_scr_to_dec_y(cy,all_obj->reso.height,-(all_obj->reso.height/2),all_obj->reso.height/2);
-            //printf("My x: %f  My y: %f\n",x,y);
             color = ft_ray_trace(all_obj,x,y);
             mlx_pixel_put(vars->mlx,vars->win,cx,cy,color);
             cx++;
