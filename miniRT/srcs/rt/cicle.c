@@ -489,8 +489,69 @@ double  ft_compute_lighting_sp(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s
 **  return (int) color in pixel
 */
 
+t_rgb     ft_ray_trace2(t_all_obj *all_obj, t_xyz o, t_xyz v,double t_min,double t_max,int rec)
+{
+    (void) t_min;
+    (void) t_max;
+    t_xyz d;
+    //t_xyz c;
+    t_list *sp;
+    t_sphere *spher;
+   // t_xyz oc;
 
-int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
+    t_xyz p;
+    t_xyz n;
+    
+    //t_kf_abc abc;
+    //double k1;
+    //double k2;
+    //double k3;
+    double kf;
+
+    sp = all_obj->sphere;
+   // o = ft_create_xyz(all_obj->camera.coord_pointer.x,all_obj->camera.coord_pointer.y,all_obj->camera.coord_pointer.z);
+    d = ft_xyz_minus(v,o);
+                   
+    t_pixel pixel;
+    pixel.t = MAX_DB;
+    pixel.rgb = all_obj->al.rgb;
+    
+    while (sp)
+    {
+            spher = sp->content;
+            ft_intersect_ray_sphere(o,d,&pixel,spher,0.0,MAX_DB);
+            sp = sp->next;
+    }
+    if (pixel.t == MAX_DB)
+        return (pixel.rgb);
+
+    p = ft_xyz_plus(o,ft_xyz_mult(d,pixel.t));
+    n = ft_xyz_minus(p,pixel.cor);
+    n = ft_xyz_div_doub(n,ft_len_vect(n));
+
+    kf = ft_compute_lighting_sp(all_obj,p,n,ft_xyz_mult(d,-1.0),pixel.specular);
+    pixel.rgb = ft_rgb_mult_db(pixel.rgb,kf);
+
+    if (rec <= 0)
+        return (pixel.rgb);
+    t_xyz r;
+    r = ft_reflect_ray(ft_xyz_mult(d,-1.0),n);
+
+    t_pixel pixel2;
+    pixel2.t = MAX_DB;
+    pixel2.rgb = all_obj->al.rgb;
+    t_rgb ref_color;
+    ref_color = ft_ray_trace2(all_obj,p,r,0.00001,MAX_DB,rec - 1);
+
+    t_rgb new;
+    new = ft_rgb_mult_db(pixel.rgb,1.0 - 0.3);
+    new = ft_rgb_plus_rgb(new, ft_rgb_mult_db(ref_color,0.3));
+    return (new);
+    //return ( create_rgb(new.red,new.green,new.blue) );
+ 
+}
+
+int     ft_ray_trace(t_all_obj *all_obj, double x, double y,int rec)
 {
     t_xyz v;
     t_xyz o;
@@ -499,7 +560,7 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
     t_list *sp;
     t_sphere *spher;
    // t_xyz oc;
-
+    (void) rec;
     t_xyz p;
     t_xyz n;
     
@@ -533,23 +594,25 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y)
 
     kf = ft_compute_lighting_sp(all_obj,p,n,ft_xyz_mult(d,-1.0),pixel.specular);
     pixel.rgb = ft_rgb_mult_db(pixel.rgb,kf);
-
-    //if (rec <= 0)
+    return (create_rgb(pixel.rgb.red,pixel.rgb.green,pixel.rgb.blue));
+    /*if (rec <= 0)
         return (create_rgb(pixel.rgb.red,pixel.rgb.green,pixel.rgb.blue));
-   /* t_xyz r;
+    t_xyz r;
     r = ft_reflect_ray(ft_xyz_mult(d,-1.0),n);
 
     t_pixel pixel2;
     pixel2.t = MAX_DB;
     pixel2.rgb = all_obj->al.rgb;
-    int ref_color;
-    ref_color = ft_intersect_ray_sphere(p,r,&pixel,spher,0.00001,MAX_DB,rec - 1);
+    t_rgb ref_color;
+    ref_color = ft_ray_trace2(all_obj,p,r,0.00001,MAX_DB,rec - 1);
 
     t_rgb new;
     new = ft_rgb_mult_db(pixel.rgb,1.0 - 0.5);
-    new = ft_rgb_plus_rgb(new, ft_rgb_mult_db(ref_color,r));
-    return ( create_rgb(new.rgb.red,new.green,new.rgb.blue) );*/
+    new = ft_rgb_plus_rgb(new, ft_rgb_mult_db(ref_color,0.5));
+    return ( create_rgb(new.red,new.green,new.blue) );*/
 }
+
+
 
 int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
 {
@@ -567,7 +630,7 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
         {
             x = ft_convert_scr_to_dec_x(cx,all_obj->reso.width,-(all_obj->reso.width/2),all_obj->reso.width/2);
             y = ft_convert_scr_to_dec_y(cy,all_obj->reso.height,-(all_obj->reso.height/2),all_obj->reso.height/2);
-            color = ft_ray_trace(all_obj,x,y);
+            color = ft_ray_trace(all_obj,x,y,3);
             mlx_pixel_put(vars->mlx,vars->win,cx,cy,color);
             cx++;
         }
