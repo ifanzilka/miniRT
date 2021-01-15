@@ -135,7 +135,21 @@ t_xyz      ft_create_v(double x, double y, int width, int height, double z)
 
     (void) width;
     (void)  height;
+    (void) z;
 
+    v.x =  x * (1.0/width) * width / height;//- (width/2);
+    v.y = y * (1.0/height);//(height/2)-y;
+    v.z =  1;
+    return (v);
+}
+
+t_xyz      ft_create_v2(double x, double y, int width, int height, double z)
+{
+    t_xyz v;
+
+    (void) width;
+    (void)  height;
+    (void) z;
     v.x =  x / width;
     v.y =  y / height;
     v.z =  z;
@@ -713,7 +727,7 @@ t_xyz ft_new_d(t_xyz r, t_xyz u,t_xyz n , t_xyz d)
     t_xyz res;
 
     res.x = r.x * d.x + r.y * d.y + r.z * d.z;
-    res.z = u.x * d.x + u.y * d.y + u.z * d.z;
+    res.y = u.x * d.x + u.y * d.y + u.z * d.z;
     res.z = n.x * d.x + n.y * d.y + n.z * d.z;
 
     return (res);
@@ -761,7 +775,7 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
             y = ft_convert_scr_to_dec_y(cy,all_obj->reso.height,-(all_obj->reso.height/2),all_obj->reso.height/2);
             
             o = ft_create_xyz(all_obj->camera.coord_pointer.x,all_obj->camera.coord_pointer.y,all_obj->camera.coord_pointer.z);
-            v = ft_create_v(x, y, all_obj->reso.width, all_obj->reso.height, 1.0);
+            v = ft_create_v(x, y, all_obj->reso.width, all_obj->reso.height, 1);
             d = ft_xyz_minus(v,o);
 
             v_up.x = 0.0;
@@ -769,12 +783,12 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
             v_up.z = 0.0;
 
             c_r = ft_xyz_mult_xyz1(v_up,all_obj->camera.normal_orientr_vec);
-            c_r = ft_xyz_div_doub(c_r,ft_len_vect(c_r));
+            //c_r = ft_xyz_div_doub(c_r,ft_len_vect(c_r));
 
             c_up = ft_xyz_mult_xyz1(all_obj->camera.normal_orientr_vec,c_r);
-            //t_xyz new_d = ft_new_d(c_r,c_up,all_obj->camera.normal_orientr_vec,d);
+            t_xyz new_d = ft_new_d(c_r,c_up,all_obj->camera.normal_orientr_vec,v);
 
-            rgb = ft_ray_trace(all_obj, o, d , 1.0 ,MAX_DB,20);
+            rgb = ft_ray_trace(all_obj, o, new_d , 1.0 ,MAX_DB,1);
             color = create_rgb(rgb.red,rgb.green,rgb.blue);
             //color = ft_ray_trace(all_obj,x,y,2);
             mlx_pixel_put(vars->mlx,vars->win,cx,cy,color);
