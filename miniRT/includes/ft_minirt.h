@@ -123,6 +123,7 @@ typedef struct	s_sphere
                 double diametr;
                 t_rgb  rgb;
                 int     specular;
+                double reflective;
 }	            t_sphere;
 
 /*

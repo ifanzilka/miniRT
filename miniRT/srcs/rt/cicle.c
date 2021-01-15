@@ -41,6 +41,7 @@ typedef struct  s_pixel
     t_rgb           rgb;
     t_xyz           cor;
     int             specular;
+    double          reflective;
 
 }                t_pixel;
 
@@ -376,7 +377,8 @@ double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,
         pixel->t = abc.t1;
         pixel->cor = spher->coord_sph_centr;
         pixel->specular = spher->specular;
-        //return (t1);
+        pixel->reflective = spher->reflective;
+                //return (t1);
     }
     else if ((abc.t2 <= abc.t1) && (abc.t2 < pixel->t) && (abc.t2 > t_min) && (abc.t2 < t_max))
     {
@@ -385,6 +387,7 @@ double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,
         pixel->t = abc.t2;
         pixel->cor = spher->coord_sph_centr;
         pixel->specular = spher->specular;
+        pixel->reflective = spher->reflective;
         //return (t2);
     } 
     return (0.0);  
@@ -688,7 +691,7 @@ t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,double t_min,double t_
     pixel.rgb = ft_rgb_mult_db(pixel.rgb,kf);
     //return (create_rgb(pixel.rgb.red,pixel.rgb.green,pixel.rgb.blue));       
     //return(pixel.rgb); 
-    if (rec <= 0)
+    if (rec <=  0 )
         return(pixel.rgb);
     t_xyz r;
     r = ft_reflect_ray(ft_xyz_mult(d,-1.0),n);
@@ -699,13 +702,33 @@ t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,double t_min,double t_
     t_rgb ref_color;
     ref_color = ft_ray_trace(all_obj,p,r,0.001,MAX_DB,rec - 1);
     t_rgb new;
-    new = ft_rgb_mult_db(pixel.rgb,1.0 - 0.2);
-    new = ft_rgb_plus_rgb(new, ft_rgb_mult_db(ref_color,0.2));
+    new = ft_rgb_mult_db(pixel.rgb,1.0 - pixel.reflective);
+    new = ft_rgb_plus_rgb(new, ft_rgb_mult_db(ref_color,pixel.reflective));
     return(new);
     //return ( create_rgb(new.red,new.green,new.blue) );    
 }
 
+t_xyz ft_new_d(t_xyz r, t_xyz u,t_xyz n , t_xyz d)
+{
+    t_xyz res;
 
+    res.x = r.x * d.x + r.y * d.y + r.z * d.z;
+    res.z = u.x * d.x + u.y * d.y + u.z * d.z;
+    res.z = n.x * d.x + n.y * d.y + n.z * d.z;
+
+    return (res);
+
+}
+t_xyz   ft_xyz_mult_xyz1(t_xyz a, t_xyz b)
+{
+    t_xyz res;
+
+    res.x = a.y * b.z - a.z * b.y;
+    res.y = a.z * b.x - a.x * b.z; 
+    res.z = a.x *  b.y - a.y * b.x;  
+
+    return(res);
+}
 int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
 {
     int cx;
@@ -719,6 +742,11 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
     t_xyz o;
     t_xyz v;
     t_xyz d;
+    //t_xyz v_r;
+    t_xyz v_up;
+    t_xyz c_r;
+    t_xyz c_up;
+
    
 
 
@@ -736,7 +764,17 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
             v = ft_create_v(x, y, all_obj->reso.width, all_obj->reso.height, 1.0);
             d = ft_xyz_minus(v,o);
 
-            rgb = ft_ray_trace(all_obj, o, d , 1.0 ,MAX_DB,3);
+            v_up.x = 0.0;
+            v_up.y = 1.0;
+            v_up.z = 0.0;
+
+            c_r = ft_xyz_mult_xyz1(v_up,all_obj->camera.normal_orientr_vec);
+            c_r = ft_xyz_div_doub(c_r,ft_len_vect(c_r));
+
+            c_up = ft_xyz_mult_xyz1(all_obj->camera.normal_orientr_vec,c_r);
+            //t_xyz new_d = ft_new_d(c_r,c_up,all_obj->camera.normal_orientr_vec,d);
+
+            rgb = ft_ray_trace(all_obj, o, d , 1.0 ,MAX_DB,20);
             color = create_rgb(rgb.red,rgb.green,rgb.blue);
             //color = ft_ray_trace(all_obj,x,y,2);
             mlx_pixel_put(vars->mlx,vars->win,cx,cy,color);

@@ -55,6 +55,9 @@ int           ft_parse_sp(t_all_obj *my,char *str)
     sp->rgb = ft_atoirgb(str, &i);
     if (!ft_check_rgb(sp->rgb))
         ft_error(9);
+    sp->reflective = ft_atof(str + i);
+    ft_skip_atof(str,&i);
+    printf("reflective : %f\n",sp->reflective);       
     sp->specular = ft_atoi(str + i);
     printf("speculer : %d\n",sp->specular);    
     if ( !(newel = ft_lstnew(sp)))
