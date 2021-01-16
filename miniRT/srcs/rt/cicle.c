@@ -743,6 +743,20 @@ t_xyz   ft_xyz_mult_xyz1(t_xyz a, t_xyz b)
 
     return(res);
 }
+
+t_xyz ft_fov(t_xyz v,t_all_obj *rt)
+{
+    t_xyz res;
+
+    //rw -res.width
+    //x
+    res.x = v.x / rt->reso.width * tan(rt->camera.FOV * 3.14 / 360);
+    res.y = v.y / rt->reso.height * tan(rt->camera.FOV * 3.14 / 360);
+    res.z = 1.0 ;//* tan(rt->camera.FOV * 3.14 / 360);
+
+    return (res);
+}
+
 int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
 {
     int cx;
@@ -755,40 +769,44 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
     
     t_xyz o;
     t_xyz v;
-    t_xyz d;
     //t_xyz v_r;
-    t_xyz v_up;
+    t_xyz v_up = {0.0,1.0,0.0};
     t_xyz c_r;
     t_xyz c_up;
 
-   
-
+   double pov;
+    pov  = 2 * tan(all_obj->camera.FOV / 2 * 3.14 / 180);
 
 
     cx = 0;
     cy = 0;
+    //double px;
+    //double py;
     while (cy < all_obj->reso.height)
     {
         while(cx < all_obj->reso.width)
         {
+            
+            
             x = ft_convert_scr_to_dec_x(cx,all_obj->reso.width,-(all_obj->reso.width/2),all_obj->reso.width/2);
             y = ft_convert_scr_to_dec_y(cy,all_obj->reso.height,-(all_obj->reso.height/2),all_obj->reso.height/2);
-            
+            x = pov * x;
+            y = pov * y;
             o = ft_create_xyz(all_obj->camera.coord_pointer.x,all_obj->camera.coord_pointer.y,all_obj->camera.coord_pointer.z);
             v = ft_create_v(x, y, all_obj->reso.width, all_obj->reso.height, 1);
-            d = ft_xyz_minus(v,o);
-
-            v_up.x = 0.0;
-            v_up.y = 1.0;
-            v_up.z = 0.0;
-
             c_r = ft_xyz_mult_xyz1(v_up,all_obj->camera.normal_orientr_vec);
             //c_r = ft_xyz_div_doub(c_r,ft_len_vect(c_r));
 
             c_up = ft_xyz_mult_xyz1(all_obj->camera.normal_orientr_vec,c_r);
-            t_xyz new_d = ft_new_d(c_r,c_up,all_obj->camera.normal_orientr_vec,v);
 
-            rgb = ft_ray_trace(all_obj, o, new_d , 1.0 ,MAX_DB,1);
+            t_xyz fov;
+            fov =  ft_fov(v,all_obj);
+            
+            //v = ft_fov(v,all_obj);     
+            t_xyz new_d = ft_new_d(c_r,c_up,all_obj->camera.normal_orientr_vec,v);
+            //new_d = ft_fov(new_d,all_obj);
+
+            rgb = ft_ray_trace(all_obj, o, new_d , 0.0 ,MAX_DB,1);
             color = create_rgb(rgb.red,rgb.green,rgb.blue);
             //color = ft_ray_trace(all_obj,x,y,2);
             mlx_pixel_put(vars->mlx,vars->win,cx,cy,color);
