@@ -125,7 +125,7 @@ void        ft_parse_file_rt(int fd)
             }
             t_list  *tmp;
             t_light *tmp_l;
-            tmp = my_rt->light;
+            tmp = my_rt->l_light;
             while (tmp)
             {
                 tmp_l = tmp->content;
@@ -135,7 +135,7 @@ void        ft_parse_file_rt(int fd)
 
             t_list  *tmps;
             t_sphere *tmps_sp;
-            tmps = my_rt->sphere;
+            tmps = my_rt->l_sphere;
             while (tmps)
             {
                 tmps_sp = tmps->content;

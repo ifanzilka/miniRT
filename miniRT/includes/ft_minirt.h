@@ -224,8 +224,8 @@ typedef struct	s_all_obj
                 t_camera camera;
 
                 //t_list *objects;
-                t_list *sphere;
-                t_list *light;
+                t_list *l_sphere;
+                t_list *l_light;
                 
                 //t_list *plane;
                 //t_list *square;

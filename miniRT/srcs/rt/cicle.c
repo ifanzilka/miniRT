@@ -240,7 +240,7 @@ double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz v)
     t_list *sp;
     t_sphere *spher;
 
-    sp = all_obj->sphere;
+    sp = all_obj->l_sphere;
 
     //printf("Hello\n");
     while (sp)
@@ -286,7 +286,7 @@ t_rgb  ft_compute_lighting_sp(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s,
     i = all_obj->al.light;
     //printf("p  x:%f y:%f z: %f\n",p.x,p.y,p.z);
     //printf("n  x:%f y:%f z: %fs\n",n.x,n.y,n.z);
-    light_all = all_obj->light;
+    light_all = all_obj->l_light;
     //color_pix = ft_rgb_mult_db(all_obj->al.rgb, 1.0);//all_obj->al.light);
     while(light_all)
     {
@@ -495,8 +495,6 @@ int     ft_ray_trace(t_all_obj *all_obj, double x, double y,int rec)
 //цвет шара * кф общего освещения + общее освещение * кф
 t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,double t_min,double t_max,int rec)
 {
-    //double kf;
-
     t_list *sp;
     t_sphere *spher;
 
@@ -509,7 +507,7 @@ t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,double t_min,double t_
     //pixel.t_min = t_min;
     //pixel.t_max = t_max;
     
-    sp = all_obj->sphere;
+    sp = all_obj->l_sphere;
     while (sp)
     {
             spher = sp->content;

@@ -58,9 +58,9 @@ int           ft_parse_l(t_all_obj *my,char *str)
     a = newel->content;    
     //printf(newel->content)    
     write(1,"TY!\n",4);
-    ft_lstadd_front(&my->light,newel);
+    ft_lstadd_front(&my->l_light,newel);
     write(1,"TYT\n",4);
-    if (my->light == NULL)
+    if (my->l_light == NULL)
         printf("PZDC\n");       
     /*printf("s:%s\n",str + i);    
     printf("x:%f\n",(*my).light.cord_l_point.x);
