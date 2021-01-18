@@ -19,26 +19,16 @@
 #include <stdint.h>
 #include <libft.h>
 #include <math.h>
-#include "get_next_line.h"
+#include <get_next_line.h>
+#include <rgb.h>
+#include <vectors.h>
 #include <mlx.h>
 #define inf 1.0 / 0.0
 
-typedef struct	s_rgb
-{
-                int red;
-                int green;
-                int blue;
-}				t_rgb;
 
-typedef struct	s_xyz
-{
-                double x;
-                double y;
-                double z;
-}	            t_xyz;
 /*
 **  Resolution
-**  identifier: R
+**  identifier: 
 **  x render size
 **  y render size
 **  

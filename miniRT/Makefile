@@ -30,12 +30,16 @@ OBJS_GNL = $(GNL_SRCS:.c=.o)
 OBJS_PARSER = $(PARSER_SRCS:.c=.o)
 OBJS_ERROR = $(ERROR_SRCS:.c=.o)
 OBJS_RayTracing = $(RayTracing_SRCS:.c=.o)
+OBJS_RGB = $(RGB_SRCS:.c=.o)
+OBJS_VEC = $(VEC_SRCS:.c=.o)
 
 DIR		= ./srcs/
 DIR_PARSER = ./srcs/parser/
 DIR_GNL = ./srcs/gnl/
 DIR_ERROR = ./srcs/error/
 DIR_RayTracing = ./srcs/rt/
+DIR_RGB = ./srcs/rgb/
+DIR_VEC = ./srcs/vectors/
 
 SRCS = $(DIR)main.c 
 GNL_SRCS = $(DIR_GNL)get_next_line.c $(DIR_GNL)get_next_line_utils.c
@@ -46,6 +50,8 @@ PARSER_SRCS =	$(DIR_PARSER)ft_parse_rt.c	$(DIR_PARSER)ft_atoirgb.c 	$(DIR_PARSER
 
 ERROR_SRCS = $(DIR_ERROR)ft_error.c
 RayTracing_SRCS = $(DIR_RayTracing)start_rt.c $(DIR_RayTracing)cicle.c
+RGB_SRCS = $(DIR_RGB)rgb.c
+VEC_SRCS = $(DIR_VEC)vectors.c
 
 AR		= ar rc
 
@@ -76,13 +82,13 @@ $(LIBFT):
 		@echo "$(F_YELLOW)START RUN Makefile in libft $(F_NONE)"
 		@$(MAKE) -C $(LIB_DIR)
 		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
-$(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)
+$(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC)
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
-		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  -L. $(LIB_NAME)  -lmlx -framework OpenGL -framework AppKit $(MINILIBX) -o $(NAME_MINIRT)
+		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) -L. $(LIB_NAME)  -lmlx -framework OpenGL -framework AppKit $(MINILIBX) -o $(NAME_MINIRT)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
-	rm -rf $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR) $(OBJS_RayTracing)
+	rm -rf $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR) $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC)
 	@echo "$(F_GREEN)Cleaned! $(F_NONE)"
 fclean: clean
 	make fclean -C $(LIB_DIR)
@@ -91,6 +97,9 @@ fclean: clean
 	@echo "$(F_GREEN)FCleaned! $(F_NONE)"
 
 re: fclean all
+
+norm:
+	norminette *.c *.h
 
 code:
 	@echo " ~~~~~~~~~~~~~~~~"
@@ -104,4 +113,4 @@ code:
 	@echo "$(F_BLUE) 010   1   110"
 	@echo "$(F_BLUE)   11011010**$(F_NONE)"
 
-.PHONY: all clean fclean re code bonus
+.PHONY: all clean fclean re code bonus norm

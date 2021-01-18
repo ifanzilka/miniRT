@@ -14,6 +14,7 @@
 #include <parse.h>
 #include <ray_tracing.h>
 #include "mlx.h"
+#include <rgb.h>
 
 #define MAX_DB 2147483647.0
 
@@ -54,17 +55,6 @@ typedef struct  s_kf_abc
     double         t2;
     double         discr;
 }                t_kf_abc;
-
-int		create_rgb( int r, int g, int b)
-{
-	return(r << 16 | g << 8 | b);
-}
-
-/*
-** 0xFF -> all bits (1)
-*/
-
-
 
 /*
 ** cx and cy -> coordinat pixel in window system
@@ -156,123 +146,6 @@ t_xyz      ft_create_v2(double x, double y, int width, int height, double z)
     return (v);
 }
 
-/*
-**  Create  vector xyz
-**
-**  x -> coordinat 
-**  y -> coordinat
-**  z -> coordinat
-**  return -> vector xyz
-*/
-
-t_xyz      ft_create_xyz(double x, double y,double z)
-{
-    t_xyz o;
-
-    o.x = x;
-    o.y = y;
-    o.z = z;
-    return (o);
-}
-
-/*
-**  Operation minus  vector xyz
-**
-**   a - b 
-**  return -> vector xyz
-*/
-
-t_xyz   ft_xyz_minus(t_xyz a, t_xyz b)
-{
-    t_xyz res;
-
-    
-    res.x = a.x - b.x;
-    res.y = a.y - b.y;
-    res.z = a.z - b.z;
-    return (res);
-}
-
-/*
-**  Operation plus  vector xyz
-**
-**   a + b 
-**  return -> vector xyz
-*/
-
-t_xyz   ft_xyz_plus(t_xyz a, t_xyz b)
-{
-    t_xyz res;
-
-    res.x = a.x + b.x;
-    res.y = a.y + b.y;
-    res.z = a.z + b.z;
-    return (res);
-}
-
-/*
-**  Operation mult  vector xyz
-**
-**   a * b 
-**  return -> vector xyz
-*/
-
-t_xyz   ft_xyz_mult(t_xyz a, double b)
-{
-    t_xyz res;
-
-    res.x = a.x * b;
-    res.y = a.y * b;
-    res.z = a.z * b;
-    return (res);
-} 
-
-
-/*
-**  Operation div  vector xyz
-**
-**   a / b 
-**  return -> vector xyz
-*/
-
-t_xyz   ft_xyz_div_doub(t_xyz a, double b)
-{
-    t_xyz res;
-
-    res.x = a.x / b;
-    res.y = a.y / b;
-    res.z = a.z / b;
-    return (res);
-}
-
-/*
-** Len  vector xyz
-**
-**  return -> Len xyz
-*/
-
-double ft_len_vect(t_xyz a)
-{
-    double len;
-
-    len = sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
-    return (len);
-}
-
-/*
-**  Operation scalar mult  vector xyz 
-**
-**   <a , b >
-**  return -> vector xyz
-*/
-
-double ft_xyz_mult_xyz(t_xyz a, t_xyz b)
-{
-    double res;
-
-    res = a.x * b.x + a.y * b.y + a.z * b.z;
-    return (res);
-}
 
 /*
 **  Create vect in 2 point 
@@ -290,84 +163,13 @@ t_xyz   ft_vect_two_point(t_xyz a, t_xyz b)
     res.z = b.z - a.z;
     return (res);
 }
-int     ft_max3(int a, int b,int c)
-{
-    int max;
-    max = a;
-    if (b > max)
-        max = b;
-    if (c > max)
-        max = c;
-    return (max);        
-}
-t_rgb   ft_rgb_mult_db(t_rgb rgb, double a)
-{
-    int max;
-    double kf;
-
-    (void) kf;
-    rgb.red = (int)((double)rgb.red * a);
-    rgb.green = (int)((double)rgb.green * a);
-    rgb.blue = (int)((double)rgb.blue * a);
-
-     max = ft_max3(rgb.red,rgb.green,rgb.blue);
-    
-    /*
-    if (max > 255)
-    {   
-        kf = 255.0 / (double)max; 
-        rgb.red = kf * rgb.red;
-        rgb.green = kf * rgb.green;
-        rgb.blue = kf * rgb.blue;
-    }*/
-    
-    
-    if (rgb.red > 255)
-        rgb.red = 255;
-    if (rgb.green > 255)
-        rgb.green = 255;
-    if (rgb.blue > 255)
-        rgb.blue = 255;
-    return (rgb);           
-}
-
-
-
-t_rgb   ft_rgb_plus_rgb(t_rgb a, t_rgb b)
-{
-    t_rgb rgb;
-    int max;
-    double kf;
-    rgb.red = a.red + b.red;
-    rgb.green = a.green + b.green;
-    rgb.blue = a.blue + b.blue;
-    max = ft_max3(rgb.red,rgb.green,rgb.blue);
-    /*
-    if (max > 255)
-    {   
-        kf = 255.0 / (double)max; 
-        rgb.red = kf * rgb.red;
-        rgb.green = kf * rgb.green;
-        rgb.blue = kf * rgb.blue;
-    }*/
-    (void) kf;
-    if (rgb.red > 255)
-        rgb.red = 255;
-    if (rgb.green > 255)
-        rgb.green = 255;
-    if (rgb.blue > 255)
-        rgb.blue = 255;
-    return (rgb); 
-}
-
-
 
  t_xyz   ft_reflect_ray(t_xyz r, t_xyz n) 
  {
     t_xyz res;
 
-    res = ft_xyz_mult(n,2);
-    res = ft_xyz_mult(res,ft_xyz_mult_xyz(n,r));
+    res = ft_xyz_mult_db(n,2);
+    res = ft_xyz_mult_db(res,ft_xyz_scal(n,r));
     res = ft_xyz_minus(res,r);
 
     return (res);
@@ -388,9 +190,9 @@ double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,
     (void) pixel;
 
     oc = ft_xyz_minus(o,spher->coord_sph_centr);    
-    abc.a = ft_xyz_mult_xyz(d,d);
-    abc.b = 2 * ft_xyz_mult_xyz(oc,d);
-    abc.c = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr ,2);
+    abc.a = ft_xyz_scal(d,d);
+    abc.b = 2 * ft_xyz_scal(oc,d);
+    abc.c = ft_xyz_scal(oc,oc) - pow(spher->diametr ,2);
     if ((abc.discr = abc.b * abc.b - 4 * abc.a * abc.c ) < 0.0)
         return(MAX_DB);
     abc.t1 = (-abc.b + sqrt(abc.discr)) / (2*abc.a);
@@ -447,9 +249,9 @@ double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz v)
                 c  =   spher->coord_sph_centr;
 
                 oc = ft_xyz_minus(o,c);    
-                abc.a = ft_xyz_mult_xyz(d,d);
-                abc.b = 2 * ft_xyz_mult_xyz(oc,d);
-                abc.c = ft_xyz_mult_xyz(oc,oc) - pow(spher->diametr ,2);
+                abc.a = ft_xyz_scal(d,d);
+                abc.b = 2 * ft_xyz_scal(oc,d);
+                abc.c = ft_xyz_scal(oc,oc) - pow(spher->diametr ,2);
                 
                 ft_intersect_ray_sphere(o,d,&pixel,spher,0.0001,0.99);
                 //ft_quadrat_equat(abc.a,abc.b,abc.c,&pixel,spher,0.0001,1.0);
@@ -495,7 +297,7 @@ t_rgb  ft_compute_lighting_sp(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s,
             l = li->cord_l_point;
         }
 
-        n_don_l = ft_xyz_mult_xyz(n,l);
+        n_don_l = ft_xyz_scal(n,l);
 
         //ClosestIntersection
         // проверяем доходит ли цвет
@@ -515,11 +317,11 @@ t_rgb  ft_compute_lighting_sp(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s,
         // отражения
         if (s > 0)
         {
-            r = ft_xyz_mult(n,2.0);
-            r = ft_xyz_mult(r,ft_xyz_mult_xyz(n,l));
+            r = ft_xyz_mult_db(n,2.0);
+            r = ft_xyz_mult_db(r,ft_xyz_scal(n,l));
             r = ft_xyz_minus(r,l);
             //r = ft_xyz_div_doub( ft_xyz_mult( 2*ft_xyz_mult_xyz(n,l));
-            r_dot_v = ft_xyz_mult_xyz(r, v);
+            r_dot_v = ft_xyz_scal(r, v);
             if (r_dot_v > 0.0)
             {
                     i = li->light_brightness * pow(r_dot_v/(ft_len_vect(r) * ft_len_vect(v)), s);
@@ -717,18 +519,18 @@ t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,double t_min,double t_
     if (pixel.t == MAX_DB)
         return (pixel.rgb);
         //return (create_rgb(pixel.rgb.red,pixel.rgb.green,pixel.rgb.blue));
-    p = ft_xyz_plus(o,ft_xyz_mult(d,pixel.t));
+    p = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel.t));
     n = ft_xyz_minus(p,pixel.cor);
-    n = ft_xyz_div_doub(n,ft_len_vect(n));
+    n = ft_xyz_div_db(n,ft_len_vect(n));
     t_rgb kf_r;
-    kf_r = ft_compute_lighting_sp(all_obj,p,n,ft_xyz_mult(d,-1.0),pixel.specular,pixel.rgb);
+    kf_r = ft_compute_lighting_sp(all_obj,p,n,ft_xyz_mult_db(d,-1.0),pixel.specular,pixel.rgb);
     pixel.rgb = kf_r;//ft_rgb_plus_rgb(pixel.rgb,kf_r);
     //return (create_rgb(pixel.rgb.red,pixel.rgb.green,pixel.rgb.blue));       
     //return(pixel.rgb); 
     if (rec <=  0 || pixel.reflective <= 0.1)
         return(pixel.rgb);
     t_xyz r;
-    r = ft_reflect_ray(ft_xyz_mult(d,-1.0),n);
+    r = ft_reflect_ray(ft_xyz_mult_db(d,-1.0),n);
 
     t_pixel pixel2;
     pixel2.t = MAX_DB;
@@ -752,16 +554,6 @@ t_xyz ft_new_d(t_xyz r, t_xyz u,t_xyz n , t_xyz d)
 
     return (res);
 
-}
-t_xyz   ft_xyz_mult_xyz1(t_xyz a, t_xyz b)
-{
-    t_xyz res;
-
-    res.x = a.y * b.z - a.z * b.y;
-    res.y = a.z * b.x - a.x * b.z; 
-    res.z = a.x *  b.y - a.y * b.x;  
-
-    return(res);
 }
 
 t_xyz ft_fov(t_xyz v,t_all_obj *rt)
@@ -814,10 +606,10 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
             y = pov * y;
             o = ft_create_xyz(all_obj->camera.coord_pointer.x,all_obj->camera.coord_pointer.y,all_obj->camera.coord_pointer.z);
             v = ft_create_v(x, y, all_obj->reso.width, all_obj->reso.height, 1);
-            c_r = ft_xyz_mult_xyz1(v_up,all_obj->camera.normal_orientr_vec);
+            c_r = ft_xyz_mult_xyz(v_up,all_obj->camera.normal_orientr_vec);
             //c_r = ft_xyz_div_doub(c_r,ft_len_vect(c_r));
 
-            c_up = ft_xyz_mult_xyz1(all_obj->camera.normal_orientr_vec,c_r);
+            c_up = ft_xyz_mult_xyz(all_obj->camera.normal_orientr_vec,c_r);
 
             t_xyz fov;
             fov =  ft_fov(v,all_obj);
