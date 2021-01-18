@@ -232,7 +232,7 @@ typedef struct	s_all_obj
                 //t_list *cylinder;
                 //t_list *triangle;
                 //t_list objects; crash!!!
-
+                int *th;
 }               t_all_obj;
 
 /*

@@ -10,11 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <time.h>
+
 #include <ft_minirt.h>
 #include <parse.h>
 #include <ray_tracing.h>
 #include "mlx.h"
 #include <rgb.h>
+#include <pthread.h>
 
 #define MAX_DB 2147483647.0
 
@@ -557,8 +560,12 @@ t_xyz ft_fov(t_xyz v,t_all_obj *rt)
     return (res);
 }
 
+
 int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
 {
+
+    clock_t begin = clock();
+
     int cx;
     int cy;
     int color;
@@ -606,7 +613,7 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
             t_xyz new_d = ft_new_d(c_r,c_up,all_obj->camera.normal_orientr_vec,v);
             //new_d = ft_fov(new_d,all_obj);
 
-            rgb = ft_ray_trace(all_obj, o, new_d , 0.0 ,MAX_DB,3);
+            rgb = ft_ray_trace(all_obj, o, new_d , 0.0 ,MAX_DB,5);
             color = create_rgb(rgb.red,rgb.green,rgb.blue);
             //color = ft_ray_trace(all_obj,x,y,2);
             mlx_pixel_put(vars->mlx,vars->win,cx,cy,color);
@@ -615,5 +622,10 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
         cx = 0;
         cy++;
     }
+    
+
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("TIME %f sec\n",time_spent);
     return (1);
 }
