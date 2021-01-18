@@ -128,7 +128,7 @@ t_xyz      ft_create_v(double x, double y, int width, int height, double z)
     (void) z;
 
     v.x =  x * (1.0/width) * width / height;//- (width/2);
-    v.y = y * (1.0/height);//(height/2)-y;
+    v.y = y * (1.0/height); //(height/2)-y;
     v.z =  1;
     return (v);
 }
@@ -153,16 +153,6 @@ t_xyz      ft_create_v2(double x, double y, int width, int height, double z)
 **  b - a
 **  return -> vector xyz
 */
-
-t_xyz   ft_vect_two_point(t_xyz a, t_xyz b)
-{
-    t_xyz res;
-
-    res.x = b.x - a.x;
-    res.y = b.y - a.y;
-    res.z = b.z - a.z;
-    return (res);
-}
 
  t_xyz   ft_reflect_ray(t_xyz r, t_xyz n) 
  {
