@@ -28,5 +28,7 @@ t_xyz   ft_xyz_div_db(t_xyz a, double b);
 double  ft_len_vect(t_xyz a);
 double  ft_xyz_scal(t_xyz a, t_xyz b);
 t_xyz   ft_xyz_mult_xyz(t_xyz a, t_xyz b);
+t_xyz   ft_xyz_normalaze(t_xyz xyz);
+t_xyz   ft_r_u_n_mult_xyz(t_xyz r, t_xyz u,t_xyz n , t_xyz d);
 
 #endif

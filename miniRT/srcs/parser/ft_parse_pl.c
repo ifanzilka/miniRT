@@ -39,6 +39,7 @@ int           ft_parse_pl(t_all_obj *my , char *str)
     (void) str;
     (void) my;
     t_plane *pl;
+    t_list  *newel;
     int i;
     
     i = 2;
@@ -47,10 +48,13 @@ int           ft_parse_pl(t_all_obj *my , char *str)
     if (!ft_check_xyz(pl->cord))
         ft_error(10);
     pl->normal_orientr_vec = ft_atoi_xyz(str,&i);
+    pl->normal_orientr_vec = ft_xyz_normalaze(pl->normal_orientr_vec);
     if (!ft_check_xyz(pl->cord) || !ft_check_normalizate(pl->normal_orientr_vec))
         ft_error(10);
     pl->rgb = ft_atoirgb(str, &i);
-
+    if (!(newel = ft_lstnew(pl)))
+        ft_error(14);
+    ft_lstadd_front(&my->l_pl,newel);    
     /*printf("x: %f\n",pl->cord.x);
     printf("y: %f\n",pl->cord.y);
     printf("z: %f\n",pl->cord.z);

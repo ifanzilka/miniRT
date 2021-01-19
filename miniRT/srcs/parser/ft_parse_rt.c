@@ -143,6 +143,15 @@ void        ft_parse_file_rt(int fd)
                 tmps = tmps->next;
             }
 
+            t_list  *tmppl;
+            t_plane *tmps_pl;
+            tmppl = my_rt->l_pl;
+            while (tmppl)
+            {
+                tmps_pl = tmppl->content;
+                printf("%d pl\n", tmps_pl->rgb.red);
+                tmppl = tmppl->next;
+            }
 
             ft_init_disp(my_rt);
             //ft_check_t_all_obj(); (проверяю на валидность данные)

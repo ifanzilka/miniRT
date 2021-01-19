@@ -13,11 +13,12 @@
 # ifndef PARSE_H
 #define PARSE_H
 #include "ft_minirt.h"
+#include <math.h>
 
 int         ft_parse_rt(char *file);
 t_rgb       ft_atoirgb(char *str,int *i);
 int         ft_check_rgb(t_rgb rgb);
-int             ft_check_normalizate(t_xyz xyz);
+int         ft_check_normalizate(t_xyz xyz);
 t_xyz       ft_atoi_xyz(char *str, int *i);
 int         ft_check_xyz(t_xyz xyz_t);
 int         ft_parse_R(t_all_obj *my,char *str);

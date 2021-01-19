@@ -142,3 +142,30 @@ t_xyz   ft_xyz_mult_xyz(t_xyz a, t_xyz b)
     res.z = a.x *  b.y - a.y * b.x;  
     return(res);
 }
+
+t_xyz   ft_xyz_normalaze(t_xyz xyz)
+{
+    t_xyz res;
+    double len;
+
+    len = ft_len_vect(xyz);
+    res.x = xyz.x / len;
+    res.y = xyz.y / len;
+    res.z = xyz.z / len;
+    return (res);
+}
+/*
+**  Matrix mult vec
+**  (new orientir)
+**  return vec(xyz)
+*/
+
+t_xyz ft_r_u_n_mult_xyz(t_xyz r, t_xyz u,t_xyz n , t_xyz d)
+{
+    t_xyz res;
+
+    res.x = r.x * d.x + r.y * d.y + r.z * d.z;
+    res.y = u.x * d.x + u.y * d.y + u.z * d.z;
+    res.z = n.x * d.x + n.y * d.y + n.z * d.z;
+    return (res);
+}

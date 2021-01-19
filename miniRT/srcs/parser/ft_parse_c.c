@@ -44,9 +44,9 @@ int            ft_parse_c(t_all_obj *my,char *str)
     if ((*my).camera.coord_pointer.x == inf1 || (*my).camera.coord_pointer.y == inf1
         || (*my).camera.coord_pointer.z == inf1)
         ft_error(7);
-    (*my).camera.normal_orientr_vec = ft_atoi_xyz(str,&i);
-    if ((*my).camera.normal_orientr_vec.x == inf1 || (*my).camera.normal_orientr_vec.y == inf1
-        || (*my).camera.normal_orientr_vec.z == inf1)
+    (*my).camera.camera_direction = ft_atoi_xyz(str,&i);
+    if ((*my).camera.camera_direction.x == inf1 || (*my).camera.camera_direction.y == inf1
+        || (*my).camera.camera_direction.z == inf1)
         ft_error(7);
     (*my).camera.FOV = ft_atof(str + i);
     if (((*my).camera.FOV < 0.0) || ((*my).camera.FOV) > 180.0)

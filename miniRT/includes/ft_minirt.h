@@ -72,7 +72,7 @@ typedef struct	s_ambient_lightning
 typedef struct	s_camera
 { 
                 t_xyz coord_pointer;
-                t_xyz normal_orientr_vec;
+                t_xyz camera_direction;
                 double FOV;
 }	            t_camera;
 
@@ -222,11 +222,10 @@ typedef struct	s_all_obj
                 t_resolution reso;
                 t_ambient_lightning al;
                 t_camera camera;
-
                 //t_list *objects;
                 t_list *l_sphere;
                 t_list *l_light;
-                
+                t_list *l_pl;
                 //t_list *plane;
                 //t_list *square;
                 //t_list *cylinder;
