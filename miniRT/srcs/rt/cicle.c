@@ -231,17 +231,20 @@ void    ft_intersect_pl(t_xyz o,t_xyz d,t_pixel *pixel,double t_min,double t_max
     double t;
     double rn;
     double ln;
-    t_xyz r;
+    double dd;
 
+    dd = -ft_xyz_scal(pl->normal_orientr_vec, pl->cord);
     ln = ft_xyz_scal(pl->normal_orientr_vec,d);
-    r = ft_xyz_minus(pl->cord, o);
-    rn = ft_xyz_scal(pl->normal_orientr_vec,r) - pl->normal_orientr_vec.x * pl->cord.x -  pl->normal_orientr_vec.y * pl->cord.y -  pl->normal_orientr_vec.z * pl->cord.z;
-    if (fabs(ln) <  0.0001)
-        return;
+    rn = ft_xyz_scal(pl->normal_orientr_vec,o) + dd;
+    //if (fabs(ln) <  0.0001)
+        //return;
+    if (ln == 0)
+        return;    
+    //printf("ku ku\n");
     t = -rn / ln;
     if ((ln > 0 && rn > 0.0) || (ln < 0 && rn < 0.0))
         return;
-    if ( t < pixel->t  && t > t_min && t <  t_max)
+    if (t < pixel->t  && t > t_min && t <  t_max)
     {
         //printf("ku ku\n");
         pixel->t = t;
@@ -292,8 +295,8 @@ double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz v)
         pl = l_pl->content;
         //printf("%d 1 pl\n", pl->rgb.red);
         ft_intersect_pl(o,d,&pixel,0.001,MAX_DB,pl);
-        if (pixel.t != MAX_DB)
-            printf("DMFSND\n");
+        //if (pixel.t != MAX_DB)
+            //printf("DMFSND\n");
         l_pl = l_pl->next;
     }
 
@@ -339,7 +342,7 @@ t_rgb  ft_compute_lighting_sp(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,int s,
 
         //ClosestIntersection
         // проверяем доходит ли цвет
-        /*if (ClosestIntersection(all_obj,p,l) != MAX_DB)
+       /* if (ClosestIntersection(all_obj,p,l) != MAX_DB)
         {
             light_all = light_all->next;
             continue;
@@ -428,7 +431,7 @@ t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,double t_min,double t_
     n = pixel.cor;
     pixel.rgb = ft_compute_lighting_sp(all_obj,p,n,ft_xyz_mult_db(d,-1.0),pixel.specular,pixel.rgb);
    
-    if (rec <=  20000 || pixel.reflective <= 2220.001)
+    if (rec <=  0|| pixel.reflective <= 0.001)
         return(pixel.rgb);
     t_xyz r;
     r = ft_reflect_ray(ft_xyz_mult_db(d,-1.0),n);
