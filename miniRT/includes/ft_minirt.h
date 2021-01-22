@@ -23,7 +23,22 @@
 #include <rgb.h>
 #include <vectors.h>
 #include <mlx.h>
-#define inf 1.0 / 0.0
+#define inf INFINITY
+
+
+
+typedef enum Bool 
+{    
+    FALSE,
+    TRUE
+}   Bool;
+
+typedef enum object 
+{    
+    sp,
+    pl,
+}   object;
+
 
 
 /*
@@ -132,6 +147,8 @@ typedef struct	s_plane
                 t_xyz cord;
                 t_xyz normal_orientr_vec;
                 t_rgb  rgb;
+                int     specular;
+                double reflective;
 }	            t_plane;
 
 /*
@@ -152,6 +169,8 @@ typedef struct	s_square
                 t_xyz normal_orientr_vec;
                 double side;
                 t_rgb  rgb;
+                int     specular;
+                double reflective;
 }	            t_square;
 
 /*
@@ -174,6 +193,8 @@ typedef struct	s_cylinder
                 double diameter;
                 double height;
                 t_rgb  rgb;
+                int     specular;
+                double reflective;
 }	            t_cylinder;
 
 /*
@@ -193,6 +214,8 @@ typedef struct	s_triangle
                 t_xyz second_point;
                 t_xyz third_point;
                 t_rgb  rgb;
+                int     specular;
+                double reflective;
 }	            t_triangle;
 
 /*
