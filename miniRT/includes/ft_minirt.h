@@ -35,8 +35,9 @@ typedef enum Bool
 
 typedef enum object 
 {    
-    sp,
-    pl,
+    sphere,
+    plane,
+    triangle
 }   object;
 
 
@@ -249,6 +250,7 @@ typedef struct	s_all_obj
                 t_list *l_sphere;
                 t_list *l_light;
                 t_list *l_pl;
+                t_list *l_tr;
                 //t_list *plane;
                 //t_list *square;
                 //t_list *cylinder;

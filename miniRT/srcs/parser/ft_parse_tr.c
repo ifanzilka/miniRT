@@ -40,6 +40,7 @@ int           ft_parse_tr(t_all_obj *my , char *str)
     (void) str;
     (void) my;
     t_triangle *tr;
+    t_list  *newel;
     int i;
 
     i = 2;
@@ -56,6 +57,9 @@ int           ft_parse_tr(t_all_obj *my , char *str)
     tr->rgb = ft_atoirgb(str,&i);
     if (!ft_check_rgb(tr->rgb))
         ft_error(12);
+    if (!(newel = ft_lstnew(tr)))
+        ft_error(14);    
+    ft_lstadd_front(&my->l_tr,newel); 
     /*printf("r: %d\n",tr->rgb.RED);
     printf("g: %d\n",tr->rgb.GREEN);
     printf("b: %d\n",tr->rgb.BLUE); */

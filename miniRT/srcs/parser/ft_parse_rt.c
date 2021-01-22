@@ -153,6 +153,16 @@ void        ft_parse_file_rt(int fd)
                 tmppl = tmppl->next;
             }
 
+            t_list  *tmptr;
+            t_triangle *tmps_tr;
+            tmptr = my_rt->l_tr;
+            while (tmptr)
+            {
+                tmps_tr = tmptr->content;
+                printf("%d tr\n", tmps_tr->rgb.red);
+                tmptr = tmptr->next;
+            }
+
             ft_init_disp(my_rt);
             //ft_check_t_all_obj(); (проверяю на валидность данные)
             if (str)
