@@ -23,8 +23,10 @@
 #include <rgb.h>
 #include <vectors.h>
 #include <mlx.h>
-#define inf INFINITY
+//#include <ray_tracing.h>
 
+#define inf INFINITY
+#define MAX_DB 2147483648.0
 
 
 typedef enum Bool 
@@ -35,12 +37,18 @@ typedef enum Bool
 
 typedef enum object 
 {    
+    nothing,
     sphere,
     plane,
-    triangle
+    triangle,
+    square
 }   object;
 
-
+typedef struct  s_range 
+{
+    double      min;
+    double      max;
+}               t_range;
 
 /*
 **  Resolution
@@ -251,8 +259,7 @@ typedef struct	s_all_obj
                 t_list *l_light;
                 t_list *l_pl;
                 t_list *l_tr;
-                //t_list *plane;
-                //t_list *square;
+                t_list *l_sq;
                 //t_list *cylinder;
                 //t_list *triangle;
                 //t_list objects; crash!!!

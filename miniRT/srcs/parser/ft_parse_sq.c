@@ -41,6 +41,7 @@ int           ft_parse_sq(t_all_obj *my , char *str)
     (void) str;
     (void) my;
     t_square *sq;
+    t_list  *newel;
     int i;
 
     sq = malloc(sizeof(t_square));
@@ -57,7 +58,10 @@ int           ft_parse_sq(t_all_obj *my , char *str)
         ft_error(11);
    sq->rgb = ft_atoirgb(str,&i);
    if (!(ft_check_rgb(sq->rgb)))
-    ft_error(11); 
+    ft_error(11);
+    if (!(newel = ft_lstnew(sq)))
+        ft_error(14);
+    ft_lstadd_front(&my->l_sq,newel); 
     /*
     printf("x: %f\n",sq->cord_sq_cen.x);
     printf("y: %f\n",sq->cord_sq_cen.y);

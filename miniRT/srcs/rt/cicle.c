@@ -13,44 +13,13 @@
 #include <time.h>
 
 #include <ft_minirt.h>
-#include <parse.h>
-#include <ray_tracing.h>
-#include "mlx.h"
-#include <rgb.h>
-#include <pthread.h>
+#include "ray_tracing.h"
 
-#define MAX_DB 2147483648.0
 
-typedef struct  s_range 
+
+int     ft_in_range(t_range *range, double a)
 {
-    double      min;
-    double      max;
-}               t_range;
-
-
-typedef struct  s_pixel 
-{
-    double          t;
-    t_rgb           rgb;
-    t_xyz           normal;
-    int             specular;
-    double          reflective;
-    int             id;
-}                t_pixel;
-
-typedef struct  s_kf_abc 
-{
-    double          a;
-    double          b;
-    double          c;
-    double          t1;
-    double         t2;
-    double         discr;
-}                t_kf_abc;
-
-int     ft_in_range(t_range range, double a)
-{
-    if (a >= range.min && a <= range.max)
+    if (a >= range->min && a <= range->max)
         return (1);
     return (0);    
 } 
@@ -163,214 +132,6 @@ t_rgb   ft_recurse_color(t_rgb  ref_col, t_rgb  loc_col, double reflective)
     res = ft_rgb_plus_rgb(res, ft_rgb_mult_db(ref_col,reflective));
     return (res);
 }
-/*
-**  the quadratic equation 
-**  D = B^2 - 4 * A * C 
-**  
-**  return -> MINIMAL X OR INFINITY
-*/
-
-
-/*
-**  Sphere:
-** P - point lutch
-** C - Center sphere
-** 
-** |P - C| = r
-** 
-**  <P - C, P - C > = r ^ 2
-**
-** D = V - O
-**
-** and  P = O + t * D
-** 
-*/
-
-double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,t_range range)
-{
-    t_xyz oc;
-    t_kf_abc abc;
-    t_xyz p1;
-
-    oc = ft_xyz_minus(o,spher->coord_sph_centr);    
-    abc.a = ft_xyz_scal(d,d);
-    abc.b = 2 * ft_xyz_scal(oc,d);
-    abc.c = ft_xyz_scal(oc,oc) - pow(spher->diametr ,2);
-    if ((abc.discr = abc.b * abc.b - 4 * abc.a * abc.c ) < 0.0)
-        return(MAX_DB);
-    abc.t1 = (-abc.b + sqrt(abc.discr)) / (2*abc.a);
-    abc.t2 = (-abc.b - sqrt(abc.discr)) / (2*abc.a);
-   
-    if((abc.t1 >= 0.0 && abc.t2 <= 0.0) || (abc.t2 >= 0.0 && abc.t1 <= 0.0)) 
-    {
-        if ( (abc.t1) < pixel->t  && ft_in_range(range,abc.t1))
-        {
-            pixel->rgb = spher->rgb;
-            pixel->t = abc.t1;
-            //pixel->cor = spher->coord_sph_centr;
-            pixel->specular = spher->specular;
-            pixel->reflective = spher->reflective;
-            p1 = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel->t * 0.9999));
-            t_xyz n;
-            n = ft_xyz_minus(p1,spher->coord_sph_centr);
-            pixel->normal = ft_xyz_div_db(n,ft_len_vect(n));
-            return (0.0);
-
-
-        }
-        else if ((abc.t2 < pixel->t) && ft_in_range(range,abc.t2))
-        {
-            pixel->rgb = spher->rgb;
-            pixel->t = abc.t2;
-            
-            pixel->specular = spher->specular;
-            pixel->reflective = spher->reflective;
-            p1 = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel->t * 0.9999));
-            t_xyz n;
-            n = ft_xyz_minus(p1,spher->coord_sph_centr);
-            pixel->normal = ft_xyz_div_db(n,ft_len_vect(n));
-            return (0.0);
-
-        }
-        return (0.0);
-    }
-    else if ((abc.t1 < abc.t2) && (abc.t1 < pixel->t) && ft_in_range(range,abc.t1))
-    {
-    
-            //printf("!!!!\n");
-            pixel->rgb = spher->rgb;
-            pixel->t = abc.t1;
-            //pixel->cor = spher->coord_sph_centr;
-            pixel->specular = spher->specular;
-            pixel->reflective = spher->reflective;
-            p1 = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel->t));
-            t_xyz n;
-            n = ft_xyz_minus(p1,spher->coord_sph_centr);
-            pixel->normal =ft_xyz_div_db(n,ft_len_vect(n));
-    }
-    else if ((abc.t2 <= abc.t1) && (abc.t2 < pixel->t) && ft_in_range(range,abc.t2))
-    {
-       // printf("!!!!\n");
-
-        if (ft_len_vect(oc) < spher->diametr) 
-        {
-
-            pixel->rgb = spher->rgb;
-            pixel->t = abc.t1;
-            
-            pixel->specular = spher->specular;
-            pixel->reflective = spher->reflective;
-            p1 = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel->t));
-            t_xyz n;
-            n = ft_xyz_minus(p1,spher->coord_sph_centr);
-            pixel->normal = ft_xyz_div_db(n,ft_len_vect(n));    
-        
-        }
-        else {
-            pixel->rgb = spher->rgb;
-            pixel->t = abc.t2;
-            
-            pixel->specular = spher->specular;
-            pixel->reflective = spher->reflective;
-            p1 = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel->t));
-            t_xyz n;
-            n = ft_xyz_minus(p1,spher->coord_sph_centr);
-            pixel->normal = ft_xyz_div_db(n,ft_len_vect(n));
-        }
-        //return (t2);
-    } 
-    return (0.0);  
-}
-
-void    ft_intersect_pl(t_xyz o,t_xyz d,t_pixel *pixel,t_range range, t_plane *pl)
-{
-    double t;
-    double dn;
-    double on;
-    double dd;
-
-    //pl->normal_orientr_vec = ft_xyz_mult_db(pl->normal_orientr_vec,1.0);
-    
-    dd = -ft_xyz_scal(pl->normal_orientr_vec, pl->cord);
-    dn = ft_xyz_scal(pl->normal_orientr_vec,d);
-    on = ft_xyz_scal(pl->normal_orientr_vec,o) + dd;
-    if (dn == 0)
-        return;
-    if (fabs(dn) <  0.0000001)
-        return;  
-    //printf("ku ku\n");
-    t = -on / dn;
-    if (t < pixel->t  && ft_in_range(range,t))
-    {
-        //printf("ku ku\n");
-        //if (ft_xyz_scal() )
-        pixel->t = t;
-        pixel->rgb = pl->rgb;
-        pixel->normal = pl->normal_orientr_vec;
-        pixel->specular = 0;//400;
-        pixel->reflective = 0;
-        pixel->id = plane;
-    }
-}
-
-void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triangle *tr,t_range range)
-{
-
-    /*printf("1: %f \n",tr->first_point.x);
-    printf("2: %f \n",tr->first_point.y);
-    printf("3: %f \n",tr->first_point.z);
-
-    printf("\n1: %f \n",tr->second_point.x);
-    printf("2: %f \n",tr->second_point.y);
-    printf("3: %f \n",tr->second_point.z);
-
-        printf("\n1: %f \n",tr->third_point.x);
-    printf("2: %f \n",tr->third_point.y);
-    printf("3: %f \n",tr->third_point.z);*/
-
-    t_xyz v1;
-    t_xyz v2;
-    t_xyz n;
-    t_xyz v1d;
-    double scal_v2_v1d;
-    double t;
-
-    v1 = ft_xyz_minus(tr->second_point,tr->first_point);
-    v2 = ft_xyz_minus(tr->third_point,tr->first_point);
-    n = ft_xyz_mult_xyz(v1,v2);
-    v1d = ft_xyz_mult_xyz(v2,d);
-    scal_v2_v1d = ft_xyz_scal(v1,v1d);
-    if (fabs(scal_v2_v1d) < 0.01)
-        return;
-     t_xyz vec;
-
-    vec = ft_xyz_minus(o, tr->first_point);
-    double u;
-    u = ft_xyz_scal(vec,v1d) / scal_v2_v1d;   
-    if (u < 0.0 || u > 1.0)
-        return ;
-    t_xyz q_vec;
-    q_vec = ft_xyz_mult_xyz(v1,vec); 
-    double v;
-    v = ft_xyz_scal(d,q_vec) / scal_v2_v1d;
-    if (v < 0.0 || u + v > 1.0)
-        return ;
-    t = ft_xyz_scal(v2, q_vec) / scal_v2_v1d;
-    if (t < pixel->t  && ft_in_range(range,t))
-    {
-
-        //printf("ku ku\n");
-        //if (ft_xyz_scal() )
-        pixel->t = t;
-        pixel->rgb = tr->rgb;
-        
-        pixel->normal = n;
-        pixel->specular = 0;//400;
-        pixel->reflective = 0;
-        pixel->id = triangle;
-    }
-}
-
 
 
 /*
@@ -383,51 +144,20 @@ void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triangle *tr,
 double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz d)
 {
     t_pixel pixel;
-    
+    t_range range;
+
+    range.min = 0.000001;
+    range.max = 0.999999;
     pixel.t = MAX_DB;
-
-    t_xyz c;
-    t_xyz oc;
-    t_list *sp;
-    t_sphere *spher;
-
-    sp = all_obj->l_sphere;
-
-    while (sp)
-    {
-        spher = sp->content;
-        c  =   spher->coord_sph_centr;
-        oc = ft_xyz_minus(o,c);    
-        ft_intersect_ray_sphere(o,d,&pixel,spher,(t_range){0.0001,0.9999});
-        sp = sp->next;
-    }
-
-    t_list  *l_pl;
-    t_plane *pl;
-    l_pl = all_obj->l_pl;
-    while (l_pl)
-    {
-        pl = l_pl->content;
-        //pl->normal_orientr_vec = ft_xyz_mult_db(pl->normal_orientr_vec,-1.0);
-        ft_intersect_pl(o,d,&pixel,(t_range){0.000000000000001,0.99999},pl);
-        l_pl = l_pl->next;
-    }
-
-    t_list *l_tr;
-    t_triangle *tr;
-    l_tr = all_obj->l_tr;
-    while (l_tr)
-    {
-        tr = l_tr->content;
-        ft_intersect_ray_triangle(o,d,&pixel,tr, (t_range){0.0000001,0.99999});
-        l_tr = l_tr->next;
-    }
-
+    ft_l_sp(all_obj, &pixel, o, d,&range);
+    ft_l_pl(all_obj, &pixel, o, d,&range);
+    ft_l_tr(all_obj,&pixel,o, d,&range);
+    ft_l_sq(all_obj,&pixel,o, d,&range);
     return (pixel.t);
 }
 
 /*
-**   ft_compute_lighting_sp
+**   ft_compute_lighting
 **  all_object
 **  point (p) in object
 **  n -> normal vec
@@ -435,7 +165,7 @@ double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz d)
 */
 
 
-t_rgb  ft_compute_lighting_sp(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixel *pixel)
+t_rgb  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixel *pixel)
 {
     (void) v;
     double i;
@@ -461,7 +191,7 @@ t_rgb  ft_compute_lighting_sp(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixe
             n = ft_xyz_mult_db(n,-1.0);
             n_don_l = ft_xyz_scal(n,l);
         }
-
+        
         //ClosestIntersection
         // проверяем доходит ли цвет
         if (ClosestIntersection(all_obj, p , l) != MAX_DB)
@@ -494,71 +224,6 @@ t_rgb  ft_compute_lighting_sp(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixe
 }
 
 
-
-
-/*
-**  ft_l_pl
-** all_obj -> rt
-**  pixel -> adress in pixel param
-**  o -> cord start in lutch
-**  d -> vec >>>>
-**  (no back point)
-*/
-
-void        ft_l_pl(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d)
-{
-    t_list  *l_pl;
-    t_plane *pl;
-
-    l_pl = all_obj->l_pl;
-    while (l_pl)
-    {
-        pl = l_pl->content;
-        ft_intersect_pl(o, d, pixel,(t_range){0.0000001,MAX_DB},pl);
-        l_pl = l_pl->next;
-    }
-}
-
-/*
-**  ft_l_sphere
-**  all_obj -> rt
-**  pixel -> adress in pixel param
-**  o -> cord start in lutch
-**  d -> vec >>>>
-**  (no back point)
-*/
-
-void       ft_l_sphere(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d)
-{
-    t_list      *l_sp;
-    t_sphere    *spher;
-
-    l_sp = all_obj->l_sphere;
-    while (l_sp)
-    {
-        spher = l_sp->content;
-        ft_intersect_ray_sphere(o,d,pixel,spher, (t_range){0.0000001,MAX_DB});
-        l_sp = l_sp->next;
-    }
-}
-
-
-
-void    ft_l_tr(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d)
-{
-    t_list      *l_tr;
-    t_triangle  *tr;
-
-    l_tr = all_obj->l_tr;
-    while (l_tr)
-    {
-        tr = l_tr->content;
-        ft_intersect_ray_triangle(o,d,pixel,tr, (t_range){0.0000001,MAX_DB});
-        l_tr = l_tr->next;
-    }
-
-}
-
 /*
 **  ft_ray_trace
 **  all_obj -> struct in rt
@@ -575,16 +240,18 @@ t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,t_range range,int rec)
     t_xyz   r;
     t_pixel pixel;
     t_rgb   ref_color;
-    
+
     pixel.t = MAX_DB;
     pixel.rgb = ft_rgb_mult_db(all_obj->al.rgb,all_obj->al.light);
-    ft_l_sphere(all_obj, &pixel, o, d);
-    ft_l_pl(all_obj, &pixel, o, d);
-    ft_l_tr(all_obj,&pixel,o, d);
+    
+    ft_l_sp(all_obj, &pixel, o, d,&range);
+    ft_l_pl(all_obj, &pixel, o, d,&range);
+    ft_l_tr(all_obj,&pixel,o, d,&range);
+    ft_l_sq(all_obj,&pixel,o, d,&range);
     if (pixel.t == MAX_DB)
         return (pixel.rgb);
-    p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel.t * 0.999999));
-    pixel.rgb = ft_compute_lighting_sp(all_obj,  p, pixel.normal,ft_xyz_mult_db(d, -1.0),&pixel);
+    p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel.t * 0.999));
+    pixel.rgb = ft_compute_lighting(all_obj,  p, pixel.normal,ft_xyz_mult_db(d, -1.0),&pixel);
     if (rec <=  0 || pixel.reflective <= 0.000001)
         return(pixel.rgb);
     r = ft_reflect_ray(ft_xyz_mult_db(d,-1.0),pixel.normal);
