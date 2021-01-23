@@ -313,6 +313,66 @@ void    ft_intersect_pl(t_xyz o,t_xyz d,t_pixel *pixel,t_range range, t_plane *p
     }
 }
 
+void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triangle *tr,t_range range)
+{
+
+    /*printf("1: %f \n",tr->first_point.x);
+    printf("2: %f \n",tr->first_point.y);
+    printf("3: %f \n",tr->first_point.z);
+
+    printf("\n1: %f \n",tr->second_point.x);
+    printf("2: %f \n",tr->second_point.y);
+    printf("3: %f \n",tr->second_point.z);
+
+        printf("\n1: %f \n",tr->third_point.x);
+    printf("2: %f \n",tr->third_point.y);
+    printf("3: %f \n",tr->third_point.z);*/
+
+    t_xyz v1;
+    t_xyz v2;
+    t_xyz n;
+    t_xyz v1d;
+    double scal_v2_v1d;
+    double t;
+
+    v1 = ft_xyz_minus(tr->second_point,tr->first_point);
+    v2 = ft_xyz_minus(tr->third_point,tr->first_point);
+    n = ft_xyz_mult_xyz(v1,v2);
+    v1d = ft_xyz_mult_xyz(v2,d);
+    scal_v2_v1d = ft_xyz_scal(v1,v1d);
+    if (fabs(scal_v2_v1d) < 0.01)
+        return;
+     t_xyz vec;
+
+    vec = ft_xyz_minus(o, tr->first_point);
+    double u;
+    u = ft_xyz_scal(vec,v1d) / scal_v2_v1d;   
+    if (u < 0.0 || u > 1.0)
+        return ;
+    t_xyz q_vec;
+    q_vec = ft_xyz_mult_xyz(v1,vec); 
+    double v;
+    v = ft_xyz_scal(d,q_vec) / scal_v2_v1d;
+    if (v < 0.0 || u + v > 1.0)
+        return ;
+    t = ft_xyz_scal(v2, q_vec) / scal_v2_v1d;
+    if (t < pixel->t  && ft_in_range(range,t))
+    {
+
+        //printf("ku ku\n");
+        //if (ft_xyz_scal() )
+        pixel->t = t;
+        pixel->rgb = tr->rgb;
+        
+        pixel->normal = n;
+        pixel->specular = 0;//400;
+        pixel->reflective = 0;
+        pixel->id = triangle;
+    }
+}
+
+
+
 /*
 **  o vec -> point in obk=ject
 **  d -> vec in light
@@ -353,6 +413,16 @@ double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz d)
         l_pl = l_pl->next;
     }
 
+    t_list *l_tr;
+    t_triangle *tr;
+    l_tr = all_obj->l_tr;
+    while (l_tr)
+    {
+        tr = l_tr->content;
+        ft_intersect_ray_triangle(o,d,&pixel,tr, (t_range){0.0000001,0.99999});
+        l_tr = l_tr->next;
+    }
+
     return (pixel.t);
 }
 
@@ -386,7 +456,7 @@ t_rgb  ft_compute_lighting_sp(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixe
         l =  ft_xyz_minus(li->cord_l_point,p);
         n_don_l = ft_xyz_scal(n,l);
         
-        if (n_don_l <= 0.0 && pixel->id == plane)
+        if (n_don_l <= 0.0 && (pixel->id == plane || pixel->id == triangle))
         {
             n = ft_xyz_mult_db(n,-1.0);
             n_don_l = ft_xyz_scal(n,l);
@@ -472,50 +542,7 @@ void       ft_l_sphere(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d)
     }
 }
 
-void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triangle *tr,t_range range)
-{
-    t_xyz v1;
-    t_xyz v2;
-    t_xyz n;
-    t_xyz v1d;
-    double scal_v2_v1d;
-    double t;
 
-    v1 = ft_xyz_minus(tr->first_point,tr->second_point);
-    v2 = ft_xyz_minus(tr->first_point,tr->third_point);
-    n = ft_xyz_mult_xyz(v1,v2);
-    v1d = ft_xyz_mult_xyz(v2,d);
-    scal_v2_v1d = ft_xyz_scal(v1,v1d);
-    if (fabs(scal_v2_v1d) < 0.01)
-        return;
-     t_xyz vec;
-
-    vec = ft_xyz_minus(o, tr->first_point);
-    double u;
-    u = ft_xyz_scal(vec,v1d) / scal_v2_v1d;   
-    if (u < 0.0 || u > 1.0)
-        return ;
-    t_xyz q_vec;
-    q_vec = ft_xyz_mult_xyz(v1,vec); 
-    double v;
-    v = ft_xyz_scal(d,q_vec) / scal_v2_v1d;
-    if (v < 0.0 || u + v > 1.0)
-        return ;
-    t = ft_xyz_scal(v2, q_vec) / scal_v2_v1d;
-    if (t < pixel->t  && ft_in_range(range,t))
-    {
-
-        //printf("ku ku\n");
-        //if (ft_xyz_scal() )
-        pixel->t = t;
-        pixel->rgb = tr->rgb;
-        
-        pixel->normal = n;
-        pixel->specular = 0;//400;
-        pixel->reflective = 0;
-        pixel->id = plane;
-    }
-}
 
 void    ft_l_tr(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d)
 {
