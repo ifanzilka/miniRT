@@ -118,6 +118,94 @@ t_xyz      ft_create_v(double x, double y, int width, int height, double z)
     return (res);
 }
 
+void        ft_intersect_cy(t_xyz o, t_xyz d, t_pixel *pixel, t_range *range,t_cylinder *cy)
+{
+    //printf("1\n");
+    double a;
+    double b;
+    double c;
+    double discr;
+    double t1;
+    double t2;
+    t_xyz maxp;
+
+    t_xyz oc;
+    oc = ft_xyz_minus(o,cy->cord);
+    a = ft_xyz_scal(d,d) - pow(ft_xyz_scal(d,cy->normal_orientr_vec),2);
+    c = ft_xyz_scal(oc,oc) - pow(ft_xyz_scal(oc,cy->normal_orientr_vec),2) - pow(cy->diameter / 2.0,2);
+    b = 2 * (ft_xyz_scal(d,oc) - ft_xyz_scal(d,cy->normal_orientr_vec) * ft_xyz_scal(oc,cy->normal_orientr_vec));
+
+    if ((discr = b * b - 4 * a * c ) < 0.0)
+        return;
+    t1 = (-b + sqrt(discr)) / (2 * a);
+    t2 = (-b - sqrt(discr)) / (2 * a);
+
+    maxp = ft_xyz_plus(cy->cord,ft_xyz_mult_db(cy->normal_orientr_vec,cy->height));
+    double m;
+    if (t1 < t2 && t1 < pixel->t && ft_in_range(range,t1))
+    {
+        t_xyz n;
+        t_xyz p;
+         m = ft_xyz_scal(d,cy->normal_orientr_vec) * t1 + ft_xyz_scal(oc,cy->normal_orientr_vec);
+        p = ft_xyz_plus(o, ft_xyz_mult_db(d, t1 * 0.999));
+
+
+
+        n = ft_xyz_minus(p,cy->cord);
+        n = ft_xyz_minus(n,ft_xyz_mult_db(cy->normal_orientr_vec,m));
+        n = ft_xyz_normalaze(n);
+        if (m < 0  || m  > ft_len_vect(ft_xyz_minus(p,maxp))) // || m  < ft_len_vect(ft_xyz_minus(p,cy->cord)))
+            return;
+        pixel->t = t1;
+
+        pixel->rgb = cy->rgb;
+        pixel->normal = n;//cy->normal_orientr_vec;
+        pixel->specular = 0;
+        pixel->reflective = 0;
+        pixel->id = sphere;
+    }
+    if (t2 < t1 && t2 < pixel->t && ft_in_range(range,t2))
+    {
+        t_xyz n;
+        t_xyz p;
+        m = ft_xyz_scal(d,cy->normal_orientr_vec) * t2 + ft_xyz_scal(oc,cy->normal_orientr_vec);
+
+        
+        p = ft_xyz_plus(o, ft_xyz_mult_db(d, t2 * 0.999));
+        n = ft_xyz_minus(p,cy->cord);
+        n = ft_xyz_minus(n,ft_xyz_mult_db(cy->normal_orientr_vec,m));
+        n = ft_xyz_normalaze(n);
+        if (m < 0  || m  > ft_len_vect(ft_xyz_minus(p,maxp))) // || m  < ft_len_vect(ft_xyz_minus(p,cy->cord)))
+            return;
+
+        pixel->t = t2;
+        pixel->rgb = cy->rgb;
+        pixel->normal = n;//cy->normal_orientr_vec;
+        pixel->specular = 0;
+        pixel->reflective = 0;
+        pixel->id = sphere;
+    }
+}
+
+
+void        ft_l_cy(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
+{
+    t_list  *l_cy;
+    t_cylinder *cy;
+    (void) pixel;
+    (void) o;
+    (void) d;
+    (void) range;
+    l_cy = all_obj->l_cy;
+    while (l_cy)
+    {
+        cy = l_cy->content;
+        ft_intersect_cy(o, d, pixel,range,cy);
+        l_cy = l_cy->next;
+    }
+}
+
+
 /*  
 **   ft_recurse_color
 **
@@ -153,6 +241,7 @@ double ClosestIntersection(t_all_obj *all_obj,t_xyz o, t_xyz d)
     ft_l_pl(all_obj, &pixel, o, d,&range);
     ft_l_tr(all_obj,&pixel,o, d,&range);
     ft_l_sq(all_obj,&pixel,o, d,&range);
+    ft_l_cy(all_obj,&pixel,o, d,&range);
     return (pixel.t);
 }
 
@@ -184,6 +273,7 @@ t_rgb  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixel *
     {
         li = l_light->content;
         l =  ft_xyz_minus(li->cord_l_point,p);
+        //l = ft_xyz_normalaze(l);
         n_don_l = ft_xyz_scal(n,l);
         
         if (n_don_l <= 0.0 && (pixel->id == plane || pixel->id == triangle))
@@ -248,6 +338,7 @@ t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,t_range range,int rec)
     ft_l_pl(all_obj, &pixel, o, d,&range);
     ft_l_tr(all_obj,&pixel,o, d,&range);
     ft_l_sq(all_obj,&pixel,o, d,&range);
+    ft_l_cy(all_obj,&pixel,o, d,&range);
     if (pixel.t == MAX_DB)
         return (pixel.rgb);
     p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel.t * 0.999));
@@ -276,6 +367,8 @@ t_xyz   ft_create_vec_d(t_all_obj *all_obj, double x, double y)
     d = ft_r_u_n_mult_xyz(c_r,c_up,all_obj->camera.camera_direction,v);
     return (d);
 }
+
+
 
 /*
 **  Cicle for all pixel

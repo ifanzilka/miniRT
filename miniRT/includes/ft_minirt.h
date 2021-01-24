@@ -254,12 +254,14 @@ typedef struct	s_all_obj
                 t_resolution reso;
                 t_ambient_lightning al;
                 t_camera camera;
+                
                 //t_list *objects;
                 t_list *l_sphere;
                 t_list *l_light;
                 t_list *l_pl;
                 t_list *l_tr;
                 t_list *l_sq;
+                t_list *l_cy;
                 //t_list *cylinder;
                 //t_list *triangle;
                 //t_list objects; crash!!!
