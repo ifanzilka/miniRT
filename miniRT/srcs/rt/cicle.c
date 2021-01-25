@@ -187,6 +187,7 @@ t_rgb  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixel *
     {
         li = l_light->content;
         l =  ft_xyz_minus(li->cord_l_point,p);
+        n = ft_xyz_normalaze(n);
         //l = ft_xyz_normalaze(l);
         n_don_l = ft_xyz_scal(n,l);
         
@@ -205,23 +206,30 @@ t_rgb  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixel *
         }
 
         // просто цвет
-        if (n_don_l >= 0.0 )
+        if (n_don_l > 0.0 )
         {
             i =  li->light_brightness * n_don_l /( ft_len_vect(n) * ft_len_vect(l));
             color_pix = ft_rgb_plus_rgb(color_pix,ft_rgb_mult_db(li->rgb,i));
         }
 
-        if (pixel->specular > 0)
-        {
-            r = ft_reflect_ray(n,l);
-            r_dot_v = ft_xyz_scal(r, v);
-            if (r_dot_v > 0.0)
+            if (pixel->specular > -10)
             {
-                    i = li->light_brightness * pow(r_dot_v/(ft_len_vect(r) * ft_len_vect(v)),500);
-                    color_pix = ft_rgb_plus_rgb(color_pix,ft_rgb_mult_db(li->rgb,i));
+                //r = ft_reflect_ray(n,l);
+                //r = ft_reflect_ray(ft_xyz_mult_db(v,1.0),n);
+                r = ft_xyz_mult_db(n,2.0);
+                r = ft_xyz_mult_db(r,ft_xyz_scal(n,l));
+                r = ft_xyz_minus(r,l);
+                r_dot_v = ft_xyz_scal(r, v);
+                //printf("n : x:%f y:%f z:%f\n",n.x,n.y,n.z);
+                //printf("l : x:%f y:%f z:%f\n",l.x,l.y,l.z);
+                //printf("r : x: %f y:%f z:%f \n",r.x,r.y,r.z);
+            
+                if (r_dot_v > 0.0)
+                {
+                        i = li->light_brightness * pow(r_dot_v/(ft_len_vect(r) * ft_len_vect(v)),100);
+                        color_pix = ft_rgb_plus_rgb(color_pix,ft_rgb_mult_db(li->rgb,i));
+                }
             }
-        }
-
         l_light = l_light->next;
     }    
     return (color_pix);
@@ -256,7 +264,7 @@ t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,t_range range,int rec)
         return (pixel.rgb);
     p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel.t * 0.9999));
     pixel.rgb = ft_compute_lighting(all_obj,  p, pixel.normal,ft_xyz_mult_db(d, -1.0),&pixel);
-    //if (rec <=  0 || pixel.reflective <= 0.000001)
+    if (rec <=  0 || pixel.reflective <= 0.01)
         return(pixel.rgb);
     r = ft_reflect_ray(ft_xyz_mult_db(d,-1.0),pixel.normal);
     ref_color = ft_ray_trace(all_obj, p, r,range,rec - 1);
@@ -300,7 +308,7 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
     t_rgb rgb;
     t_xyz d;
     printf("true %d \n",TRUE);
-    all_obj->camera.camera_direction = ft_xyz_normalaze(all_obj->camera.camera_direction);
+    //all_obj->camera.camera_direction = ft_xyz_normalaze(all_obj->camera.camera_direction);
     cx = 0;
     cy = 0;
     while (cy < all_obj->reso.height)

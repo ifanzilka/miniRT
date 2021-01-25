@@ -55,7 +55,8 @@ double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,
             p1 = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel->t * 0.9999));
             t_xyz n;
             n = ft_xyz_minus(p1,spher->coord_sph_centr);
-            pixel->normal = ft_xyz_div_db(n,ft_len_vect(n));
+            pixel->normal =  n;
+            //pixel->normal = ft_xyz_normalaze(pixel->normal);
             return (0.0);
 
 
@@ -70,7 +71,8 @@ double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,
             p1 = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel->t * 0.9999));
             t_xyz n;
             n = ft_xyz_minus(p1,spher->coord_sph_centr);
-            pixel->normal = ft_xyz_div_db(n,ft_len_vect(n));
+            pixel->normal =  n;
+            //pixel->normal = ft_xyz_normalaze(pixel->normal);
             return (0.0);
 
         }
@@ -88,7 +90,8 @@ double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,
             p1 = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel->t));
             t_xyz n;
             n = ft_xyz_minus(p1,spher->coord_sph_centr);
-            pixel->normal =ft_xyz_div_db(n,ft_len_vect(n));
+            pixel->normal =  n;
+            //pixel->normal = ft_xyz_normalaze(pixel->normal);
     }
     else if ((abc.t2 <= abc.t1) && (abc.t2 < pixel->t) && ft_in_range(range,abc.t2))
     {
@@ -105,8 +108,8 @@ double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,
             p1 = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel->t));
             t_xyz n;
             n = ft_xyz_minus(p1,spher->coord_sph_centr);
-            pixel->normal = ft_xyz_div_db(n,ft_len_vect(n));    
-        
+            pixel->normal = ft_xyz_normalaze(pixel->normal);    
+            pixel->normal =  n;
         }
         else {
             pixel->rgb = spher->rgb;
@@ -117,7 +120,7 @@ double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,
             p1 = ft_xyz_plus(o,ft_xyz_mult_db(d,pixel->t));
             t_xyz n;
             n = ft_xyz_minus(p1,spher->coord_sph_centr);
-            pixel->normal = ft_xyz_div_db(n,ft_len_vect(n));
+            pixel->normal =  n;//ft_xyz_div_db(n,ft_len_vect(n));
         }
         //return (t2);
     } 

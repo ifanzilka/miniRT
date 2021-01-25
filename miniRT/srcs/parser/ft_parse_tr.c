@@ -56,7 +56,7 @@ int           ft_parse_tr(t_all_obj *my , char *str)
         ft_error(12);
     tr->rgb = ft_atoirgb(str,&i);
     if (!ft_check_rgb(tr->rgb))
-        ft_error(12);
+        ft_error(12);  
     if (!(newel = ft_lstnew(tr)))
         ft_error(14);    
     ft_lstadd_front(&my->l_tr,newel); 
