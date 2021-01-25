@@ -43,5 +43,6 @@ void    ft_l_sp(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range
 void    ft_l_pl(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 void    ft_l_tr(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 void    ft_l_sq(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
+void    ft_l_cy(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 
 #endif

@@ -37,7 +37,7 @@ void    ft_intersect_pl(t_xyz o,t_xyz d,t_pixel *pixel,t_range *range, t_plane *
         pixel->t = t;
         pixel->rgb = pl->rgb;
         pixel->normal = pl->normal_orientr_vec;
-        pixel->specular = 0;//400;
+        pixel->specular = 400;//400;
         pixel->reflective = 0;
         pixel->id = plane;
     }

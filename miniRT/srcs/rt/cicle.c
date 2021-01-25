@@ -118,93 +118,6 @@ t_xyz      ft_create_v(double x, double y, int width, int height, double z)
     return (res);
 }
 
-void        ft_intersect_cy(t_xyz o, t_xyz d, t_pixel *pixel, t_range *range,t_cylinder *cy)
-{
-    //printf("1\n");
-    double a;
-    double b;
-    double c;
-    double discr;
-    double t1;
-    double t2;
-    t_xyz maxp;
-
-    t_xyz oc;
-    oc = ft_xyz_minus(o,cy->cord);
-    a = ft_xyz_scal(d,d) - pow(ft_xyz_scal(d,cy->normal_orientr_vec),2);
-    c = ft_xyz_scal(oc,oc) - pow(ft_xyz_scal(oc,cy->normal_orientr_vec),2) - pow(cy->diameter / 2.0,2);
-    b = 2 * (ft_xyz_scal(d,oc) - ft_xyz_scal(d,cy->normal_orientr_vec) * ft_xyz_scal(oc,cy->normal_orientr_vec));
-
-    if ((discr = b * b - 4 * a * c ) < 0.0)
-        return;
-    t1 = (-b + sqrt(discr)) / (2 * a);
-    t2 = (-b - sqrt(discr)) / (2 * a);
-
-    maxp = ft_xyz_plus(cy->cord,ft_xyz_mult_db(cy->normal_orientr_vec,cy->height));
-    double m;
-    if (t1 < t2 && t1 < pixel->t && ft_in_range(range,t1))
-    {
-        t_xyz n;
-        t_xyz p;
-         m = ft_xyz_scal(d,cy->normal_orientr_vec) * t1 + ft_xyz_scal(oc,cy->normal_orientr_vec);
-        p = ft_xyz_plus(o, ft_xyz_mult_db(d, t1 * 0.999));
-
-
-
-        n = ft_xyz_minus(p,cy->cord);
-        n = ft_xyz_minus(n,ft_xyz_mult_db(cy->normal_orientr_vec,m));
-        n = ft_xyz_normalaze(n);
-        if (m < 0  || m  > ft_len_vect(ft_xyz_minus(p,maxp))) // || m  < ft_len_vect(ft_xyz_minus(p,cy->cord)))
-            return;
-        pixel->t = t1;
-
-        pixel->rgb = cy->rgb;
-        pixel->normal = n;//cy->normal_orientr_vec;
-        pixel->specular = 0;
-        pixel->reflective = 0;
-        pixel->id = sphere;
-    }
-    if (t2 < t1 && t2 < pixel->t && ft_in_range(range,t2))
-    {
-        t_xyz n;
-        t_xyz p;
-        m = ft_xyz_scal(d,cy->normal_orientr_vec) * t2 + ft_xyz_scal(oc,cy->normal_orientr_vec);
-
-        
-        p = ft_xyz_plus(o, ft_xyz_mult_db(d, t2 * 0.999));
-        n = ft_xyz_minus(p,cy->cord);
-        n = ft_xyz_minus(n,ft_xyz_mult_db(cy->normal_orientr_vec,m));
-        n = ft_xyz_normalaze(n);
-        if (m < 0  || m  > ft_len_vect(ft_xyz_minus(p,maxp))) // || m  < ft_len_vect(ft_xyz_minus(p,cy->cord)))
-            return;
-
-        pixel->t = t2;
-        pixel->rgb = cy->rgb;
-        pixel->normal = n;//cy->normal_orientr_vec;
-        pixel->specular = 0;
-        pixel->reflective = 0;
-        pixel->id = sphere;
-    }
-}
-
-
-void        ft_l_cy(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
-{
-    t_list  *l_cy;
-    t_cylinder *cy;
-    (void) pixel;
-    (void) o;
-    (void) d;
-    (void) range;
-    l_cy = all_obj->l_cy;
-    while (l_cy)
-    {
-        cy = l_cy->content;
-        ft_intersect_cy(o, d, pixel,range,cy);
-        l_cy = l_cy->next;
-    }
-}
-
 
 /*  
 **   ft_recurse_color
@@ -264,10 +177,11 @@ t_rgb  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixel *
     t_list *l_light;
     t_light *li;
     t_xyz r;
-    t_rgb	color_pix;
-	color_pix = ft_rgb_mult_db(pixel->rgb,all_obj->al.light);//  rgbmy;//(t_rgb){0, 0, 0};   
-    color_pix = ft_rgb_plus_rgb(color_pix,ft_rgb_mult_db(all_obj->al.rgb,all_obj->al.light));
-    i = all_obj->al.light;
+
+    t_rgb	color_pix = {0,0,0};
+    
+    color_pix = ft_rgb_mult_db(all_obj->al.rgb,all_obj->al.light);
+	color_pix = ft_rgb_plus_rgb(color_pix, ft_rgb_mult_db(pixel->rgb,all_obj->al.light));
     l_light = all_obj->l_light;
     while(l_light)
     {
@@ -297,13 +211,13 @@ t_rgb  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixel *
             color_pix = ft_rgb_plus_rgb(color_pix,ft_rgb_mult_db(li->rgb,i));
         }
 
-        if (pixel->specular > 0 && n_don_l >= 0.0)
+        if (pixel->specular > 0)
         {
             r = ft_reflect_ray(n,l);
             r_dot_v = ft_xyz_scal(r, v);
             if (r_dot_v > 0.0)
-            {   
-                    i = li->light_brightness * pow(r_dot_v/(ft_len_vect(r) * ft_len_vect(v)), pixel->specular);
+            {
+                    i = li->light_brightness * pow(r_dot_v/(ft_len_vect(r) * ft_len_vect(v)),500);
                     color_pix = ft_rgb_plus_rgb(color_pix,ft_rgb_mult_db(li->rgb,i));
             }
         }
@@ -333,7 +247,6 @@ t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,t_range range,int rec)
 
     pixel.t = MAX_DB;
     pixel.rgb = ft_rgb_mult_db(all_obj->al.rgb,all_obj->al.light);
-    
     ft_l_sp(all_obj, &pixel, o, d,&range);
     ft_l_pl(all_obj, &pixel, o, d,&range);
     ft_l_tr(all_obj,&pixel,o, d,&range);
@@ -341,9 +254,9 @@ t_rgb     ft_ray_trace(t_all_obj *all_obj,t_xyz o,t_xyz d,t_range range,int rec)
     ft_l_cy(all_obj,&pixel,o, d,&range);
     if (pixel.t == MAX_DB)
         return (pixel.rgb);
-    p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel.t * 0.999));
+    p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel.t * 0.9999));
     pixel.rgb = ft_compute_lighting(all_obj,  p, pixel.normal,ft_xyz_mult_db(d, -1.0),&pixel);
-    if (rec <=  0 || pixel.reflective <= 0.000001)
+    //if (rec <=  0 || pixel.reflective <= 0.000001)
         return(pixel.rgb);
     r = ft_reflect_ray(ft_xyz_mult_db(d,-1.0),pixel.normal);
     ref_color = ft_ray_trace(all_obj, p, r,range,rec - 1);
