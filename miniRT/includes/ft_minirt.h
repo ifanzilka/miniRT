@@ -44,11 +44,50 @@ typedef enum object
     square
 }   object;
 
+typedef enum light_option 
+{    
+    point,
+    direction
+}   light_option;
+
 typedef struct  s_range 
 {
     double      min;
     double      max;
 }               t_range;
+
+
+
+typedef enum
+{   
+    a,
+    s,
+    d,
+    f,
+    h,
+    g,
+    z,
+    x,
+    c,
+    v
+}  t_key;
+
+typedef struct s_l_list
+{
+  void *content; // поле данных
+  struct s_l_list *next; // указатель на следующий элемент
+  struct s_l_list *prev; // указатель на предыдущий элемент
+}               t_l_list;
+
+
+
+t_l_list *ft_l_lsnew(void  *content) ; // а- значение первого узла
+
+void	ft_l_lstadd_front(t_l_list **lst,   t_l_list *new);
+
+
+
+void	ft_l_lstadd_back(t_l_list **lst,   t_l_list *new);
 
 /*
 **  Resolution
@@ -253,8 +292,8 @@ typedef struct	s_all_obj
                 t_cnt_object cnt;
                 t_resolution reso;
                 t_ambient_lightning al;
-                t_camera camera;
-                
+                t_camera *camera;
+                t_l_list *ll_camera;
                 //t_list *objects;
                 t_list *l_sphere;
                 t_list *l_light;
@@ -262,6 +301,7 @@ typedef struct	s_all_obj
                 t_list *l_tr;
                 t_list *l_sq;
                 t_list *l_cy;
+                //t_l_list *ll_camera;
                 //t_list *cylinder;
                 //t_list *triangle;
                 //t_list objects; crash!!!
@@ -279,6 +319,7 @@ typedef struct  s_vars
 {
     void        *mlx;
     void        *win;
+    void        *rt;
 }                t_vars;
 
 void        ft_error(int n);

@@ -17,6 +17,61 @@
 
 #define eps 1e-7
 
+
+t_l_list * ft_l_lsnew(void  *content)  // а- значение первого узла
+{
+  t_l_list *lst;
+
+  lst = (t_l_list*)malloc(sizeof(t_l_list));
+  if (!lst)
+    return (NULL);
+  lst->content = content;
+  lst->next = NULL; 
+  lst->prev = NULL; 
+  return(lst);
+}
+
+void	ft_l_lstadd_front(t_l_list **lst,   t_l_list *new)
+{   
+    t_l_list *tmp;
+
+	if (!lst || !new)
+		return ;    
+    tmp = *lst; 
+    if (!(tmp))
+        *lst = new;
+    else 
+    {       
+	    new->next = *lst;
+        new->prev = tmp->prev;
+        tmp->prev = new;
+	    *lst = new;
+    }    
+}
+
+
+void	ft_l_lstadd_back(t_l_list **lst,   t_l_list *new)
+{   
+    t_l_list *tmp;
+	if (!lst || !new)
+		return ;
+    tmp = *lst;
+    if (!tmp)
+    {
+        printf("ok\n");
+        *lst = new;
+    }
+    else
+    {    
+        while (tmp->next)
+			tmp = tmp->next;
+        tmp->next = new;
+        new->prev = tmp;
+    }    
+}
+
+
+
 /*
 ** perror-> write string and last error
 ** strerror(error) -> pointer in str with error  
@@ -105,13 +160,14 @@ void        ft_parse_file_rt(int fd)
 {
             char *str;
             t_all_obj *my_rt;
+            int gnl;
 
             my_rt = malloc(sizeof(t_all_obj));
             if (!my_rt)
                 ft_error(14);
             ft_init_t_all_obj(my_rt);
-
-            while ((get_next_line(fd,&str)) == 1)
+            gnl = 1;
+            while ( gnl != 0 && ( gnl = get_next_line(fd,&str)) >= 0)
             {
                 printf("s:!%s!\n",str);
                 if (!ft_parse_str(str,my_rt))
@@ -123,6 +179,13 @@ void        ft_parse_file_rt(int fd)
 
                 free(str);
             }
+             printf("!\n");
+            t_camera *cam;
+            cam = (t_camera *)(my_rt->ll_camera->content);
+            printf("!!\n");
+            my_rt->camera = cam;
+            printf("cam : x %f y %f z%f \n", my_rt->camera->coord_pointer.x,my_rt->camera->coord_pointer.y,my_rt->camera->coord_pointer.z);
+            
             t_list  *tmp;
             t_light *tmp_l;
             tmp = my_rt->l_light;

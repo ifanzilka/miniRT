@@ -39,7 +39,7 @@ int           ft_parse_l(t_all_obj *my,char *str)
     t_list  *newel;
     int i;
 
-     light = malloc(sizeof(t_light));
+    light = malloc(sizeof(t_light));
     i = 1;
     light->cord_l_point = ft_atoi_xyz(str,&i);
     if (!ft_check_xyz(light->cord_l_point))

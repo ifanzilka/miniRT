@@ -37,20 +37,30 @@
 int            ft_parse_c(t_all_obj *my,char *str)
 {
     write(1,"FIND c\n",7);
+    t_l_list    *new_cam;
+    t_camera     *camera;
     int i;
-    
+
+   
+    if (!(camera = malloc(sizeof(t_camera))))
+        ft_error(14);    
     i = 1;
-    (*my).camera.coord_pointer = ft_atoi_xyz(str,&i);
-    if ((*my).camera.coord_pointer.x == inf1 || (*my).camera.coord_pointer.y == inf1
-        || (*my).camera.coord_pointer.z == inf1)
+    camera->coord_pointer = ft_atoi_xyz(str,&i);
+    if (camera->coord_pointer.x == inf1 || camera->coord_pointer.y == inf1
+        || camera->coord_pointer.z == inf1)
         ft_error(7);
-    (*my).camera.camera_direction = ft_atoi_xyz(str,&i);
-    if ((*my).camera.camera_direction.x == inf1 || (*my).camera.camera_direction.y == inf1
-        || (*my).camera.camera_direction.z == inf1)
+    camera->camera_direction = ft_atoi_xyz(str,&i);
+    if (camera->camera_direction.x == inf1 || camera->camera_direction.y == inf1
+        || camera->camera_direction.z == inf1)
         ft_error(7);
-    (*my).camera.FOV = ft_atof(str + i);
-    if (((*my).camera.FOV < 0.0) || ((*my).camera.FOV) > 180.0)
+    camera->FOV = ft_atof(str + i);
+    camera->camera_direction.x *= -1.0;
+    camera->camera_direction.y *= -1.0;
+    if ((camera->FOV < 0.0) || (camera->FOV) > 180.0)
         ft_error(7);
+     if (!(new_cam = ft_l_lsnew(camera)))
+        ft_error(14);
+    ft_l_lstadd_back(&my->ll_camera,new_cam);   
     //printf("c:%f\n",(*my).camera.normal_orientr_vec.y);
     my->cnt.c+=1;    
     return (1);

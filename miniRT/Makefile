@@ -44,14 +44,14 @@ DIR_VEC = ./srcs/vectors/
 SRCS = $(DIR)main.c 
 GNL_SRCS = $(DIR_GNL)get_next_line.c $(DIR_GNL)get_next_line_utils.c
 PARSER_SRCS =	$(DIR_PARSER)ft_parse_rt.c	$(DIR_PARSER)ft_atoirgb.c 	$(DIR_PARSER)ft_atoi_xyz.c\
-				$(DIR_PARSER)ft_parse_R.c	$(DIR_PARSER)ft_parse_A.c 	$(DIR_PARSER)ft_parse_c.c\
+				$(DIR_PARSER)ft_parse_r.c	$(DIR_PARSER)ft_parse_a.c 	$(DIR_PARSER)ft_parse_c.c\
 				$(DIR_PARSER)ft_parse_l.c	$(DIR_PARSER)ft_parse_sp.c	$(DIR_PARSER)ft_parse_cy.c\
 				$(DIR_PARSER)ft_parse_pl.c	$(DIR_PARSER)ft_parse_sq.c	$(DIR_PARSER)ft_parse_tr.c
 
 ERROR_SRCS = $(DIR_ERROR)ft_error.c
 RayTracing_SRCS = 	$(DIR_RayTracing)start_rt.c $(DIR_RayTracing)cicle.c $(DIR_RayTracing)sphere.c \
 					$(DIR_RayTracing)plane.c $(DIR_RayTracing)triangle.c $(DIR_RayTracing)square.c \
-					$(DIR_RayTracing)cylinder.c
+					$(DIR_RayTracing)cylinder.c	$(DIR_RayTracing)buttons.c
 RGB_SRCS = $(DIR_RGB)rgb.c
 VEC_SRCS = $(DIR_VEC)vectors.c
 

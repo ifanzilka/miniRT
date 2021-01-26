@@ -44,5 +44,15 @@ void    ft_l_pl(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range
 void    ft_l_tr(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 void    ft_l_sq(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 void    ft_l_cy(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
-
+void    ft_next_cam(t_vars *vars);
+void    ft_prev_cam(t_vars *vars);
+void    ft_plus_cam(t_vars *vars);
+void    ft_minus_cam(t_vars *vars);
+void    ft_right_cam(t_vars *vars);
+void    ft_left_cam(t_vars *vars);
+void    ft_up_cam(t_vars *vars);
+void    ft_down_cam(t_vars *vars);
+void    ft_revers_cam(t_vars *vars);
+void    ft_plus_al(t_vars *vars);
+void    ft_minus_al(t_vars *vars);
 #endif

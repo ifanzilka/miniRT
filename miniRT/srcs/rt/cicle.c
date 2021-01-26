@@ -178,17 +178,20 @@ t_rgb  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixel *
     t_light *li;
     t_xyz r;
 
-    t_rgb	color_pix = {0,0,0};
-    
-    color_pix = ft_rgb_mult_db(all_obj->al.rgb,all_obj->al.light);
-	color_pix = ft_rgb_plus_rgb(color_pix, ft_rgb_mult_db(pixel->rgb,all_obj->al.light));
+    t_rgb	color_pix;
+    //printf("al : %f \n",all_obj->al.light);
+    color_pix = ft_rgb_mult_db(pixel->rgb,all_obj->al.light);
+    //color_pix = pixel->rgb;
+	color_pix = ft_rgb_plus_rgb(color_pix, ft_rgb_mult_db(all_obj->al.rgb,all_obj->al.light));
     l_light = all_obj->l_light;
     while(l_light)
     {
         li = l_light->content;
+
+        //ft_light
         l =  ft_xyz_minus(li->cord_l_point,p);
-        n = ft_xyz_normalaze(n);
-        //l = ft_xyz_normalaze(l);
+        //l= li->cord_l_point;
+        //n = ft_xyz_normalaze(n);
         n_don_l = ft_xyz_scal(n,l);
         
         if (n_don_l <= 0.0 && (pixel->id == plane || pixel->id == triangle))
@@ -210,23 +213,18 @@ t_rgb  ft_compute_lighting(t_all_obj *all_obj,t_xyz p, t_xyz n,t_xyz v,t_pixel *
         {
             i =  li->light_brightness * n_don_l /( ft_len_vect(n) * ft_len_vect(l));
             color_pix = ft_rgb_plus_rgb(color_pix,ft_rgb_mult_db(li->rgb,i));
+
         }
 
-            if (pixel->specular > -10)
+            if (pixel->specular > -1)
             {
-                //r = ft_reflect_ray(n,l);
-                //r = ft_reflect_ray(ft_xyz_mult_db(v,1.0),n);
-                r = ft_xyz_mult_db(n,2.0);
-                r = ft_xyz_mult_db(r,ft_xyz_scal(n,l));
-                r = ft_xyz_minus(r,l);
+
+                r = ft_reflect_ray(l,n);
                 r_dot_v = ft_xyz_scal(r, v);
-                //printf("n : x:%f y:%f z:%f\n",n.x,n.y,n.z);
-                //printf("l : x:%f y:%f z:%f\n",l.x,l.y,l.z);
-                //printf("r : x: %f y:%f z:%f \n",r.x,r.y,r.z);
-            
                 if (r_dot_v > 0.0)
-                {
-                        i = li->light_brightness * pow(r_dot_v/(ft_len_vect(r) * ft_len_vect(v)),100);
+                {       
+                        //printf("1\n");
+                        i = li->light_brightness * pow(r_dot_v/(ft_len_vect(r) * ft_len_vect(v)),pixel->specular);
                         color_pix = ft_rgb_plus_rgb(color_pix,ft_rgb_mult_db(li->rgb,i));
                 }
             }
@@ -279,13 +277,19 @@ t_xyz   ft_create_vec_d(t_all_obj *all_obj, double x, double y)
     t_xyz   v;
     double  kf;
     
-    kf  =  2 * tan(all_obj->camera.FOV / 2 * 3.14 / 180);
+
+
+    all_obj->camera->camera_direction = ft_xyz_normalaze(all_obj->camera->camera_direction);
+
+    kf  =  2 * tan(all_obj->camera->FOV / 2 * 3.14 / 180);
     x *= kf;
     y *= kf;
     v = ft_create_v(x, y, all_obj->reso.width, all_obj->reso.height, 1);
-    c_r = ft_xyz_mult_xyz((t_xyz){0.0, 1.0, 0.0},all_obj->camera.camera_direction);
-    c_up = ft_xyz_mult_xyz(all_obj->camera.camera_direction,c_r);
-    d = ft_r_u_n_mult_xyz(c_r,c_up,all_obj->camera.camera_direction,v);
+    c_r = ft_xyz_mult_xyz((t_xyz){0.0, 1.0, 0.0},all_obj->camera->camera_direction);
+    c_up = ft_xyz_mult_xyz(all_obj->camera->camera_direction,c_r);
+    d = ft_r_u_n_mult_xyz(c_r,c_up,all_obj->camera->camera_direction,v);
+    //d.y *= -1;
+    //d.x *= -1;
     return (d);
 }
 
@@ -307,8 +311,7 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
     double y;
     t_rgb rgb;
     t_xyz d;
-    printf("true %d \n",TRUE);
-    //all_obj->camera.camera_direction = ft_xyz_normalaze(all_obj->camera.camera_direction);
+   
     cx = 0;
     cy = 0;
     while (cy < all_obj->reso.height)
@@ -317,8 +320,9 @@ int     cicle_for_pixel(t_all_obj *all_obj,t_vars *vars)
         {    
             x =  ft_convert_scr_to_dec_x(cx, all_obj->reso.width, -(all_obj->reso.width / 2), all_obj->reso.width / 2);
             y =  ft_convert_scr_to_dec_y(cy, all_obj->reso.height, -(all_obj->reso.height / 2), all_obj->reso.height / 2); 
+
             d =  ft_create_vec_d(all_obj , x ,y);
-            rgb = ft_ray_trace(all_obj, all_obj->camera.coord_pointer, d ,(t_range){0.0001,MAX_DB},5);
+            rgb = ft_ray_trace(all_obj, all_obj->camera->coord_pointer, d ,(t_range){0.0001,MAX_DB},5);
             mlx_pixel_put(vars->mlx,vars->win,cx,cy,create_rgb(rgb.red,rgb.green,rgb.blue));
             cx++;
         }
