@@ -362,11 +362,14 @@ int     cicle_for_pixel(t_rt *rt,t_vars *vars)
             d = ft_init_d(&cx,&cy,rt);
             rgb = ft_ray_trace(rt, rt->camera->cord, d ,(t_range){0.0001,MAX_DB},depth);
             mlx_pixel_put(vars->mlx,vars->win,cx,cy,create_rgb(rgb.red,rgb.green,rgb.blue));
+            ft_putnbr_fd((int)((double)(cx + cy * rt->reso.width) / (double)(rt->reso.height * rt->reso.width) * 100),1);
+            ft_putstr_fd("%\b\b\b",1);
             cx++;
         }
         cx = 0;
         cy++;
-    }  
+    } 
+    printf("\n"); 
     clock_t end = clock();
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
     printf("TIME %f sec\n",time_spent);
