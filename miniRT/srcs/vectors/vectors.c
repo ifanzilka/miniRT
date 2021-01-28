@@ -169,3 +169,20 @@ t_xyz ft_r_u_n_mult_xyz(t_xyz r, t_xyz u,t_xyz n , t_xyz d)
     res.z = n.x * d.x + n.y * d.y + n.z * d.z;
     return (res);
 }
+
+/*
+**  Reflected relative to n ray
+**  r - vec
+**  n - normal
+**  /return 2 * N * dot(N, R) - R;
+*/
+
+ t_xyz   ft_reflect_ray(t_xyz r, t_xyz n) 
+ {
+    t_xyz res;
+
+    res = ft_xyz_mult_db(n,2);
+    res = ft_xyz_mult_db(res,ft_xyz_scal(n,r));
+    res = ft_xyz_minus(res,r);
+    return (res);
+}

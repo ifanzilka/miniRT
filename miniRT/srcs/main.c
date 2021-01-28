@@ -12,6 +12,9 @@
 
 #include <ft_minirt.h>
 #include <parse.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 /*
 **  checking the validity of an argument
@@ -40,6 +43,11 @@ static int	ft_check_argv(int argc, char **argv)
 
 int			main(int argc, char **argv)
 {
+	int fd = open("almir.bmp",O_RDWR,O_CREAT);
+
+	write(fd,"almir",5);
+
+	(void) fd;
 	if (!ft_check_argv(argc, argv) || !ft_parse_rt(argv[1], argc))
 		exit(0);
 	return (1);

@@ -56,7 +56,7 @@ PARSER_SRCS =	$(DIR_PARSER)ft_parse_rt.c	$(DIR_PARSER)ft_atoirgb.c 	$(DIR_PARSER
 ERROR_SRCS = $(DIR_ERROR)ft_error.c
 RayTracing_SRCS = 	$(DIR_RayTracing)start_rt.c $(DIR_RayTracing)cicle.c $(DIR_RayTracing)sphere.c \
 					$(DIR_RayTracing)plane.c $(DIR_RayTracing)triangle.c $(DIR_RayTracing)square.c \
-					$(DIR_RayTracing)cylinder.c	
+					$(DIR_RayTracing)cylinder.c	$(DIR_RayTracing)compute_light.c
 RGB_SRCS = $(DIR_RGB)rgb.c
 VEC_SRCS = $(DIR_VEC)vectors.c
 KEYS_SRCS = $(DIR_KEYS)buttons.c	$(DIR_KEYS)buttons2.c $(DIR_KEYS)buttons3.c

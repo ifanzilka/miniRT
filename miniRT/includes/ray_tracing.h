@@ -49,6 +49,24 @@ typedef struct  s_kf_abc
     double         discr;
 }                t_kf_abc;
 
+/*
+**   ft_compute_lighting
+**  rtect
+**  point (p) in object
+**  n -> normal vec
+**  v -> vec in (-d)
+*/
+
+typedef struct s_cp_l
+{
+    double      i;
+    double      n_dot_l;
+    double      r_dot_v; 
+    t_rgb       color_pix;
+    t_xyz       l;    
+    t_xyz       r;
+}              t_cp_l;
+
 int     ft_init_disp(t_rt *rt);
 int     cicle_for_pixel(t_rt *rt,t_vars *vars);
 int     ft_in_range(t_range *range, double a);
@@ -58,5 +76,8 @@ void    ft_l_pl(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 void    ft_l_tr(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 void    ft_l_sq(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 void    ft_l_cy(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
+double ClosestIntersection(t_rt *rt,t_xyz o, t_xyz d);
+t_rgb  ft_compute_lighting(t_rt *rt,t_xyz p, t_xyz n,t_xyz v,t_pixel *pixel);
+
 
 #endif
