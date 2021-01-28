@@ -23,6 +23,8 @@
 #include <rgb.h>
 #include <vectors.h>
 #include <mlx.h>
+//#include <keyboard.h>
+#include <errors_rt.h>
 //#include <ray_tracing.h>
 
 #define inf INFINITY
@@ -41,7 +43,8 @@ typedef enum object
     sphere,
     plane,
     triangle,
-    square
+    square,
+    cylinder
 }   object;
 
 typedef enum light_option 
@@ -57,37 +60,6 @@ typedef struct  s_range
 }               t_range;
 
 
-
-typedef enum
-{   
-    a,
-    s,
-    d,
-    f,
-    h,
-    g,
-    z,
-    x,
-    c,
-    v
-}  t_key;
-
-typedef struct s_l_list
-{
-  void *content; // поле данных
-  struct s_l_list *next; // указатель на следующий элемент
-  struct s_l_list *prev; // указатель на предыдущий элемент
-}               t_l_list;
-
-
-
-t_l_list *ft_l_lsnew(void  *content) ; // а- значение первого узла
-
-void	ft_l_lstadd_front(t_l_list **lst,   t_l_list *new);
-
-
-
-void	ft_l_lstadd_back(t_l_list **lst,   t_l_list *new);
 
 /*
 **  Resolution
@@ -134,9 +106,9 @@ typedef struct	s_ambient_lightning
 
 typedef struct	s_camera
 { 
-                t_xyz coord_pointer;
-                t_xyz camera_direction;
-                double FOV;
+                t_xyz cord;
+                t_xyz direction;
+                double fov;
 }	            t_camera;
 
 /*
@@ -151,8 +123,8 @@ typedef struct	s_camera
 
 typedef struct	s_light
 { 
-                t_xyz cord_l_point;
-                double light_brightness;
+                t_xyz   cord;
+                double  intensive;
                 t_rgb  rgb;
 }	            t_light;
 
@@ -193,7 +165,7 @@ typedef struct	s_sphere
 typedef struct	s_plane
 { 
                 t_xyz cord;
-                t_xyz normal_orientr_vec;
+                t_xyz normal;
                 t_rgb  rgb;
                 int     specular;
                 double reflective;
@@ -213,8 +185,8 @@ typedef struct	s_plane
 
 typedef struct	s_square
 { 
-                t_xyz cord_sq_cen;
-                t_xyz normal_orientr_vec;
+                t_xyz cord;
+                t_xyz normal;
                 double side;
                 t_rgb  rgb;
                 int     specular;
@@ -237,7 +209,7 @@ typedef struct	s_square
 typedef struct	s_cylinder
 { 
                 t_xyz cord;
-                t_xyz normal_orientr_vec;
+                t_xyz normal;
                 double diameter;
                 double height;
                 t_rgb  rgb;
@@ -258,12 +230,12 @@ typedef struct	s_cylinder
 
 typedef struct	s_triangle
 { 
-                t_xyz first_point;
-                t_xyz second_point;
-                t_xyz third_point;
-                t_rgb  rgb;
-                int     specular;
-                double reflective;
+    t_xyz   first;
+    t_xyz   second;
+    t_xyz   third;
+    t_rgb    rgb;
+    int       specular;
+    double   reflective;
 }	            t_triangle;
 
 /*
@@ -272,55 +244,37 @@ typedef struct	s_triangle
 
 typedef struct	s_cnt_object
 { 
-                int R ;
-                int A;
-                int c;
-                int l;
-                int sp;
-                int pl;
-                int sq;
-                int cy;
-                int tr;
+    int     R ;
+    int     A;
+    int     c;
+    int     l;
+    int     sp;
+    int     pl;
+    int     sq;
+    int     cy;
+    int     tr;
 }	            t_cnt_object;
 
 /*
-**  Struct for all_objc 
+**  Struct for rtc 
 */
 
-typedef struct	s_all_obj
+typedef struct	s_rt
 { 
-                t_cnt_object cnt;
-                t_resolution reso;
-                t_ambient_lightning al;
-                t_camera *camera;
-                t_l_list *ll_camera;
-                //t_list *objects;
-                t_list *l_sphere;
-                t_list *l_light;
-                t_list *l_pl;
-                t_list *l_tr;
-                t_list *l_sq;
-                t_list *l_cy;
-                //t_l_list *ll_camera;
-                //t_list *cylinder;
-                //t_list *triangle;
-                //t_list objects; crash!!!
-                int *th;
-}               t_all_obj;
-
-/*
-**
-**  s_vars 
-**  mlx -> pointer libary
-**  win -> link for window 
-*/
-
-typedef struct  s_vars 
-{
-    void        *mlx;
-    void        *win;
-    void        *rt;
-}                t_vars;
-
-void        ft_error(int n);
+    t_cnt_object cnt;
+    t_resolution reso;
+    t_ambient_lightning al;
+    t_camera *camera;
+    t_l_list *ll_camera;
+    t_list  *l_sphere;
+    t_list  *l_light;
+    t_list  *l_pl;
+    t_list  *l_tr;
+    t_list  *l_sq;
+    t_list  *l_cy;
+    t_list  *l_p;
+    //int *th;
+}               t_rt;
+void	ft_error_rt(int n, t_rt *rt);
+void    ft_clear_rt(t_rt *rt);
 #endif

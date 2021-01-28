@@ -130,19 +130,19 @@ double  ft_intersect_ray_sphere(t_xyz o, t_xyz d,t_pixel *pixel,t_sphere *spher,
 
 /*
 **  ft_l_sphere
-**  all_obj -> rt
+**  rt -> rt
 **  pixel -> adress in pixel param
 **  o -> cord start in lutch
 **  d -> vec >>>>
 **  (no back point)
 */
 
-void       ft_l_sp(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
+void       ft_l_sp(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
 {
     t_list      *l_sp;
     t_sphere    *spher;
 
-    l_sp = all_obj->l_sphere;
+    l_sp = rt->l_sphere;
     while (l_sp)
     {
         spher = l_sp->content;

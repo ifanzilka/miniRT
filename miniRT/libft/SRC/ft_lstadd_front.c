@@ -30,3 +30,27 @@ void	ft_lstadd_front(t_list **lst, t_list *new)
 	new->next = *lst;
 	*lst = new;
 }
+
+// t_list	*ft_lstnew(void *content)
+// {
+// 	t_list	*el;
+
+// 	if (!(el = (t_list*)malloc(sizeof(t_list))))
+// 		return (NULL);
+// 	el->content = content;
+// 	el->next = NULL;
+// 	return (el);
+// }
+
+t_list	*ft_lst_cr_front(t_list **lst, void *content)
+{
+	t_list *new;
+
+	if (!(new = ft_lstnew(content)))
+		return(NULL);
+	if (!lst)
+		return (NULL) ;
+	new->next = *lst;
+	*lst = new;
+	return(new);
+}

@@ -34,7 +34,7 @@
 **  }	            t_camera;
 */
 
-int            ft_parse_c(t_all_obj *my,char *str)
+int            ft_parse_c(t_rt *rt,char *str)
 {
     write(1,"FIND c\n",7);
     t_l_list    *new_cam;
@@ -43,25 +43,28 @@ int            ft_parse_c(t_all_obj *my,char *str)
 
    
     if (!(camera = malloc(sizeof(t_camera))))
-        ft_error(14);    
+        ft_error(err_malloc);    
     i = 1;
-    camera->coord_pointer = ft_atoi_xyz(str,&i);
-    if (camera->coord_pointer.x == inf1 || camera->coord_pointer.y == inf1
-        || camera->coord_pointer.z == inf1)
-        ft_error(7);
-    camera->camera_direction = ft_atoi_xyz(str,&i);
-    if (camera->camera_direction.x == inf1 || camera->camera_direction.y == inf1
-        || camera->camera_direction.z == inf1)
-        ft_error(7);
-    camera->FOV = ft_atof(str + i);
-    camera->camera_direction.x *= -1.0;
-    camera->camera_direction.y *= -1.0;
-    if ((camera->FOV < 0.0) || (camera->FOV) > 180.0)
-        ft_error(7);
+    camera->cord = ft_atoi_xyz(str,&i);
+    if (camera->cord.x == inf1 || camera->cord.y == inf1
+        || camera->cord.z == inf1)
+        ft_error(err_c);
+    camera->direction = ft_atoi_xyz(str,&i);
+    if (camera->direction.x == inf1 || camera->direction.y == inf1
+        || camera->direction.z == inf1)
+        ft_error(err_c);
+    camera->fov = ft_atof(str + i);
+    camera->direction.x *= -1.0;
+    camera->direction.y *= -1.0;
+    if ((camera->fov < 0.0) || (camera->fov) > 180.0)
+        ft_error(err_c);
+     printf("TUT0\n");    
      if (!(new_cam = ft_l_lsnew(camera)))
-        ft_error(14);
-    ft_l_lstadd_back(&my->ll_camera,new_cam);   
-    //printf("c:%f\n",(*my).camera.normal_orientr_vec.y);
-    my->cnt.c+=1;    
+        ft_error(err_malloc);
+    printf("TUT1\n");    
+    ft_l_lstadd_back(&rt->ll_camera,new_cam);
+    printf("TUT2\n");    
+    //printf("c:%f\n",(*rt).camera.normal_orientr_vec.y);
+    rt->cnt.c+=1;    
     return (1);
 }

@@ -17,10 +17,7 @@
 
 int                    ft_check_xyz(t_xyz xyz_t)
 {
-    double inf_1;
-
-    inf_1 = 1.0 / 0.0;
-    if (xyz_t.x == inf_1 || xyz_t.y == inf_1 || xyz_t.z == inf_1)
+    if (xyz_t.x == inf || xyz_t.y == inf || xyz_t.z == inf)
         return (0);
     return (1);
 }
@@ -60,9 +57,6 @@ t_xyz          ft_atoi_xyz(char *str, int *j)
         return(xyz);
     xyz.z = ft_atof(str + i);
     ft_miss(str,&i);
-    // printf("x(f): %f\n",xyz.x);
-    //printf("y(f): %f\n",xyz.y);
-    //printf("z(f): %f\n",xyz.z);
     *j = i;
     return(xyz);
 }

@@ -43,7 +43,12 @@ SRCS	= $(DIR)ft_bzero.c 		$(DIR)ft_isalnum.c 	$(DIR)ft_calloc.c \
 		  $(DIR)ft_atof.c\
 		  $(DIR)ft_itoa_unsigned_ll.c $(DIR)ft_itoa_base_x.c \
 		  $(DIR)ft_lstnew.c		$(DIR)ft_lstadd_front.c $(DIR)ft_lstsize.c \
-		  $(DIR)ft_lstlast.c		$(DIR)ft_lstadd_back.c
+		  $(DIR)ft_lstlast.c		$(DIR)ft_lstadd_back.c\
+		  $(DIR)ft_l_lsnew.c	$(DIR)ft_l_lstadd_front.c	$(DIR)ft_l_lstadd_back.c\
+		  $(DIR)ft_l_lstclear.c	$(DIR)ft_l_lstdelone.c	$(DIR)ft_l_lstiter.c\
+		  $(DIR)ft_l_lstlast.c $(DIR)ft_l_lstsize.c\
+		  $(DIR)ft_lstiter.c 	$(DIR)ft_lstclear.c
+
 
 F_NONE		= \033[37m
 F_BOLD		= \033[1m

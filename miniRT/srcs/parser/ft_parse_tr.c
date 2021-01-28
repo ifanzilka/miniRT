@@ -34,35 +34,40 @@
 **  }	            t_triang
 */
 
-int           ft_parse_tr(t_all_obj *my , char *str)
+int           ft_parse_tr(t_rt *rt , char *str)
 {
     write(1,"FIND tr\n",8);
     (void) str;
-    (void) my;
+    (void) rt;
     t_triangle *tr;
     t_list  *newel;
     int i;
 
     i = 2;
     tr = malloc(sizeof(t_triangle));
-    tr->first_point = ft_atoi_xyz(str,&i);
-    if (!ft_check_xyz(tr->first_point))
+    tr->first = ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(tr->first))
         ft_error(12);
-    tr->second_point = ft_atoi_xyz(str,&i);
-    if (!ft_check_xyz(tr->second_point))
+    tr->second = ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(tr->second))
         ft_error(12);
-    tr->third_point = ft_atoi_xyz(str,&i);
-    if (!ft_check_xyz(tr->third_point))
+    tr->third= ft_atoi_xyz(str,&i);
+    if (!ft_check_xyz(tr->third))
         ft_error(12);
     tr->rgb = ft_atoirgb(str,&i);
     if (!ft_check_rgb(tr->rgb))
-        ft_error(12);  
+        ft_error(12);
+    tr->reflective = ft_atof(str + i);
+    ft_skip_atof(str,&i);
+    printf("reflective : %f\n",tr->reflective);       
+    tr->specular = ft_atoi(str + i);
+    printf("speculer : %d\n",tr->specular);       
     if (!(newel = ft_lstnew(tr)))
         ft_error(14);    
-    ft_lstadd_front(&my->l_tr,newel); 
+    ft_lstadd_front(&rt->l_tr,newel); 
     /*printf("r: %d\n",tr->rgb.RED);
     printf("g: %d\n",tr->rgb.GREEN);
     printf("b: %d\n",tr->rgb.BLUE); */
-    my->cnt.tr+=1;
+    rt->cnt.tr+=1;
     return (1);
 }

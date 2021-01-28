@@ -31,22 +31,19 @@
 **  }				t_ambient_lightning;
 */
 
-int            ft_parse_A(t_all_obj *my,char *str)
+int            ft_parse_A(t_rt *rt,char *str)
 {
     write(1,"FIND A\n",7);
     int i;
 
     i = 1;
-    (*my).al.light = ft_atof(str + i);
-    if (my->al.light ==  1.0 / 0.0 || my->al.light > 1.0 || my->al.light < 0.0)
-        ft_error(5);
+    (*rt).al.light = ft_atof(str + i);
+    if (rt->al.light ==  1.0 / 0.0 || rt->al.light > 1.0 || rt->al.light < 0.0)
+        ft_error(err_a);
     ft_skip_atof(str, &i);    
-    (*my).al.rgb = ft_atoirgb(str, &i);
-    if (!(ft_check_rgb((*my).al.rgb)))
-        ft_error(5);
-    //printf("r:%d\n",my->al.rgb.RED);
-    //printf("g:%d\n",my->al.rgb.GREEN);   
-    //printf("b:%d\n",my->al.rgb.BLUE);    
-    my->cnt.A+=1;    
+    (*rt).al.rgb = ft_atoirgb(str, &i);
+    if (!(ft_check_rgb((*rt).al.rgb)))
+        ft_error(err_a);    
+    rt->cnt.A+=1;    
     return (1);
 }

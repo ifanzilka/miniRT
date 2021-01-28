@@ -25,8 +25,8 @@ static void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triang
     double scal_v2_v1d;
     double t;
 
-    v1 = ft_xyz_minus(tr->second_point,tr->first_point);
-    v2 = ft_xyz_minus(tr->third_point,tr->first_point);
+    v1 = ft_xyz_minus(tr->second,tr->first);
+    v2 = ft_xyz_minus(tr->third,tr->first);
     n = ft_xyz_mult_xyz(v1,v2);
     v1d = ft_xyz_mult_xyz(v2,d);
     scal_v2_v1d = ft_xyz_scal(v1,v1d);
@@ -34,7 +34,7 @@ static void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triang
         return;
      t_xyz vec;
 
-    vec = ft_xyz_minus(o, tr->first_point);
+    vec = ft_xyz_minus(o, tr->first);
     double u;
     u = ft_xyz_scal(vec,v1d) / scal_v2_v1d;   
     if (u < 0.0 || u > 1.0)
@@ -53,20 +53,19 @@ static void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triang
         //if (ft_xyz_scal() )
         pixel->t = t;
         pixel->rgb = tr->rgb;
-        
         pixel->normal = n;
-        pixel->specular = 0;//400;
-        pixel->reflective = 0;
+        pixel->specular = tr->specular;//400;
+        pixel->reflective = tr->reflective;
         pixel->id = triangle;
     }
 }
 
-void    ft_l_tr(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
+void    ft_l_tr(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
 {
     t_list      *l_tr;
     t_triangle  *tr;
 
-    l_tr = all_obj->l_tr;
+    l_tr = rt->l_tr;
     while (l_tr)
     {
         tr = l_tr->content;

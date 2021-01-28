@@ -27,13 +27,14 @@ void        ft_intersect_cy(t_xyz o, t_xyz d, t_pixel *pixel, t_range *range,t_c
     t_xyz maxp;
 
     t_xyz oc;
-    minp = ft_xyz_minus(cy->cord,ft_xyz_mult_db(cy->normal_orientr_vec,cy->height / 2.0));
-    maxp = ft_xyz_plus(cy->cord,ft_xyz_mult_db(cy->normal_orientr_vec,cy->height / 2.0));
+    minp = ft_xyz_minus(cy->cord,ft_xyz_mult_db(cy->normal
+    ,cy->height / 2.0));
+    maxp = ft_xyz_plus(cy->cord,ft_xyz_mult_db(cy->normal,cy->height / 2.0));
 
     oc = ft_xyz_minus(o,minp);
-    a = ft_xyz_scal(d,d) - pow(ft_xyz_scal(d,cy->normal_orientr_vec),2);
-    c = ft_xyz_scal(oc,oc) - pow(ft_xyz_scal(oc,cy->normal_orientr_vec),2) - pow(cy->diameter / 2.0,2);
-    b = 2 * (ft_xyz_scal(d,oc) - ft_xyz_scal(d,cy->normal_orientr_vec) * ft_xyz_scal(oc,cy->normal_orientr_vec));
+    a = ft_xyz_scal(d,d) - pow(ft_xyz_scal(d,cy->normal),2);
+    c = ft_xyz_scal(oc,oc) - pow(ft_xyz_scal(oc,cy->normal),2) - pow(cy->diameter / 2.0,2);
+    b = 2 * (ft_xyz_scal(d,oc) - ft_xyz_scal(d,cy->normal) * ft_xyz_scal(oc,cy->normal));
 
     if ((discr = b * b - 4 * a * c ) < 0.0)
         return;
@@ -56,13 +57,11 @@ void        ft_intersect_cy(t_xyz o, t_xyz d, t_pixel *pixel, t_range *range,t_c
     {
         t_xyz n;
         t_xyz p;
-        m = ft_xyz_scal(d,cy->normal_orientr_vec) * t1 + ft_xyz_scal(oc,cy->normal_orientr_vec);
+        m = ft_xyz_scal(d,cy->normal) * t1 + ft_xyz_scal(oc,cy->normal);
         p = ft_xyz_plus(o, ft_xyz_mult_db(d, t1 * 0.999));
 
-
-
         n = ft_xyz_minus(p,minp);
-        n = ft_xyz_minus(n,ft_xyz_mult_db(cy->normal_orientr_vec,m));
+        n = ft_xyz_minus(n,ft_xyz_mult_db(cy->normal,m));
         n = ft_xyz_normalaze(n);
 
           if (m < 0  || m  > cy->height) // || m  < ft_len_vect(ft_xyz_minus(p,cy->cord)))
@@ -74,9 +73,9 @@ void        ft_intersect_cy(t_xyz o, t_xyz d, t_pixel *pixel, t_range *range,t_c
             pixel->t = t1;
 
             pixel->rgb = cy->rgb;
-            pixel->normal = n;//cy->normal_orientr_vec;
-            pixel->specular = 1500;
-            pixel->reflective = 0;
+            pixel->normal = n;//cy->normal;
+            pixel->specular = cy->specular;
+            pixel->reflective = cy->reflective;
            pixel->id = plane;
         }
     }
@@ -84,12 +83,12 @@ void        ft_intersect_cy(t_xyz o, t_xyz d, t_pixel *pixel, t_range *range,t_c
     {
         t_xyz n;
         t_xyz p;
-        m = ft_xyz_scal(d,cy->normal_orientr_vec) * t2 + ft_xyz_scal(oc,cy->normal_orientr_vec);
+        m = ft_xyz_scal(d,cy->normal) * t2 + ft_xyz_scal(oc,cy->normal);
 
         
         p = ft_xyz_plus(o, ft_xyz_mult_db(d, t2 * 0.999));
         n = ft_xyz_minus(p,minp);
-        n = ft_xyz_minus(n,ft_xyz_mult_db(cy->normal_orientr_vec,m));
+        n = ft_xyz_minus(n,ft_xyz_mult_db(cy->normal,m));
         n = ft_xyz_normalaze(n);
         if (m < 0  || m  > cy->height) // || m  < ft_len_vect(ft_xyz_minus(p,cy->cord)))
         {
@@ -100,20 +99,20 @@ void        ft_intersect_cy(t_xyz o, t_xyz d, t_pixel *pixel, t_range *range,t_c
 
             pixel->t = t2;
             pixel->rgb = cy->rgb;
-            pixel->normal = n;//cy->normal_orientr_vec;
-            pixel->specular = 1500;
-            pixel->reflective = 0;
+            pixel->normal = n;//cy->normal;
+            pixel->specular = cy->specular;
+            pixel->reflective = cy->reflective;
             pixel->id = plane;
         }
     }
 }
 
-void        ft_l_cy(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
+void        ft_l_cy(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
 {
     t_list  *l_cy;
     t_cylinder *cy;
     
-    l_cy = all_obj->l_cy;
+    l_cy = rt->l_cy;
     while (l_cy)
     {
         cy = l_cy->content;

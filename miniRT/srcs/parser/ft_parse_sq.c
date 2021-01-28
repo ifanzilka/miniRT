@@ -35,33 +35,36 @@
 **  }	            t_square;
 */
 
-int           ft_parse_sq(t_all_obj *my , char *str)
+int           ft_parse_sq(t_rt *rt , char *str)
 {
      write(1,"FIND sq\n",8);
-    (void) str;
-    (void) my;
     t_square *sq;
     t_list  *newel;
     int i;
 
     sq = malloc(sizeof(t_square));
     i = 2;
-    sq->cord_sq_cen= ft_atoi_xyz(str, &i);
-    if (!ft_check_xyz(sq->cord_sq_cen))
+    sq->cord= ft_atoi_xyz(str, &i);
+    if (!ft_check_xyz(sq->cord))
         ft_error(11);
-    sq->normal_orientr_vec = ft_atoi_xyz(str,&i);
-    if (!ft_check_normalizate(sq->normal_orientr_vec))
+    sq->normal = ft_atoi_xyz(str,&i);
+    if (!ft_check_normalizate(sq->normal))
         ft_error(11);
     sq->side = ft_atof(str + i);
     ft_skip_atof(str,&i);
     if (sq->side == inf)
         ft_error(11);
    sq->rgb = ft_atoirgb(str,&i);
-   if (!(ft_check_rgb(sq->rgb)))
-    ft_error(11);
+    if (!(ft_check_rgb(sq->rgb)))
+        ft_error(11);
+    sq->reflective = ft_atof(str + i);
+    ft_skip_atof(str,&i);
+    printf("reflective : %f\n",sq->reflective);       
+    sq->specular = ft_atoi(str + i);
+    printf("speculer : %d\n",sq->specular); 
     if (!(newel = ft_lstnew(sq)))
         ft_error(14);
-    ft_lstadd_front(&my->l_sq,newel); 
+    ft_lstadd_front(&rt->l_sq,newel); 
     /*
     printf("x: %f\n",sq->cord_sq_cen.x);
     printf("y: %f\n",sq->cord_sq_cen.y);
@@ -74,6 +77,6 @@ int           ft_parse_sq(t_all_obj *my , char *str)
     printf("b: %d\n",sq->rgb.BLUE);
     printf("side: %f\n",sq->side);
     */
-    my->cnt.sq+=1;
+    rt->cnt.sq+=1;
     return(1);
 }

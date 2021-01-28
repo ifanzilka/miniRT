@@ -32,13 +32,13 @@
 **  }			    t_resolution;
 */
 
-int            ft_parse_R(t_all_obj *my,char *str)
+int            ft_parse_R(t_rt *rt,char *str)
 {
     int width;
     int height;
 
-    if ((*my).cnt.R > 1)
-         ft_error(4);
+    if ((*rt).cnt.R > 1)
+         ft_error(err_r);
     width = -1;
     height = -1;
     write(1,"FIND R\n",7);
@@ -49,10 +49,10 @@ int            ft_parse_R(t_all_obj *my,char *str)
     while (*str && ft_isdigit(*str))
         str++;
     height = ft_atoi(str);
-    my->reso.width = width;
-    my->reso.height = height;
-    my->cnt.R += 1;
+    rt->reso.width = width;
+    rt->reso.height = height;
+    rt->cnt.R += 1;
     if (width <= 0 || height <= 0)
-        ft_error(4);
+        ft_error(err_r);
     return (1);
 }

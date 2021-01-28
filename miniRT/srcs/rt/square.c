@@ -21,8 +21,8 @@ void     ft_intersect_ray_square(t_xyz o,t_xyz d,t_pixel *pixel,t_square *sq, t_
     double t;
 
     pixel_loc.t =  MAX_DB;
-    pl.normal_orientr_vec = sq->normal_orientr_vec;
-    pl.cord = sq->cord_sq_cen;
+    pl.normal = sq->normal;
+    pl.cord = sq->cord;
     ft_intersect_pl( o, d, &pixel_loc,range,&pl);
 
     if (pixel_loc.t == MAX_DB)
@@ -35,25 +35,25 @@ void     ft_intersect_ray_square(t_xyz o,t_xyz d,t_pixel *pixel,t_square *sq, t_
         range2.min = -sq->side / 2.0;
         range2.max = sq->side / 2.0;
         p = ft_xyz_plus(o, ft_xyz_mult_db(d, t * 0.999));
-        if (ft_in_range(&range2,p.x -  sq->cord_sq_cen.x) && ft_in_range(&range2,p.y- sq->cord_sq_cen.y) && ft_in_range(&range2,p.z - sq->cord_sq_cen.z)  )
+        if (ft_in_range(&range2,p.x -  sq->cord.x) && ft_in_range(&range2,p.y- sq->cord.y) && ft_in_range(&range2,p.z - sq->cord.z)  )
         {
             
             pixel->t = t;
             pixel->rgb = sq->rgb;
-            pixel->normal = sq->normal_orientr_vec;
-            pixel->specular = 0;//400;
-            pixel->reflective = 0;
+            pixel->normal = sq->normal;
+            pixel->specular = sq->specular;//400;
+            pixel->reflective = sq->reflective;
             pixel->id = plane;
         }
     }
 }
 
-void    ft_l_sq(t_all_obj *all_obj,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
+void    ft_l_sq(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
 {
     t_list      *l_sq;
     t_square *sq;
 
-    l_sq = all_obj->l_sq;
+    l_sq = rt->l_sq;
     while (l_sq)
     {
         sq = l_sq->content;
