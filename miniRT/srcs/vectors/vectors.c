@@ -186,3 +186,4 @@ t_xyz ft_r_u_n_mult_xyz(t_xyz r, t_xyz u,t_xyz n , t_xyz d)
     res = ft_xyz_minus(res,r);
     return (res);
 }
+

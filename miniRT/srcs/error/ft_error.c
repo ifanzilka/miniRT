@@ -27,8 +27,9 @@ void    ft_error(int n)
 
 void    del_obj(void *p)
 {
-    if (p)
+    //if (p)
         free(p);
+	p = NULL;	
 }
 
 void    ft_clear_rt(t_rt *rt)
@@ -43,9 +44,8 @@ void    ft_clear_rt(t_rt *rt)
 	ft_l_lstclear(&(rt->ll_camera),del_obj);
 	ft_lstclear(&(rt->l_p),del_obj);
 	free(rt);
-	//printf("Clear ok\n");
-	//while(1)
-	//	;
+	while(1)
+		;
 }
 
 void	ft_error_rt(int n, t_rt *rt)

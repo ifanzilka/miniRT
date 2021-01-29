@@ -42,12 +42,7 @@ int             key_hook(int keycode, t_vars *vars)
 {
     printf("Hello from key_hook!%d!\n",keycode);
     if (keycode == 53)
-    {
         ft_close_win(vars);
-        mlx_destroy_window(vars->mlx, vars->win);
-        ft_clear_rt(vars->rt);
-        exit(0);
-    }
     else if (keycode == arrow_right)
         ft_next_cam(vars);
     else if (keycode == arrow_left)   
@@ -80,8 +75,6 @@ int             key_hook(int keycode, t_vars *vars)
     return(1);
 }
 
-
-
 void    ft_check_w_h_win(void *mlx_ptr,int x, int y,t_rt *rt)
 {
     mlx_get_screen_size(mlx_ptr,&x,&y);
@@ -91,6 +84,7 @@ void    ft_check_w_h_win(void *mlx_ptr,int x, int y,t_rt *rt)
         rt->reso.height = y;
     }
 }
+
 void            my_mlx_pixel_put(t_img *data, int x, int y, int color)
 {
     char    *dst;
@@ -105,7 +99,6 @@ int     ft_init_img(t_rt *rt)
     t_vars      *vars;
     t_img       *img;
 
-    printf("ok");
     vars = NULL;
     if (!(vars = malloc(sizeof(t_vars))) && !(ft_lst_cr_front(&rt->l_p, vars)))
         ft_error_rt(err_malloc,rt);
@@ -117,7 +110,8 @@ int     ft_init_img(t_rt *rt)
     img->addr =mlx_get_data_addr(img->img, &(img->bits_per_pixel), &(img->line_length),
                                  &(img->endian));
     vars->rt = rt;
-    cicle_for_pixel_sc(rt,vars);
+    vars->bmp = 1;
+    cicle_for_pixel(rt,vars);
     ft_putstr_fd("Screen create !\n",1);
     return(1);
 }
@@ -127,14 +121,12 @@ int     ft_init_disp(t_rt *rt)
     t_vars      *vars;
     t_img       *img;
 
-    printf("ok");
     vars = NULL;
     if (!(vars = malloc(sizeof(t_vars))) && !(ft_lst_cr_front(&rt->l_p, vars)))
         ft_error_rt(err_malloc,rt);
     if (!(vars->mlx = mlx_init()) && !(ft_lst_cr_front(&(rt->l_p), vars->mlx)))
         ft_error_rt(err_mlx,rt);
-    img = &(vars->img);
-    printf("ok");        
+    img = &(vars->img);      
     ft_check_w_h_win(vars->mlx,0,0,rt);
     img->img = mlx_new_image(vars->mlx, rt->reso.width, rt->reso.height);
     img->addr =mlx_get_data_addr(img->img, &(img->bits_per_pixel), &(img->line_length),
@@ -142,7 +134,8 @@ int     ft_init_disp(t_rt *rt)
     if (!(vars->win = mlx_new_window(vars->mlx, rt->reso.width,
         rt->reso.height, "miniRT")) && !(ft_lst_cr_front(&rt->l_p, vars->win)))
         ft_error_rt(err_mlx,rt);
-    vars->rt = rt;    
+    vars->rt = rt;
+    vars->bmp = 0;    
     mlx_key_hook(vars->win, key_hook, vars);
     mlx_hook(vars->win,17,0L,ft_close_win,vars);  
     cicle_for_pixel(rt,vars);

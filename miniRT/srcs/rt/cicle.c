@@ -23,79 +23,23 @@ int     ft_in_range(t_range *range, double a)
     return (0);    
 } 
 
-/*
-** cx and cy -> coordinat pixel in window system
-*/
-
-/*
-**  Converter x Screen coordinat to decart coordinat
-**
-**  cx -> coordinat x for Scr
-**  width -> width window
-**  xmin  -> minimal x in decart system
-**  xmax  -> maximal x in decart system
-**  return -> x for decart system
-*/
-
-double  ft_convert_scr_to_dec_x(int cx, int width, double xmin, double xmax)
+void ft_iter_obj_close(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
 {
-    double x;
-    double xsize;
-    double w;
-
-    w = width;
-    xsize = xmax - xmin;
-    x = xmin + (cx / w) * xsize;
-    return (x);
-    //return ((double)cx - (double)width / 2);
+    ft_l_sp(rt, pixel, o, d,range);
+    if (pixel->t != MAX_DB)
+        return;
+    ft_l_pl(rt, pixel, o, d,range);
+    if (pixel->t != MAX_DB)
+        return;
+    ft_l_tr(rt,pixel,o, d,range);
+    if (pixel->t != MAX_DB)
+        return;
+    ft_l_sq(rt,pixel,o, d,range);
+    if (pixel->t != MAX_DB)
+        return;
+    ft_l_cy(rt,pixel,o, d,range);
 }
 
-/*
-**  Converter y Screen coordinat to decart coordinat
-**
-**  cy -> coordinat y for Scr
-**  width -> width window
-**  ymin  -> minimal y in decart system
-**  ymax  -> maximal y in decart system
-**  return -> y for decart system
-*/
-
-double  ft_convert_scr_to_dec_y(int cy, int height, double  ymin, double  ymax)
-{
-    double y;
-    double ysize;
-    double h;
-    
-    h = height;
-    ysize = ymax - ymin;
-    y = ymax - (cy / h) * ysize;
-    return (y);
-}
-
-/*
-**  Create viewport vector
-**
-**  x -> coordinat 
-**  y -> coordinat
-**  width window
-**  height window
-**  Vx = Cx * Vw/Cw
-**  Vy = Cy * Vh/Ch
-**  Vz = d
-**  z -> z
-**  return -> vector xyz
-*/
-
-void  ft_rt_xy_convert(int *cx,int *cy, double *x,double *y,t_rt *rt)
-{
-    double width;
-    double height;
-
-    width = rt->reso.width;
-    height = rt->reso.height;
-     *x =  ft_convert_scr_to_dec_x(*cx, width, -(width / 2), width / 2);
-     *y =  ft_convert_scr_to_dec_y(*cy, height, -(height / 2),height / 2);
-}
 
 void ft_iter_obj(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
 {
@@ -105,18 +49,6 @@ void ft_iter_obj(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
     ft_l_sq(rt,pixel,o, d,range);
     ft_l_cy(rt,pixel,o, d,range);
 }
-
-t_xyz      ft_create_v(double x, double y, int height, double z)
-{
-    t_xyz v;
-
-    v.x =   x / height;
-    v.y =   y / height;
-    v.z =   z;
-    return (v);
-}
-
-
 
 
 /*  
@@ -150,7 +82,7 @@ double ClosestIntersection(t_rt *rt,t_xyz o, t_xyz d)
     range.min = 0.000001;
     range.max = 0.999999;
     pixel.t = MAX_DB;
-    ft_iter_obj(rt, &pixel, o, d,&range);
+    ft_iter_obj_close(rt, &pixel, o, d,&range);
     return (pixel.t);
 }
 
@@ -189,34 +121,6 @@ t_rgb     ft_ray_trace(t_rt *rt,t_xyz o,t_xyz d,t_range range,int rec)
     return(ft_recurse_color(ref_color, pixel->rgb, pixel->reflective));
 }
 
-t_xyz   ft_create_vec_d(t_rt *rt, double x, double y)
-{
-    t_xyz   c_r;
-    t_xyz   c_up;
-    t_xyz   d;
-    t_xyz   v;
-    double  kf;
-    
-    rt->camera->direction = ft_xyz_normalaze(rt->camera->direction);
-    kf  =  2 * tan(rt->camera->fov / 2 * 3.14 / 180);
-    x *= kf;
-    y *= kf;
-    v = ft_create_v(x, y, rt->reso.height, 1);
-    c_r = ft_xyz_mult_xyz((t_xyz){0.0, 1.0, 0.0},rt->camera->direction);
-    c_up = ft_xyz_mult_xyz(rt->camera->direction,c_r);
-    d = ft_r_u_n_mult_xyz(c_r,c_up,rt->camera->direction,v);
-    return (d);
-}
-
-t_xyz ft_init_d(int *cx,int *cy,t_rt *rt)
-{
-    double x;
-    double y;
-
-    ft_rt_xy_convert(cx,cy,&x,&y,rt);
-    return (ft_create_vec_d(rt , x ,y));
-}
-
 /*
 **  Cicle for all pixel
 **  
@@ -234,6 +138,7 @@ int     cicle_for_pixel(t_rt *rt,t_vars *vars)
 
     cx = 0;
     cy = 0;
+    write(1,"Start Rendering...\n",19);
     while (cy < rt->reso.height)
     {
         while(cx < rt->reso.width)
@@ -248,33 +153,9 @@ int     cicle_for_pixel(t_rt *rt,t_vars *vars)
         cx = 0;
         cy++;
     }
-     mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0); 
-    return (1);
-}
-int     cicle_for_pixel_sc(t_rt *rt,t_vars *vars)
-{
-    int cx;
-    int cy;
-    t_rgb rgb;
-    t_xyz d;
-
-    cx = 0;
-    cy = 0;
-    printf("ok");
-    while (cy < rt->reso.height)
-    {
-        while(cx < rt->reso.width)
-        {    
-            d = ft_init_d(&cx,&cy,rt);
-            rgb = ft_ray_trace(rt, rt->camera->cord, d ,(t_range){0.0001,MAX_DB},depth);
-            my_mlx_pixel_put(&(vars->img),cx,cy,create_rgb(rgb.red,rgb.green,rgb.blue));
-            ft_putnbr_fd((int)((double)(cx + cy * rt->reso.width) / (double)(rt->reso.height * rt->reso.width) * 100),1);
-            write(1,"%\r",2);
-            cx++;
-        }
-        cx = 0;
-        cy++;
-    }
-     ft_create_bmp(rt,&(vars->img));
+    if (vars->bmp)
+        ft_create_bmp(rt,&(vars->img));
+    else    
+        mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0); 
     return (1);
 }

@@ -67,7 +67,7 @@ t_rgb  ft_compute_lighting(t_rt *rt,t_xyz p, t_xyz n,t_xyz v,t_pixel *pixel)
     {
         li = l_light->content;
         ft_init_vectors_light(li,cp_l, pixel, &n, &p);    
-        if (ClosestIntersection(rt, p , cp_l->l) != MAX_DB)
+        if (ClosestIntersection(rt, p ,cp_l->l) != MAX_DB)
         {
             l_light = l_light->next;
             continue;
