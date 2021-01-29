@@ -121,7 +121,7 @@ int     ft_init_disp(t_rt *rt)
     t_vars      *vars;
     t_img       *img;
 
-    vars = NULL;
+    //vars = NULL;
     if (!(vars = malloc(sizeof(t_vars))) && !(ft_lst_cr_front(&rt->l_p, vars)))
         ft_error_rt(err_malloc,rt);
     if (!(vars->mlx = mlx_init()) && !(ft_lst_cr_front(&(rt->l_p), vars->mlx)))
@@ -134,6 +134,8 @@ int     ft_init_disp(t_rt *rt)
     if (!(vars->win = mlx_new_window(vars->mlx, rt->reso.width,
         rt->reso.height, "miniRT")) && !(ft_lst_cr_front(&rt->l_p, vars->win)))
         ft_error_rt(err_mlx,rt);
+    // ft_lst_cr_front(&rt->l_p, vars->img.img);
+    // ft_lst_cr_front(&rt->l_p, vars->img.addr);    
     vars->rt = rt;
     vars->bmp = 0;    
     mlx_key_hook(vars->win, key_hook, vars);

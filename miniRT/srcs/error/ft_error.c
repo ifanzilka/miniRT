@@ -44,8 +44,6 @@ void    ft_clear_rt(t_rt *rt)
 	ft_l_lstclear(&(rt->ll_camera),del_obj);
 	ft_lstclear(&(rt->l_p),del_obj);
 	free(rt);
-	while(1)
-		;
 }
 
 void	ft_error_rt(int n, t_rt *rt)

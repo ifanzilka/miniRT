@@ -104,8 +104,9 @@ t_rgb     ft_ray_trace(t_rt *rt,t_xyz o,t_xyz d,t_range range,int rec)
     t_pixel *pixel;
     t_rgb   ref_color;
 
+    
     if (!(pixel = malloc(sizeof(t_pixel))) && !(ft_lst_cr_front(&rt->l_p, pixel)))
-        ft_error_rt(err_malloc,rt);
+        ft_error_rt(err_malloc,rt);   
     pixel->t = MAX_DB;
     pixel->rgb = ft_rgb_mult_db(rt->al.rgb,rt->al.light);
     ft_iter_obj(rt, pixel, o, d,&range);
@@ -113,11 +114,11 @@ t_rgb     ft_ray_trace(t_rt *rt,t_xyz o,t_xyz d,t_range range,int rec)
         return (pixel->rgb);
     //pixel.normal = ft_xyz_mult_db(pixel.normal,-1.0);    
     p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel->t * 0.9999));
-    pixel->rgb = ft_compute_lighting(rt,  p, pixel->normal,ft_xyz_mult_db(d, -1.0),pixel);
+    //pixel->rgb = ft_compute_lighting(rt,  p, pixel->normal,ft_xyz_mult_db(d, -1.0),pixel);
     if (rec <=  0 || pixel->reflective <= 0.01)
         return(pixel->rgb);
     r = ft_reflect_ray(ft_xyz_mult_db(d,-1.0),pixel->normal);
-    ref_color = ft_ray_trace(rt, p, r,range,rec - 1);
+    ref_color = ft_ray_trace(rt, p, r,range,rec - 1);  
     return(ft_recurse_color(ref_color, pixel->rgb, pixel->reflective));
 }
 
@@ -145,9 +146,12 @@ int     cicle_for_pixel(t_rt *rt,t_vars *vars)
         {    
             d = ft_init_d(&cx,&cy,rt);
             rgb = ft_ray_trace(rt, rt->camera->cord, d ,(t_range){0.0001,MAX_DB},depth);
+            //mlx_pixel_put(vars->mlx,vars->win,cx,cy,create_rgb(rgb.red,rgb.green,rgb.blue));   
             my_mlx_pixel_put(&(vars->img),cx,cy,create_rgb(rgb.red,rgb.green,rgb.blue));
             ft_putnbr_fd((int)((double)(cx + cy * rt->reso.width) / (double)(rt->reso.height * rt->reso.width) * 100),1);
             write(1,"%\r",2);
+            while(1)
+            ;
             cx++;
         }
         cx = 0;

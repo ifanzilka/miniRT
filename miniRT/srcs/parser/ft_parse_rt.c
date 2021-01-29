@@ -249,8 +249,7 @@ void        ft_parse_file_rt(int fd, int argc, char *file)
         ft_init_disp(rt);
     else if (argc == 3)
         ft_init_img(rt);
-    ft_clear_rt(rt);    
-        //ft_create_bmp(rt);   
+    ft_clear_rt(rt);     
             
 }
 
