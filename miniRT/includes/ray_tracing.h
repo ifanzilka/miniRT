@@ -22,12 +22,23 @@
 **  win -> link for window 
 */
 
+typedef struct  s_img {
+    void        *img;
+    char        *addr;
+    int         bits_per_pixel;
+    int         line_length;
+    int         endian;
+}               t_img;
+
 typedef struct  s_vars 
 {
+    t_img       img;
     void        *mlx;
     void        *win;
     void        *rt;
 }                t_vars;
+
+
 
 typedef struct  s_pixel 
 {
@@ -67,8 +78,12 @@ typedef struct s_cp_l
     t_xyz       r;
 }              t_cp_l;
 
+void            my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void        ft_create_bmp(t_rt *rt,t_img *img);
 int     ft_init_disp(t_rt *rt);
+int     ft_init_img(t_rt *rt);
 int     cicle_for_pixel(t_rt *rt,t_vars *vars);
+int     cicle_for_pixel_sc(t_rt *rt,t_vars *vars);
 int     ft_in_range(t_range *range, double a);
 void    ft_intersect_pl(t_xyz o,t_xyz d,t_pixel *pixel,t_range *range, t_plane *pl);
 void    ft_l_sp(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);

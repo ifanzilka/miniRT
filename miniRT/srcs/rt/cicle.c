@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <time.h>
-
 #include <ft_minirt.h>
 #include "ray_tracing.h"
 # ifndef depth
@@ -108,16 +106,12 @@ void ft_iter_obj(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
     ft_l_cy(rt,pixel,o, d,range);
 }
 
-t_xyz      ft_create_v(double x, double y, int width, int height, double z)
+t_xyz      ft_create_v(double x, double y, int height, double z)
 {
     t_xyz v;
 
-    (void) width;
-    (void)  height;
-    (void) z;
-
-    v.x =   x  / height;//- (width/2);
-    v.y =   y * (1.0/height); //(height/2)-y;
+    v.x =   x / height;
+    v.y =   y / height;
     v.z =   z;
     return (v);
 }
@@ -158,21 +152,6 @@ double ClosestIntersection(t_rt *rt,t_xyz o, t_xyz d)
     pixel.t = MAX_DB;
     ft_iter_obj(rt, &pixel, o, d,&range);
     return (pixel.t);
-}
-
-
-void        ft_l_pl(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
-{
-    t_list  *l_pl;
-    t_plane *pl;
-
-    l_pl = rt->l_pl;
-    while (l_pl)
-    {
-        pl = l_pl->content;
-        ft_intersect_pl(o, d, pixel,range,pl);
-        l_pl = l_pl->next;
-    }
 }
 
 
@@ -222,7 +201,7 @@ t_xyz   ft_create_vec_d(t_rt *rt, double x, double y)
     kf  =  2 * tan(rt->camera->fov / 2 * 3.14 / 180);
     x *= kf;
     y *= kf;
-    v = ft_create_v(x, y, rt->reso.width, rt->reso.height, 1);
+    v = ft_create_v(x, y, rt->reso.height, 1);
     c_r = ft_xyz_mult_xyz((t_xyz){0.0, 1.0, 0.0},rt->camera->direction);
     c_up = ft_xyz_mult_xyz(rt->camera->direction,c_r);
     d = ft_r_u_n_mult_xyz(c_r,c_up,rt->camera->direction,v);
@@ -245,14 +224,14 @@ t_xyz ft_init_d(int *cx,int *cy,t_rt *rt)
 ** 600 600
 */
 
+
 int     cicle_for_pixel(t_rt *rt,t_vars *vars)
 {
-    clock_t begin = clock();
     int cx;
     int cy;
     t_rgb rgb;
     t_xyz d;
-   
+
     cx = 0;
     cy = 0;
     while (cy < rt->reso.height)
@@ -261,17 +240,41 @@ int     cicle_for_pixel(t_rt *rt,t_vars *vars)
         {    
             d = ft_init_d(&cx,&cy,rt);
             rgb = ft_ray_trace(rt, rt->camera->cord, d ,(t_range){0.0001,MAX_DB},depth);
-            mlx_pixel_put(vars->mlx,vars->win,cx,cy,create_rgb(rgb.red,rgb.green,rgb.blue));
+            my_mlx_pixel_put(&(vars->img),cx,cy,create_rgb(rgb.red,rgb.green,rgb.blue));
             ft_putnbr_fd((int)((double)(cx + cy * rt->reso.width) / (double)(rt->reso.height * rt->reso.width) * 100),1);
-            ft_putstr_fd("%\b\b\b",1);
+            write(1,"%\r",2);
             cx++;
         }
         cx = 0;
         cy++;
-    } 
-    printf("\n"); 
-    clock_t end = clock();
-    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-    printf("TIME %f sec\n",time_spent);
+    }
+     mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0); 
+    return (1);
+}
+int     cicle_for_pixel_sc(t_rt *rt,t_vars *vars)
+{
+    int cx;
+    int cy;
+    t_rgb rgb;
+    t_xyz d;
+
+    cx = 0;
+    cy = 0;
+    printf("ok");
+    while (cy < rt->reso.height)
+    {
+        while(cx < rt->reso.width)
+        {    
+            d = ft_init_d(&cx,&cy,rt);
+            rgb = ft_ray_trace(rt, rt->camera->cord, d ,(t_range){0.0001,MAX_DB},depth);
+            my_mlx_pixel_put(&(vars->img),cx,cy,create_rgb(rgb.red,rgb.green,rgb.blue));
+            ft_putnbr_fd((int)((double)(cx + cy * rt->reso.width) / (double)(rt->reso.height * rt->reso.width) * 100),1);
+            write(1,"%\r",2);
+            cx++;
+        }
+        cx = 0;
+        cy++;
+    }
+     ft_create_bmp(rt,&(vars->img));
     return (1);
 }

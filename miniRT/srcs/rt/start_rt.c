@@ -24,9 +24,6 @@
 ** events or messages is called a hook.
 */
 
-
-
-
 /*
 ** key_hook (function)
 **  
@@ -94,26 +91,60 @@ void    ft_check_w_h_win(void *mlx_ptr,int x, int y,t_rt *rt)
         rt->reso.height = y;
     }
 }
+void            my_mlx_pixel_put(t_img *data, int x, int y, int color)
+{
+    char    *dst;
+
+    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    *(unsigned int*)dst = color;
+}
 
 
-int     ft_init_disp(t_rt *rt)
+int     ft_init_img(t_rt *rt)
 {
     t_vars      *vars;
+    t_img       *img;
 
+    printf("ok");
     vars = NULL;
     if (!(vars = malloc(sizeof(t_vars))) && !(ft_lst_cr_front(&rt->l_p, vars)))
         ft_error_rt(err_malloc,rt);
     if (!(vars->mlx = mlx_init()) && !(ft_lst_cr_front(&(rt->l_p), vars->mlx)))
         ft_error_rt(err_mlx,rt);
+    img = &(vars->img);
     ft_check_w_h_win(vars->mlx,0,0,rt);
+    img->img = mlx_new_image(vars->mlx, rt->reso.width, rt->reso.height);
+    img->addr =mlx_get_data_addr(img->img, &(img->bits_per_pixel), &(img->line_length),
+                                 &(img->endian));
+    vars->rt = rt;
+    cicle_for_pixel_sc(rt,vars);
+    ft_putstr_fd("Screen create !\n",1);
+    return(1);
+}
+
+int     ft_init_disp(t_rt *rt)
+{
+    t_vars      *vars;
+    t_img       *img;
+
+    printf("ok");
+    vars = NULL;
+    if (!(vars = malloc(sizeof(t_vars))) && !(ft_lst_cr_front(&rt->l_p, vars)))
+        ft_error_rt(err_malloc,rt);
+    if (!(vars->mlx = mlx_init()) && !(ft_lst_cr_front(&(rt->l_p), vars->mlx)))
+        ft_error_rt(err_mlx,rt);
+    img = &(vars->img);
+    printf("ok");        
+    ft_check_w_h_win(vars->mlx,0,0,rt);
+    img->img = mlx_new_image(vars->mlx, rt->reso.width, rt->reso.height);
+    img->addr =mlx_get_data_addr(img->img, &(img->bits_per_pixel), &(img->line_length),
+                                 &(img->endian));
     if (!(vars->win = mlx_new_window(vars->mlx, rt->reso.width,
         rt->reso.height, "miniRT")) && !(ft_lst_cr_front(&rt->l_p, vars->win)))
         ft_error_rt(err_mlx,rt);
     vars->rt = rt;    
     mlx_key_hook(vars->win, key_hook, vars);
     mlx_hook(vars->win,17,0L,ft_close_win,vars);  
-    //fun trace
-    //mlx_pixel_put(vars.mlx,vars.win,10,10,create_rgb(255,255,255));
     cicle_for_pixel(rt,vars);
     mlx_loop(vars->mlx);
     return (1);

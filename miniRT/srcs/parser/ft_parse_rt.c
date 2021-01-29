@@ -13,7 +13,9 @@
 #include <ft_minirt.h>
 #include <parse.h>
 #include <ray_tracing.h>
-
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #define eps 1e-7
 
@@ -121,6 +123,93 @@ void        ft_init_t_rt(t_rt *rt)
 //     p = (t_plane *)pl;
 //     free(pl);
 // }
+// static void	init(t_all *all)
+// {
+// 	my_mlx_init(all);
+// 	if (!(rt->reso.win = mlx_new_window(rt->reso.mlx, rt->reso.width,
+// 	rt->reso.height, "cub3D")))
+// 		error_handler(MAP_PARS, 0);
+// 	my_image_init(all);
+// 	my_plr_init(all);
+// 	sprites_init(all);
+// 	read_text(all);
+// 	draw_all0(all);
+// }
+// void		create_file_header(t_all *all, int fd)
+// {
+// 	unsigned char	*file_header;
+// 	int				i;
+// 	int				file_size;
+// 	file_header = (unsigned char *)malloc(14 * sizeof(unsigned char));
+// 	i = 0;
+// 	while (i < 14)
+// 	{
+// 		file_header[i] = (unsigned char)(0);
+// 		i++;
+// 	}
+// 	file_size = 14 + 40 + (4 * rt->reso.width * rt->reso.height);
+// 	file_header[0] = (unsigned char)('B');
+// 	file_header[1] = (unsigned char)('M');
+// 	file_header[2] = (unsigned char)(file_size % 256);
+// 	file_header[3] = (unsigned char)(file_size / 256 % 256);
+// 	file_header[4] = (unsigned char)(file_size / 256 / 256 % 256);
+// 	file_header[5] = (unsigned char)(file_size / 256 / 256 / 256);
+// 	file_header[10] = (unsigned char)(14 + 40);
+// 	write(fd, file_header, 14);
+// 	free(file_header);
+// }
+// void		create_info_header(t_all *all, int fd)
+// {
+// 	int				i;
+// 	unsigned char	*file_header;
+// 	i = 0;
+// 	file_header = (unsigned char *)malloc(40 * sizeof(unsigned char));
+// 	while (i < 40)
+// 	{
+// 		file_header[i] = (unsigned char)(0);
+// 		i++;
+// 	}
+// 	file_header[0] = (unsigned char)(40);
+// 	file_header[4] = (unsigned char)(rt->reso.width % 256);
+// 	file_header[5] = (unsigned char)(rt->reso.width / 256 % 256);
+// 	file_header[6] = (unsigned char)(rt->reso.width / 256 / 256 % 256);
+// 	file_header[7] = (unsigned char)(rt->reso.width / 256 / 256 / 256);
+// 	file_header[8] = (unsigned char)(rt->reso.height % 256);
+// 	file_header[9] = (unsigned char)(rt->reso.height / 256 % 256);
+// 	file_header[10] = (unsigned char)(rt->reso.height / 256 / 256 % 256);
+// 	file_header[11] = (unsigned char)(rt->reso.height / 256 / 256 / 256);
+// 	file_header[12] = (unsigned char)(1);
+// 	file_header[14] = (unsigned char)(32);
+// 	write(fd, file_header, 40);
+// 	free(file_header);
+// }
+// void		create_image_to_file(t_all *all)
+// {
+// 	int y;
+// 	int line_length;
+// 	line_length = rt->reso.width * all->img->bits_per_pixel / 8;
+// 	y = rt->reso.height;
+// 	while (0 <= y)
+// 	{
+// 		write(all->fd, (unsigned char *)(all->img->addr +
+// 		y * all->img->line_length), line_length);
+// 		y--;
+// 	}
+// }
+// void		screen_save(t_all *all)
+// {
+// 	all->fd = open("screen.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0655);
+// 	init(all);
+// 	create_file_header(all, all->fd);
+// 	create_info_header(all, all->fd);
+// 	create_image_to_file(all);
+// 	close(all->fd);
+// 	write(1, "Image generate!\n", 17);
+// 	my_exit();
+// }
+
+
+
 
 void        ft_parse_file_rt(int fd, int argc, char *file)
 {
@@ -159,9 +248,10 @@ void        ft_parse_file_rt(int fd, int argc, char *file)
      if (argc == 2)
         ft_init_disp(rt);
     else if (argc == 3)
-        ft_init_disp(rt);   
+        ft_init_img(rt);
+    ft_clear_rt(rt);    
+        //ft_create_bmp(rt);   
             
-
 }
 
 int         ft_parse_rt(char *file, int argc)

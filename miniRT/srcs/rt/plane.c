@@ -43,6 +43,20 @@ void    ft_intersect_pl(t_xyz o,t_xyz d,t_pixel *pixel,t_range *range, t_plane *
     }
 }
 
+void        ft_l_pl(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
+{
+    t_list  *l_pl;
+    t_plane *pl;
+
+    l_pl = rt->l_pl;
+    while (l_pl)
+    {
+        pl = l_pl->content;
+        ft_intersect_pl(o, d, pixel,range,pl);
+        l_pl = l_pl->next;
+    }
+}
+
 /*
 **  ft_l_pl
 ** rt -> rt

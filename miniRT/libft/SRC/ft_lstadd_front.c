@@ -41,16 +41,3 @@ void	ft_lstadd_front(t_list **lst, t_list *new)
 // 	el->next = NULL;
 // 	return (el);
 // }
-
-t_list	*ft_lst_cr_front(t_list **lst, void *content)
-{
-	t_list *new;
-
-	if (!(new = ft_lstnew(content)))
-		return(NULL);
-	if (!lst)
-		return (NULL) ;
-	new->next = *lst;
-	*lst = new;
-	return(new);
-}

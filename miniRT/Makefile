@@ -60,7 +60,7 @@ RayTracing_SRCS = 	$(DIR_RayTracing)start_rt.c $(DIR_RayTracing)cicle.c $(DIR_Ra
 RGB_SRCS = $(DIR_RGB)rgb.c
 VEC_SRCS = $(DIR_VEC)vectors.c
 KEYS_SRCS = $(DIR_KEYS)buttons.c	$(DIR_KEYS)buttons2.c $(DIR_KEYS)buttons3.c
-BMP_SRCS = 
+BMP_SRCS = $(DIR_BMP)ft_create_bmp.c
 
 AR		= ar rc
 
@@ -91,13 +91,13 @@ $(LIBFT):
 		@echo "$(F_YELLOW)START RUN Makefile in libft $(F_NONE)"
 		@$(MAKE) -C $(LIB_DIR)
 		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
-$(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS)
+$(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP)
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
-		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) -L. $(LIB_NAME)  -lmlx -framework OpenGL -framework AppKit $(MINILIBX) -o $(NAME_MINIRT)
+		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) -L. $(LIB_NAME)  -lmlx -framework OpenGL -framework AppKit $(MINILIBX) -o $(NAME_MINIRT)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
-	rm -rf $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR) $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS)
+	rm -rf $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR) $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP)
 	@echo "$(F_GREEN)Cleaned! $(F_NONE)"
 fclean: clean
 	make fclean -C $(LIB_DIR)

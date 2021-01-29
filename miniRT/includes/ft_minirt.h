@@ -275,6 +275,7 @@ typedef struct	s_rt
     t_list  *l_p;
     //int *th;
 }               t_rt;
+
 void	ft_error_rt(int n, t_rt *rt);
 void    ft_clear_rt(t_rt *rt);
 #endif
