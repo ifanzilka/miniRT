@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/01 23:52:04 by bmarilli          #+#    #+#             */
-/*   Updated: 2020/11/02 18:34:13 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/01/31 19:20:36 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 **	}
 */
 
-void	ft_lstclear(t_list **lst,  void (*del)(void*))
+void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
 	t_list	*cur;
 	t_list	*tmp;

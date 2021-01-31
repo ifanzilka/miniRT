@@ -6,30 +6,30 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 17:59:44 by bmarilli          #+#    #+#             */
-/*   Updated: 2020/12/14 18:00:28 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/01/31 18:39:53 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-void        ft_skip_atof(char *str,int *j)
+void		ft_skip_atof(char *str, int *j)
 {
-    int i;
+	int i;
 
-    i = *j; 
-    while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
+	i = *j;
+	while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
-    while (str[i] && ft_isdigit(str[i]))
+	while (str[i] && ft_isdigit(str[i]))
 		i++;
-    if ((str[i] && str[i] == '.'))
-    {
-        i++;
-        while (str[i] && ft_isdigit(str[i]))
-		    i++;
-    }
-    *j = i;
+	if ((str[i] && str[i] == '.'))
+	{
+		i++;
+		while (str[i] && ft_isdigit(str[i]))
+			i++;
+	}
+	*j = i;
 }
 
 static	int	ft_check_an(char *str)

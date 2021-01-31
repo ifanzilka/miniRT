@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 16:09:44 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/01/30 16:09:53 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/01/31 18:34:01 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ t_list	*ft_lst_cr_back(t_list **lst, void *content)
 	t_list	*cur;
 
 	if (!(new = ft_lstnew(content)))
-		return(NULL);
+		return (NULL);
 	if (!lst)
-		return (NULL) ;
+		return (NULL);
 	cur = *lst;
 	if (!cur)
 		*lst = new;

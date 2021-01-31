@@ -6,12 +6,13 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/01 23:09:45 by bmarilli          #+#    #+#             */
-/*   Updated: 2020/11/01 23:20:51 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/01/31 19:17:55 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
+
 /*
 ** ENG
 */
@@ -39,4 +40,3 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		cur->next = new;
 	}
 }
-

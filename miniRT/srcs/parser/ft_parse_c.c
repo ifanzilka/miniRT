@@ -55,7 +55,7 @@ int            ft_parse_c(t_rt *rt,char *str)
     // camera->direction.y *= -1.0;
     if ((camera->fov < 0.0) || (camera->fov) > 180.0)
         ft_error_rt(err_c,rt);
-     if (!(ft_l_lst_cr_back(&(rt->ll_camera),camera)))
+     if (!(ft_l_lst_cr_front(&(rt->ll_camera),camera)))
         ft_error_rt(err_malloc,rt);   
     rt->cnt.c+=1;    
     return (1);

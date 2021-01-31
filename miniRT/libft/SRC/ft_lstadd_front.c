@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/01 23:00:05 by bmarilli          #+#    #+#             */
-/*   Updated: 2020/11/01 23:06:57 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/01/31 19:19:35 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,3 @@ void	ft_lstadd_front(t_list **lst, t_list *new)
 	new->next = *lst;
 	*lst = new;
 }
-
-// t_list	*ft_lstnew(void *content)
-// {
-// 	t_list	*el;
-
-// 	if (!(el = (t_list*)malloc(sizeof(t_list))))
-// 		return (NULL);
-// 	el->content = content;
-// 	el->next = NULL;
-// 	return (el);
-// }
