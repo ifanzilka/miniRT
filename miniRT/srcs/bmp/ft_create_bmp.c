@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 17:52:05 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/01/29 17:52:09 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/01/31 15:47:42 by ifanzilka        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 /*
 **	BMP
 ** Bit Map file header - 14 bytes
-** 
+**
 ** 2 [0-1] 2 bytes  -> in FileType
 ** 6 [2-5] 4 bytes  -> unsigned integer in File size
 ** 10 [6 -9] 4 bytes -> 	 RESERVED!!!
@@ -29,11 +29,11 @@
 /*
 **	BMP
 **	Bit Map INFO_HEADER_SIZE - 40-bytes
-** 
+**
 **	12 [11 - 14] 4 bytes -> size of the header in bytes(40)
 **	16 [15 - 18] 4 bytes ->	the width of the final image in pixels
 **	20 [19 - 22] 4 bytes ->	the height of the final image in pixels
-**	24 [23 - 24] 2 bytes -> plane the number of color planes 
+**	24 [23 - 24] 2 bytes -> plane the number of color planes
 **		of the target device. Should be '1' in decimal.
 ** 	26 [25 - 26] 2 bytes  -> BitsPerPixel
 ** 	28 [27 - 30] 4 bytes ->	Compression
@@ -44,8 +44,6 @@
 ** 	48 [47 - 50] 4 bytes -> ImportantColors
 */
 
-
-
 static	void		ft_create_file_header(t_rt *rt, int fd)
 {
 	unsigned char	*file_header;
@@ -53,19 +51,19 @@ static	void		ft_create_file_header(t_rt *rt, int fd)
 	int				file_size;
 
 	file_header = (unsigned char *)malloc(14 * sizeof(unsigned char));
-    if (!file_header)
-        ft_error_rt(err_malloc,rt);
+	if (!file_header)
+		ft_error_rt(err_malloc, rt);
 	i = 0;
 	while (i < 14)
 	{
 		file_header[i] = (unsigned char)(0);
 		i++;
 	}
-	file_size = FILE_HEADER_SIZE + INFO_HEADER_SIZE 
+	file_size = FILE_HEADER_SIZE + INFO_HEADER_SIZE
 		+ (4 * rt->reso.width * rt->reso.height);
 	file_header[0] = (unsigned char)('B');
 	file_header[1] = (unsigned char)('M');
-	file_header[2] = (unsigned char)(file_size );
+	file_header[2] = (unsigned char)(file_size);
 	file_header[3] = (unsigned char)(file_size >> 8);
 	file_header[4] = (unsigned char)(file_size >> 16);
 	file_header[5] = (unsigned char)(file_size >> 24);
@@ -81,8 +79,8 @@ static	void		ft_create_info_header(t_rt *rt, int fd)
 
 	i = 0;
 	file_header = (unsigned char *)malloc(40 * sizeof(unsigned char));
-    if (!file_header)
-        ft_error_rt(err_malloc,rt);
+	if (!file_header)
+		ft_error_rt(err_malloc, rt);
 	while (i < 40)
 	{
 		file_header[i] = (unsigned char)(0);
@@ -102,7 +100,8 @@ static	void		ft_create_info_header(t_rt *rt, int fd)
 	write(fd, file_header, 40);
 	free(file_header);
 }
-static	void		ft_create_image_to_file(t_rt *rt,t_img *img,int fd)
+
+static	void		ft_create_image_to_file(t_rt *rt, t_img *img, int fd)
 {
 	int y;
 	int line_length;
@@ -117,21 +116,21 @@ static	void		ft_create_image_to_file(t_rt *rt,t_img *img,int fd)
 	}
 }
 
-void        ft_create_bmp(t_rt *rt,t_img *img)
+void				ft_create_bmp(t_rt *rt, t_img *img)
 {
-    int fd;
+	int fd;
 
-	if ((fd = open("screen.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0655)) > 1)
-    {
-        ft_create_file_header(rt,fd);
-        ft_create_info_header(rt,fd);
-        ft_create_image_to_file(rt,img,fd);
-        close(fd);   
-    }
-    else 
-    {
-        perror("Error\n");
-        ft_error_rt(err_rt,rt);
-        exit(0);
-    }
+	if ((fd = open("screen.bmp", O_CREAT | O_WRONLY | O_TRUwNC, 0655)) > 1)
+	{
+		ft_create_file_header(rt, fd);
+		ft_create_info_header(rt, fd);
+		ft_create_image_to_file(rt, img, fd);
+		close(fd);
+	}
+	else
+	{
+		perror("Error\n");
+		ft_error_rt(err_rt, rt);
+		exit(0);
+	}
 }
