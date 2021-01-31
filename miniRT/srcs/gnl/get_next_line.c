@@ -6,12 +6,13 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 13:38:02 by bmarilli          #+#    #+#             */
-/*   Updated: 2020/12/08 06:51:49 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/01/31 20:28:09 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-# define BUFFER_SIZE 1000
+#define BUFFER_SIZE 1000
+
 /*
 ** # 1 parameter: file descriptor to read
 ** # 2. parameter: Value of what was read
