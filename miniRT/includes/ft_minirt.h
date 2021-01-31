@@ -23,9 +23,8 @@
 #include <rgb.h>
 #include <vectors.h>
 #include <mlx.h>
-//#include <keyboard.h>
 #include <errors_rt.h>
-//#include <ray_tracing.h>
+
 
 #define inf INFINITY
 #define MAX_DB 2147483648.0
@@ -276,6 +275,6 @@ typedef struct	s_rt
     //int *th;
 }               t_rt;
 
-void	ft_error_rt(int n, t_rt *rt);
 void    ft_clear_rt(t_rt *rt);
+void	ft_error_rt(int n, t_rt *rt);
 #endif

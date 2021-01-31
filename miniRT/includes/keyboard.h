@@ -13,6 +13,7 @@
 #ifndef KEYBOARD_H
 # define KEYBOARD_H
 #include <ray_tracing.h>
+#include <mlx_win.h>
 
 typedef	enum
 {

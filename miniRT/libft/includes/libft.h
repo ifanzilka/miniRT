@@ -92,7 +92,8 @@ void				ft_lstclear(t_list **lst, void (*del)(void*));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
-t_list				*ft_lst_cr_front(t_list **lst, void *content);						
+t_list				*ft_lst_cr_front(t_list **lst, void *content);	
+t_list				*ft_lst_cr_back(t_list **lst, void *content);					
 
 /*
 ** Two List
@@ -105,7 +106,7 @@ typedef struct s_l_list
   struct s_l_list *prev; // указатель на предыдущий элемент
 }               t_l_list;
 
-t_l_list *ft_l_lsnew(void  *content) ; // а- значение первого узла
+t_l_list *ft_l_lsnew(void  *content) ;
 void	ft_l_lstadd_front(t_l_list **lst,   t_l_list *new);
 void	ft_l_lstadd_back(t_l_list **lst,   t_l_list *new);
 void	ft_l_lstclear(t_l_list **lst,   void (*del)(void*));
@@ -113,5 +114,7 @@ void	ft_l_lstdelone(t_l_list *lst, void (*del)(void*));
 void	ft_l_lstiter(t_l_list *lst, void (*f)(void *));
 t_l_list    *ft_l_lstlast(t_l_list *lst);
 int 	ft_l_lstsize(t_l_list *lst);
+t_l_list    *ft_l_lst_cr_front(t_l_list **lst,   void *content);
+t_l_list    *ft_l_lst_cr_back(t_l_list **lst,   void *content);
 
 #endif

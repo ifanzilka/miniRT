@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lst_cr_front.c                                  :+:      :+:    :+:   */
+/*   ft_range.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/29 01:10:08 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/01/29 01:10:35 by bmarilli         ###   ########.fr       */
+/*   Created: 2021/01/30 18:53:28 by bmarilli          #+#    #+#             */
+/*   Updated: 2021/01/30 18:53:29 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <ray_tracing.h>
 
-t_list	*ft_lst_cr_front(t_list **lst, void *content)
+int     ft_in_range(t_range *range, double a)
 {
-	t_list *new;
-
-	if (!(new = ft_lstnew(content)))
-		return(NULL);
-	if (!lst)
-		return (NULL) ;
-	new->next = *lst;
-	*lst = new;
-	return(new);
-}
+    if (a >= range->min && a <= range->max)
+        return (1);
+    return (0);    
+} 

@@ -36,11 +36,7 @@
 
 int           ft_parse_tr(t_rt *rt , char *str)
 {
-    write(1,"FIND tr\n",8);
-    (void) str;
-    (void) rt;
     t_triangle *tr;
-    t_list  *newel;
     int i;
 
     i = 2;
@@ -62,9 +58,8 @@ int           ft_parse_tr(t_rt *rt , char *str)
     printf("reflective : %f\n",tr->reflective);       
     tr->specular = ft_atoi(str + i);
     printf("speculer : %d\n",tr->specular);       
-    if (!(newel = ft_lstnew(tr)))
-        ft_error(14);    
-    ft_lstadd_front(&rt->l_tr,newel); 
+    if (!(ft_lst_cr_front(&rt->l_tr,tr)))
+        ft_error(err_malloc);    
     /*printf("r: %d\n",tr->rgb.RED);
     printf("g: %d\n",tr->rgb.GREEN);
     printf("b: %d\n",tr->rgb.BLUE); */

@@ -37,55 +37,41 @@
 **  }	            t_cylinder;
 */
 
+static  void          ft_parse_specular_reflective(t_cylinder *cy, int i,char *str)
+{
+    cy->reflective = ft_atof(str + i);
+    ft_skip_atof(str,&i);    
+    cy->specular = ft_atoi(str + i);
+
+}
+
 int           ft_parse_cy(t_rt *rt,char *str)
 {
-    (void) rt;
-    (void) str;
-    int i;
-    write(1,"FIND cy\n",8);
     t_cylinder *cy;
-    t_list  *newel;
+    int i;
+ 
     i = 2;
     if (!(cy = malloc(sizeof(t_cylinder))))
-        ft_error(err_malloc);
+        ft_error_rt(err_malloc,rt);
     cy->cord = ft_atoi_xyz(str,&i);
     if (!ft_check_xyz(cy->cord))
-        ft_error(err_cy);
+        ft_error_rt(err_cy,rt);
     cy->normal = ft_atoi_xyz(str,&i);
     if (!ft_check_xyz(cy->cord) || !ft_check_normalizate(cy->normal))
-        ft_error(err_cy);
-     cy->normal = ft_xyz_normalaze(cy->normal); 
+        ft_error_rt(err_cy,rt);
+    cy->normal = ft_xyz_normalaze(cy->normal); 
     cy->diameter = ft_atof(str + i);
     ft_skip_atof(str, &i);
     cy->height = ft_atof(str +i);
     ft_skip_atof(str, &i);
     if (cy->diameter < 0.0 || cy->height < 0.0)
-        ft_error(err_cy);
+        ft_error_rt(err_cy,rt);
     cy->rgb = ft_atoirgb(str, &i);
     if (!ft_check_rgb(cy->rgb))
-        ft_error(err_cy);
-    cy->reflective = ft_atof(str + i);
-    ft_skip_atof(str,&i);
-    printf("reflective : %f\n",cy->reflective);       
-    cy->specular = ft_atoi(str + i);
-    printf("speculer : %d\n",cy->specular);  
-    if (!(newel = ft_lstnew(cy)))
-        ft_error(err_malloc);
-    ft_lstadd_front(&rt->l_cy,newel);     
-
-    /*
-    printf("x: %f\n",cy->cord.x);
-    printf("y: %f\n",cy->cord.y);
-    printf("z: %f\n",cy->cord.z);
-    printf("x: %f\n",cy->normal_orientr_vec.x);
-    printf("y: %f\n",cy->normal_orientr_vec.y);
-    printf("z: %f\n",cy->normal_orientr_vec.z);
-    printf("r: %d\n",cy->rgb.RED);
-    printf("g: %d\n",cy->rgb.GREEN);
-    printf("b: %d\n",cy->rgb.BLUE);
-    printf("d: %f\n",cy->diameter);
-    printf("h: %f\n",cy->height);
-    */
+        ft_error_rt(err_cy,rt);
+    ft_parse_specular_reflective(cy,i,str);
+    if (!(ft_lst_cr_front(&rt->l_cy,cy)))
+        ft_error(err_malloc);    
     rt->cnt.cy+=1;
     return (1);
 }

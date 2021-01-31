@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lst_cr_front.c                                  :+:      :+:    :+:   */
+/*   bmp.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/29 01:10:08 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/01/29 01:10:35 by bmarilli         ###   ########.fr       */
+/*   Created: 2021/01/30 18:37:14 by bmarilli          #+#    #+#             */
+/*   Updated: 2021/01/30 18:37:15 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+# ifndef BMP_H
+#define BMP_H
 
-t_list	*ft_lst_cr_front(t_list **lst, void *content)
-{
-	t_list *new;
+#include <ft_minirt.h>
+#include <mlx_win.h>
 
-	if (!(new = ft_lstnew(content)))
-		return(NULL);
-	if (!lst)
-		return (NULL) ;
-	new->next = *lst;
-	*lst = new;
-	return(new);
-}
+void     ft_create_bmp(t_rt *rt,t_img *img);
+
+#endif

@@ -20,8 +20,6 @@ typedef struct	s_xyz
                 double z;
 }	            t_xyz;
 
-
-
 t_xyz   ft_create_xyz(double x, double y,double z);
 t_xyz   ft_xyz_minus(t_xyz a, t_xyz b);
 t_xyz   ft_xyz_plus(t_xyz a, t_xyz b);

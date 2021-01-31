@@ -49,11 +49,9 @@ static void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triang
     if (t < pixel->t  && ft_in_range(range,t))
     {
 
-        //printf("ku ku\n");
-        //if (ft_xyz_scal() )
         pixel->t = t;
         pixel->rgb = tr->rgb;
-        pixel->normal = n;
+        pixel->normal = n;//ft_xyz_mult_db(n,-1.0);
         pixel->specular = tr->specular;//400;
         pixel->reflective = tr->reflective;
         pixel->id = triangle;

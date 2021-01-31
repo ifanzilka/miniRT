@@ -34,9 +34,7 @@
 
 int           ft_parse_l(t_rt *rt,char *str)
 {
-    write(1,"FIND l\n",7);
     t_light *light;
-    t_list  *newel;
     int i;
 
     if (!(light = malloc(sizeof(t_light))))
@@ -52,25 +50,8 @@ int           ft_parse_l(t_rt *rt,char *str)
     light->rgb = ft_atoirgb(str, &i);
     if (!ft_check_rgb(light->rgb))
         ft_error(err_l);
-    newel = ft_lstnew(light);
-    if (!newel)
-        write(1,"CRASH\n",6);
-    t_light *a;
-    a = newel->content;    
-    //printf(newel->content)    
-    write(1,"TY!\n",4);
-    ft_lstadd_front(&rt->l_light,newel);
-    write(1,"TYT\n",4);
-    if (rt->l_light == NULL)
-        printf("PZDC\n");       
-    /*printf("s:%s\n",str + i);    
-    printf("x:%f\n",(*rt).light.cord_l_point.x);
-    printf("y:%f\n",(*rt).light.cord_l_point.y);
-    printf("z:%f\n",(*rt).light.cord_l_point.z);
-    printf("lb:%f\n",(*rt).light.light_brightness);
-    printf("r:%d\n",(*rt).light.rgb.RED);
-    printf("g:%d\n",(*rt).light.rgb.GREEN);
-    printf("b:%d\n",(*rt).light.rgb.BLUE);*/
+    if (!(ft_lst_cr_front(&rt->l_light,light)))
+        ft_error(err_malloc);
     rt->cnt.l+=1;
     return (1);
 }

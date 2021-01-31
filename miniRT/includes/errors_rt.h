@@ -13,6 +13,8 @@
 #ifndef ERRORS_RT_H
 # define ERRORS_RT_H
 
+//#include <ft_minirt.h>
+
 typedef	enum
 {
     no_er,
@@ -34,6 +36,6 @@ typedef	enum
     err_argv
 }	t_errors;
 
-void        ft_error(int n);
+void    ft_error(int n);
 
 #endif

@@ -14,32 +14,7 @@
 #define RAY_TRACING_H
 
 #include <ft_minirt.h>
-
-/*
-**
-**  s_vars 
-**  mlx -> pointer libary
-**  win -> link for window 
-*/
-
-typedef struct  s_img {
-    void        *img;
-    char        *addr;
-    int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-}               t_img;
-
-typedef struct  s_vars 
-{
-    t_img       img;
-    void        *mlx;
-    void        *win;
-    void        *rt;
-    int         bmp;
-}                t_vars;
-
-
+#include <mlx_win.h>
 
 typedef struct  s_pixel 
 {
@@ -79,16 +54,14 @@ typedef struct s_cp_l
     t_xyz       r;
 }              t_cp_l;
 
+void    ft_percent_render(int x, int y, int width, int height);
+
 double  ft_convert_scr_to_dec_x(int cx, int width, double xmin, double xmax);
 double  ft_convert_scr_to_dec_y(int cy, int height, double  ymin, double  ymax);
 void    ft_rt_xy_convert(int *cx,int *cy, double *x,double *y,t_rt *rt);
 t_xyz   ft_create_v(double x, double y, int height, double z);
 t_xyz   ft_init_d(int *cx,int *cy,t_rt *rt);
 
-void            my_mlx_pixel_put(t_img *img, int x, int y, int color);
-void        ft_create_bmp(t_rt *rt,t_img *img);
-int     ft_init_disp(t_rt *rt);
-int     ft_init_img(t_rt *rt);
 int     cicle_for_pixel(t_rt *rt,t_vars *vars);
 int     ft_in_range(t_range *range, double a);
 void    ft_intersect_pl(t_xyz o,t_xyz d,t_pixel *pixel,t_range *range, t_plane *pl);
@@ -97,8 +70,12 @@ void    ft_l_pl(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 void    ft_l_tr(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 void    ft_l_sq(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
 void    ft_l_cy(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
+void    ft_iter_obj_close(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
+void    ft_iter_obj(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range);
+
 double  ClosestIntersection(t_rt *rt,t_xyz o, t_xyz d);
 t_rgb  ft_compute_lighting(t_rt *rt,t_xyz p, t_xyz n,t_xyz v,t_pixel *pixel);
+t_rgb     ft_ray_trace(t_rt *rt,t_xyz o,t_xyz d,t_range range,int rec);
 
 
 #endif

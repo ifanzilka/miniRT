@@ -59,7 +59,7 @@ t_rgb  ft_compute_lighting(t_rt *rt,t_xyz p, t_xyz n,t_xyz v,t_pixel *pixel)
     t_light *li;
     t_cp_l  *cp_l;
   
-    if (!(cp_l = malloc(sizeof(t_cp_l))) && !(ft_lst_cr_front(&rt->l_p, cp_l)))
+    if (!(cp_l = malloc(sizeof(t_cp_l))) || !(ft_lst_cr_front(&rt->l_p, cp_l)))
         ft_error_rt(err_malloc,rt);
     ft_init_color(rt,cp_l,pixel);
     l_light = rt->l_light;
@@ -80,3 +80,28 @@ t_rgb  ft_compute_lighting(t_rt *rt,t_xyz p, t_xyz n,t_xyz v,t_pixel *pixel)
    //free(cp_l);
     return (cp_l->color_pix);
 }
+
+// t_rgb  ft_compute_lighting(t_rt *rt,t_xyz p, t_xyz n,t_xyz v,t_pixel *pixel)
+// {
+//     t_list  *l_light;
+//     t_light *li;
+//     t_cp_l  cp_l;
+  
+//     ft_init_color(rt,&cp_l,pixel);
+//     l_light = rt->l_light;
+//     while(l_light)
+//     {
+//         li = l_light->content;
+//         ft_init_vectors_light(li,&cp_l, pixel, &n, &p);  
+//         if (ClosestIntersection(rt, p ,cp_l.l) != MAX_DB)
+//         {
+//             l_light = l_light->next;
+//             continue;
+//         }
+//         ft_add_color_li(&cp_l,&n,li);
+//         ft_add_color_li_sp(&cp_l,&v,li,&n,&pixel->specular);
+//         l_light = l_light->next;
+//     }
+//    //free(cp_l);
+//     return (cp_l.color_pix);
+// }

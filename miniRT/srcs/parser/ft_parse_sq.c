@@ -37,9 +37,7 @@
 
 int           ft_parse_sq(t_rt *rt , char *str)
 {
-     write(1,"FIND sq\n",8);
     t_square *sq;
-    t_list  *newel;
     int i;
 
     sq = malloc(sizeof(t_square));
@@ -55,7 +53,7 @@ int           ft_parse_sq(t_rt *rt , char *str)
     ft_skip_atof(str,&i);
     if (sq->side == inf)
         ft_error(11);
-   sq->rgb = ft_atoirgb(str,&i);
+    sq->rgb = ft_atoirgb(str,&i);
     if (!(ft_check_rgb(sq->rgb)))
         ft_error(11);
     sq->reflective = ft_atof(str + i);
@@ -63,9 +61,8 @@ int           ft_parse_sq(t_rt *rt , char *str)
     printf("reflective : %f\n",sq->reflective);       
     sq->specular = ft_atoi(str + i);
     printf("speculer : %d\n",sq->specular); 
-    if (!(newel = ft_lstnew(sq)))
-        ft_error(14);
-    ft_lstadd_front(&rt->l_sq,newel); 
+    if (!(ft_lst_cr_front(&rt->l_sq,sq)))
+        ft_error(err_malloc);    
     /*
     printf("x: %f\n",sq->cord_sq_cen.x);
     printf("y: %f\n",sq->cord_sq_cen.y);

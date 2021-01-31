@@ -34,10 +34,7 @@
 
 int           ft_parse_sp(t_rt *rt,char *str)
 {
-    write(1,"FIND sp\n",8);
-    (void) rt;
     t_sphere *sp;
-    t_list  *newel;
     int i;
 
     if (!(sp = malloc(sizeof(t_sphere))))
@@ -49,29 +46,16 @@ int           ft_parse_sp(t_rt *rt,char *str)
     sp->diametr = ft_atof(str + i);
     if (sp->diametr == inf || sp->diametr < 0.0)
         ft_error_rt(err_sp,rt);
-    sp->diametr = sp->diametr / 2.0;    
-    //printf("s1:%s\n",str + i);    
+    sp->diametr = sp->diametr / 2.0;       
     ft_skip_atof(str,&i);
-    //printf("s2:%s\n",str + i);
     sp->rgb = ft_atoirgb(str, &i);
     if (!ft_check_rgb(sp->rgb))
         ft_error_rt(err_sp,rt);
     sp->reflective = ft_atof(str + i);
-    ft_skip_atof(str,&i);
-    printf("reflective : %f\n",sp->reflective);       
+    ft_skip_atof(str,&i);     
     sp->specular = ft_atoi(str + i);
-    printf("speculer : %d\n",sp->specular);    
-    if ( !(newel = ft_lstnew(sp)))
-        ft_error(14);
-    write(1,"TYT\n",4); 
-    ft_lstadd_front(&rt->l_sphere,newel);
-    write(1,"TYT\n",4);
-    if (rt->l_sphere == NULL) 
-        printf("PZDC2\n");
-    //printf("x: %f\n",sp.coord_sph_centr.x);
-    //printf("y: %f\n",sp.coord_sph_centr.y);
-    //printf("z: %f\n",sp.coord_sph_centr.z);
-    //printf("di: %f\n",sp->diametr);
-    rt->cnt.sp+=1;
+    if (!(ft_lst_cr_front(&rt->l_sphere,sp)))
+        ft_error(err_malloc);    
+    rt->cnt.sp += 1;
     return(1);
 }

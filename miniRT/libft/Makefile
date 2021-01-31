@@ -48,8 +48,8 @@ SRCS	= $(DIR)ft_bzero.c 		$(DIR)ft_isalnum.c 	$(DIR)ft_calloc.c \
 		  $(DIR)ft_l_lstclear.c	$(DIR)ft_l_lstdelone.c	$(DIR)ft_l_lstiter.c\
 		  $(DIR)ft_l_lstlast.c $(DIR)ft_l_lstsize.c\
 		  $(DIR)ft_lstiter.c 	$(DIR)ft_lstclear.c\
-		  $(DIR)ft_lst_cr_front.c 
-
+		  $(DIR)ft_lst_cr_front.c \
+		  $(DIR)ft_l_lst_cr_back.c $(DIR)ft_l_lst_cr_front.c 
 
 F_NONE		= \033[37m
 F_BOLD		= \033[1m

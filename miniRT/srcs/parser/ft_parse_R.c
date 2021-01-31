@@ -32,16 +32,15 @@
 **  }			    t_resolution;
 */
 
-int            ft_parse_R(t_rt *rt,char *str)
+int            ft_parse_r(t_rt *rt,char *str)
 {
     int width;
     int height;
 
     if ((*rt).cnt.R > 1)
-         ft_error(err_r);
+         ft_error_rt(err_r,rt);
     width = -1;
     height = -1;
-    write(1,"FIND R\n",7);
     str++;
     width = ft_atoi(str);
     while (*str && (ft_isspace(*str)))
@@ -53,6 +52,6 @@ int            ft_parse_R(t_rt *rt,char *str)
     rt->reso.height = height;
     rt->cnt.R += 1;
     if (width <= 0 || height <= 0)
-        ft_error(err_r);
+        ft_error_rt(err_r,rt);
     return (1);
 }
