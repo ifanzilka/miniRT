@@ -67,7 +67,7 @@ RGB_SRCS = $(DIR_RGB)rgb.c
 VEC_SRCS = $(DIR_VEC)vectors.c
 KEYS_SRCS = $(DIR_KEYS)buttons.c	$(DIR_KEYS)buttons2.c $(DIR_KEYS)buttons3.c
 BMP_SRCS = $(DIR_BMP)ft_create_bmp.c
-MLX_WIN_SRCS = $(DIR_MLX_WIN)mlx_win.c
+MLX_WIN_SRCS = $(DIR_MLX_WIN)mlx_win.c $(DIR_MLX_WIN)key_hook.c
 
 AR		= ar rc
 

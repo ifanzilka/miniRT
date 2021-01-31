@@ -36,9 +36,6 @@ int		create_rgb(int r, int g, int b)
 
 t_rgb	ft_rgb_mult_db(t_rgb rgb, double a)
 {
-	int		max;
-	double	kf;
-
 	rgb.red = (int)((double)rgb.red * a);
 	rgb.green = (int)((double)rgb.green * a);
 	rgb.blue = (int)((double)rgb.blue * a);
@@ -54,8 +51,6 @@ t_rgb	ft_rgb_mult_db(t_rgb rgb, double a)
 t_rgb	ft_rgb_plus_rgb(t_rgb a, t_rgb b)
 {
 	t_rgb	rgb;
-	int		max;
-	double	kf;
 
 	rgb.red = a.red + b.red;
 	rgb.green = a.green + b.green;
