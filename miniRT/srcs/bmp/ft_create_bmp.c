@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 17:52:05 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/01/31 15:47:42 by ifanzilka        ###   ########.fr       */
+/*   Updated: 2021/01/31 17:43:25 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void				ft_create_bmp(t_rt *rt, t_img *img)
 {
 	int fd;
 
-	if ((fd = open("screen.bmp", O_CREAT | O_WRONLY | O_TRUwNC, 0655)) > 1)
+	if ((fd = open("screen.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0655)) > 1)
 	{
 		ft_create_file_header(rt, fd);
 		ft_create_info_header(rt, fd);
