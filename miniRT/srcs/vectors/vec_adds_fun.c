@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:05:02 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/02/01 17:06:05 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/01 17:26:32 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 **  return vec(xyz)
 */
 
-t_xyz ft_r_u_n_mult_xyz(t_xyz r, t_xyz u,t_xyz n , t_xyz d)
+t_xyz	ft_r_u_n_mult_xyz(t_xyz r, t_xyz u, t_xyz n, t_xyz d)
 {
-    t_xyz res;
+	t_xyz res;
 
-    res.x = r.x * d.x + r.y * d.y + r.z * d.z;
-    res.y = u.x * d.x + u.y * d.y + u.z * d.z;
-    res.z = n.x * d.x + n.y * d.y + n.z * d.z;
-    return (res);
+	res.x = r.x * d.x + r.y * d.y + r.z * d.z;
+	res.y = u.x * d.x + u.y * d.y + u.z * d.z;
+	res.z = n.x * d.x + n.y * d.y + n.z * d.z;
+	return (res);
 }
 
 /*
@@ -35,12 +35,12 @@ t_xyz ft_r_u_n_mult_xyz(t_xyz r, t_xyz u,t_xyz n , t_xyz d)
 **  /return 2 * N * dot(N, R) - R;
 */
 
- t_xyz   ft_reflect_ray(t_xyz r, t_xyz n) 
- {
-    t_xyz res;
+t_xyz	ft_reflect_ray(t_xyz r, t_xyz n)
+{
+	t_xyz	res;
 
-    res = ft_xyz_mult_db(n,2);
-    res = ft_xyz_mult_db(res,ft_xyz_scal(n,r));
-    res = ft_xyz_minus(res,r);
-    return (res);
+	res = ft_xyz_mult_db(n, 2);
+	res = ft_xyz_mult_db(res, ft_xyz_scal(n, r));
+	res = ft_xyz_minus(res, r);
+	return (res);
 }
