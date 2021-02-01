@@ -62,8 +62,8 @@ void ft_init_t_rt(t_rt *rt)
 {
     rt->reso.height = -1;
     rt->reso.width = -1;
-    rt->cnt.R = 0;
-    rt->cnt.A = 0;
+    rt->cnt.r = 0;
+    rt->cnt.a = 0;
     rt->cnt.c = 0;
     rt->cnt.l = 0;
     rt->cnt.sp = 0;
@@ -84,7 +84,7 @@ void ft_init_t_rt(t_rt *rt)
 
 int ft_check_t_rt(t_rt *rt)
 {
-    if (rt->cnt.R < 1|| rt->cnt.c < 1 || rt->cnt.A < 1)
+    if (rt->cnt.r < 1|| rt->cnt.c < 1 || rt->cnt.a < 1)
         return(1);
     else if (ft_lstsize(rt->l_light) != rt->cnt.l)
         return(1);

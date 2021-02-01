@@ -13,11 +13,11 @@
 #include <ft_minirt.h>
 #include <parse.h>
 
-//#define inf 1.0 / 0.0
+//#define INF 1.0 / 0.0
 
 int                    ft_check_xyz(t_xyz xyz_t)
 {
-    if (xyz_t.x == inf || xyz_t.y == inf || xyz_t.z == inf)
+    if (xyz_t.x == INF|| xyz_t.y == INF || xyz_t.z == INF)
         return (0);
     return (1);
 }
@@ -44,9 +44,9 @@ t_xyz          ft_atoi_xyz(char *str, int *j)
     int i;
 
     i = *j;
-    xyz.x = 1.0 / 0;
-    xyz.y = 1.0 / 0;
-    xyz.z = 1.0 / 0;
+    xyz.x = INF;
+    xyz.y = INF;
+    xyz.z = INF;
     xyz.x = ft_atof(str + i);
     ft_miss(str,&i);
     if (!(str[i] && (str[i] == ',') && (i++)))

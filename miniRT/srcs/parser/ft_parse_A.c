@@ -43,6 +43,6 @@ int            ft_parse_a(t_rt *rt,char *str)
     (*rt).al.rgb = ft_atoirgb(str, &i);
     if (!(ft_check_rgb((*rt).al.rgb)))
         ft_error_rt(err_a,rt);    
-    rt->cnt.A += 1;    
+    rt->cnt.a += 1;    
     return (1);
 }

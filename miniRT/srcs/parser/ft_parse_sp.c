@@ -44,7 +44,7 @@ int           ft_parse_sp(t_rt *rt,char *str)
     if (!ft_check_xyz(sp->coord_sph_centr))
         ft_error(err_sp);
     sp->diametr = ft_atof(str + i);
-    if (sp->diametr == inf || sp->diametr < 0.0)
+    if (sp->diametr == INF || sp->diametr < 0.0)
         ft_error_rt(err_sp,rt);
     sp->diametr = sp->diametr / 2.0;       
     ft_skip_atof(str,&i);

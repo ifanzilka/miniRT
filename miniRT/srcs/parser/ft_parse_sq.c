@@ -51,7 +51,7 @@ int           ft_parse_sq(t_rt *rt , char *str)
     sq->normal = ft_xyz_normalaze(sq->normal);    
     sq->side = ft_atof(str + i);
     ft_skip_atof(str,&i);
-    if (sq->side == inf)
+    if (sq->side == INF)
         ft_error(11);
     sq->rgb = ft_atoirgb(str,&i);
     if (!(ft_check_rgb(sq->rgb)))

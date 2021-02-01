@@ -37,7 +37,7 @@ int            ft_parse_r(t_rt *rt,char *str)
     int width;
     int height;
 
-    if ((*rt).cnt.R > 1)
+    if ((*rt).cnt.r > 1)
          ft_error_rt(err_r,rt);
     width = -1;
     height = -1;
@@ -50,7 +50,7 @@ int            ft_parse_r(t_rt *rt,char *str)
     height = ft_atoi(str);
     rt->reso.width = width;
     rt->reso.height = height;
-    rt->cnt.R += 1;
+    rt->cnt.r += 1;
     if (width <= 0 || height <= 0)
         ft_error_rt(err_r,rt);
     return (1);
