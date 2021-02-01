@@ -28,24 +28,6 @@ t_rgb   ft_recurse_color(t_rgb  ref_col, t_rgb  loc_col, double reflective)
 }
 
 
-/*
-**  o vec -> point in obk=ject
-**  d -> vec in light
-**
-**
-*/
-
-double ClosestIntersection(t_rt *rt,t_xyz o, t_xyz d)
-{
-    t_pixel pixel;
-    t_range range;
-
-    range.min = 0.000001;
-    range.max = 0.999999;
-    pixel.t = MAX_DB;
-    ft_iter_obj_close(rt, &pixel, o, d,&range);
-    return (pixel.t);
-}
 
 
 /*

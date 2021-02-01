@@ -53,6 +53,26 @@ void    ft_init_vectors_light(t_light *li,t_cp_l *cp_l,t_pixel *pixel,t_xyz *n, 
     }
 }
 
+/*
+**  o vec -> point in obk=ject
+**  d -> vec in light
+**
+**
+*/
+
+double closestintersection(t_rt *rt,t_xyz o, t_xyz d)
+{
+    t_pixel pixel;
+    t_range range;
+
+    range.min = 0.000001;
+    range.max = 0.999999;
+    pixel.t = MAX_DB;
+    ft_iter_obj_close(rt, &pixel, o, d,&range);
+    return (pixel.t);
+}
+
+
 t_rgb  ft_compute_lighting(t_rt *rt,t_xyz p, t_xyz n,t_xyz v,t_pixel *pixel)
 {
     t_list  *l_light;
@@ -68,7 +88,7 @@ t_rgb  ft_compute_lighting(t_rt *rt,t_xyz p, t_xyz n,t_xyz v,t_pixel *pixel)
         li = l_light->content;
         ft_init_vectors_light(li,cp_l, pixel, &n, &p);  
 
-        if (ClosestIntersection(rt, p ,cp_l->l) != MAX_DB)
+        if (closestintersection(rt, p ,cp_l->l) != MAX_DB)
         {
             l_light = l_light->next;
             continue;
