@@ -64,7 +64,7 @@ RayTracing_SRCS = 	$(DIR_RayTracing)start_rt.c $(DIR_RayTracing)cicle.c $(DIR_Ra
 					$(DIR_RayTracing)ft_iter_objs.c   $(DIR_RayTracing)ft_percent_render.c\
 					$(DIR_RayTracing)ft_ray_trace.c
 RGB_SRCS = $(DIR_RGB)rgb.c
-VEC_SRCS = $(DIR_VEC)vectors.c
+VEC_SRCS = $(DIR_VEC)vectors.c $(DIR_VEC)vec_adds_fun.c $(DIR_VEC)vec_operation.c
 KEYS_SRCS = $(DIR_KEYS)buttons.c	$(DIR_KEYS)buttons2.c $(DIR_KEYS)buttons3.c
 BMP_SRCS = $(DIR_BMP)ft_create_bmp.c
 MLX_WIN_SRCS = $(DIR_MLX_WIN)mlx_win.c $(DIR_MLX_WIN)key_hook.c
