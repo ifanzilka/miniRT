@@ -6,16 +6,16 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 18:37:14 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/01/30 18:37:15 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/01 17:40:39 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef BMP_H
-#define BMP_H
+#ifndef BMP_H
+# define BMP_H
 
-#include <ft_minirt.h>
-#include <mlx_win.h>
+# include <ft_minirt.h>
+# include <mlx_win.h>
 
-void     ft_create_bmp(t_rt *rt,t_img *img);
+void	ft_create_bmp(t_rt *rt, t_img *img);
 
 #endif
