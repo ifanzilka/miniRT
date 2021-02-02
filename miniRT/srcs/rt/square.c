@@ -85,6 +85,12 @@ void     ft_intersect_ray_square(t_xyz o,t_xyz dir,t_pixel *pixel,t_square *sq, 
     d = ft_xyz_minus(c_d,ft_xyz_mult_db(n_up,sq->side / 2));
     c = ft_xyz_plus(c_d,ft_xyz_mult_db(n_up,sq->side / 2));
 
+    // printf("a : %f, %f, %f \n",a.x,a.y,a.z);
+    // printf("b : %f, %f, %f \n",b.x,b.y,b.z);
+    // printf("c : %f, %f, %f \n",c.x,c.y,c.z);
+    // printf("d : %f, %f, %f \n",d.x,d.y,d.z);
+
+
     t_xyz ab;
     t_xyz bc;
     t_xyz cd;

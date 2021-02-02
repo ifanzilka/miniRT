@@ -48,6 +48,7 @@ DIR_VEC = ./srcs/vectors/
 DIR_KEYS = ./srcs/keyboard/
 DIR_BMP = ./srcs/bmp/
 DIR_MLX_WIN = ./srcs/mlx_win/
+DIR_CLEAR = ./srcs/clear/
 
 SRCS = $(DIR)main.c 
 GNL_SRCS = $(DIR_GNL)get_next_line.c $(DIR_GNL)get_next_line_utils.c
@@ -56,7 +57,7 @@ PARSER_SRCS =	$(DIR_PARSER)ft_parse_rt.c	$(DIR_PARSER)ft_atoirgb.c 	$(DIR_PARSER
 				$(DIR_PARSER)ft_parse_l.c	$(DIR_PARSER)ft_parse_sp.c	$(DIR_PARSER)ft_parse_cy.c\
 				$(DIR_PARSER)ft_parse_pl.c	$(DIR_PARSER)ft_parse_sq.c	$(DIR_PARSER)ft_parse_tr.c
 
-ERROR_SRCS = $(DIR_ERROR)ft_error.c
+ERROR_SRCS = $(DIR_ERROR)ft_error.c $(DIR_CLEAR)ft_clear.c
 RayTracing_SRCS = 	$(DIR_RayTracing)start_rt.c $(DIR_RayTracing)cicle.c $(DIR_RayTracing)sphere.c \
 					$(DIR_RayTracing)plane.c $(DIR_RayTracing)triangle.c $(DIR_RayTracing)square.c \
 					$(DIR_RayTracing)cylinder.c	$(DIR_RayTracing)compute_light.c $(DIR_RayTracing)converts.c\
