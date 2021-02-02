@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:05:02 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/02/01 17:26:32 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/02 23:45:56 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,15 @@ t_xyz	ft_reflect_ray(t_xyz r, t_xyz n)
 	res = ft_xyz_mult_db(res, ft_xyz_scal(n, r));
 	res = ft_xyz_minus(res, r);
 	return (res);
+}
+
+int		ft_check_normalizate(t_xyz xyz)
+{
+	if (xyz.x > 1.0 || xyz.x < -1.0 || xyz.y > 1.0 || xyz.y < -1.0
+			|| xyz.z > 1.0 || xyz.z < -1.0)
+		return (0);
+	if (xyz.x + xyz.y + xyz.z < 0.0001 && xyz.x +
+			xyz.y + xyz.z > -0.0001)
+		return (0);
+	return (1);
 }

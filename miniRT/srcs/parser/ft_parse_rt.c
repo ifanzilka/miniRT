@@ -24,15 +24,6 @@
 ** strerror(error) -> pointer in str with error  
 */
 
-int ft_check_normalizate(t_xyz xyz)
-{
-    if (xyz.x > 1.0 || xyz.x < -1.0 || xyz.y > 1.0 || xyz.y < -1.0 || xyz.z > 1.0 || xyz.z < -1.0)
-        return (0);
-    if (xyz.x + xyz.y + xyz.z < 0.0001 && xyz.x + xyz.y + xyz.z > -0.0001)
-        return (0);
-    return (1);
-}
-
 void ft_parse_str(char *str, t_rt *rt)
 {
     if (ft_strnstr(str, " ", 1) || ft_strnstr(str, "\n", 1))
