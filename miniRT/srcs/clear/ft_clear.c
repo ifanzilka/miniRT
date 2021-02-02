@@ -30,5 +30,6 @@ void	ft_clear_rt(t_rt *rt)
 	ft_lstclear(&(rt->l_p), del_obj);
 	ft_l_lstclear(&(rt->ll_camera), del_obj);
 	ft_lstclear(&(rt->l_p), del_obj);
+	ft_garbage_collector(NULL, M_ADD);
 	free(rt);
 }
