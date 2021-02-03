@@ -14,7 +14,7 @@
 #include <ray_tracing.h>
 #include <bmp.h>
 #ifndef DEPTH
-# define DEPTH 1
+# define DEPTH 3
 #endif
 
 /*

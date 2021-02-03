@@ -39,7 +39,7 @@ t_rgb	ft_recurse_color(t_rgb ref_col, t_rgb loc_col, double reflective)
 
 t_rgb	ft_ray_trace(t_rt *rt, t_xyz o, t_xyz d, int rec)
 {
-	t_xyz	p;
+	//t_xyz	p;
 	t_xyz	r;
 	t_pixel	*pixel;
 	t_rgb	ref_color;
@@ -51,12 +51,12 @@ t_rgb	ft_ray_trace(t_rt *rt, t_xyz o, t_xyz d, int rec)
 	ft_iter_obj(rt, pixel, o, d, &(t_range){0.0001, MAX_DB});
 	if (pixel->t == MAX_DB)
 		return (pixel->rgb);
-	p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel->t * 0.9999));
-	pixel->rgb = ft_compute_lighting(rt, p, pixel->normal,
+	pixel->p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel->t * 0.9999));
+	pixel->rgb = ft_compute_lighting(rt, pixel->normal,
 			ft_xyz_mult_db(d, -1.0), pixel);
 	if (rec <= 0 || pixel->reflective <= 0.01)
 		return (pixel->rgb);
 	r = ft_reflect_ray(ft_xyz_mult_db(d, -1.0), pixel->normal);
-	ref_color = ft_ray_trace(rt, p, r, rec - 1);
+	ref_color = ft_ray_trace(rt, pixel->p, r, rec - 1);
 	return (ft_recurse_color(ref_color, pixel->rgb, pixel->reflective));
 }

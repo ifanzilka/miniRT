@@ -53,6 +53,7 @@ typedef struct	s_cp_l
 	t_rgb		color_pix;
 	t_xyz		l;
 	t_xyz		r;
+	int			spec;
 }				t_cp_l;
 
 void			ft_percent_render(int x, int y, int width,
@@ -84,8 +85,7 @@ void			ft_iter_obj_close(t_rt *rt, t_pixel *pixel, t_xyz o,
 					t_xyz d, t_range *range);
 void			ft_iter_obj(t_rt *rt, t_pixel *pixel, t_xyz o, t_xyz d,
 					t_range *range);
-double			closestintersection(t_rt *rt, t_xyz o, t_xyz d);
-t_rgb			ft_compute_lighting(t_rt *rt, t_xyz p, t_xyz n,
+t_rgb			ft_compute_lighting(t_rt *rt, t_xyz n,
 					t_xyz v, t_pixel *pixel);
 t_rgb			ft_ray_trace(t_rt *rt, t_xyz o,
 					t_xyz d, int rec);
