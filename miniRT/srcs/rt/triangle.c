@@ -16,7 +16,7 @@
 
 
 
-static void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triangle *tr,t_range *range)
+static void    ft_intersect_ray_triangle(t_lutch luc,t_pixel *pixel,t_triangle *tr,t_range *range)
 {
     t_xyz v1;
     t_xyz v2;
@@ -28,13 +28,13 @@ static void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triang
     v1 = ft_xyz_minus(tr->second,tr->first);
     v2 = ft_xyz_minus(tr->third,tr->first);
     n = ft_xyz_mult_xyz(v1,v2);
-    v1d = ft_xyz_mult_xyz(v2,d);
+    v1d = ft_xyz_mult_xyz(v2,luc.d);
     scal_v2_v1d = ft_xyz_scal(v1,v1d);
     if (fabs(scal_v2_v1d) < 0.01)
         return;
      t_xyz vec;
 
-    vec = ft_xyz_minus(o, tr->first);
+    vec = ft_xyz_minus(luc.o, tr->first);
     double u;
     u = ft_xyz_scal(vec,v1d) / scal_v2_v1d;   
     if (u < 0.0 || u > 1.0)
@@ -42,7 +42,7 @@ static void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triang
     t_xyz q_vec;
     q_vec = ft_xyz_mult_xyz(v1,vec); 
     double v;
-    v = ft_xyz_scal(d,q_vec) / scal_v2_v1d;
+    v = ft_xyz_scal(luc.d,q_vec) / scal_v2_v1d;
     if (v < 0.0 || u + v > 1.0)
         return ;
     t = ft_xyz_scal(v2, q_vec) / scal_v2_v1d;
@@ -58,7 +58,7 @@ static void    ft_intersect_ray_triangle(t_xyz o,t_xyz d,t_pixel *pixel,t_triang
     }
 }
 
-void    ft_l_tr(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
+void    ft_l_tr(t_rt *rt,t_pixel *pixel,t_lutch luc,t_range *range)
 {
     t_list      *l_tr;
     t_triangle  *tr;
@@ -67,7 +67,7 @@ void    ft_l_tr(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
     while (l_tr)
     {
         tr = l_tr->content;
-        ft_intersect_ray_triangle(o,d,pixel,tr, range);
+        ft_intersect_ray_triangle(luc,pixel,tr, range);
         l_tr = l_tr->next;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:04:28 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/02/03 16:58:01 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/03 18:07:04 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_rgb	ft_recurse_color(t_rgb ref_col, t_rgb loc_col, double reflective)
 
 t_rgb	ft_ray_trace(t_rt *rt, t_xyz o, t_xyz d, int rec)
 {
-	//t_xyz	p;
 	t_xyz	r;
 	t_pixel	*pixel;
 	t_rgb	ref_color;
@@ -48,7 +47,7 @@ t_rgb	ft_ray_trace(t_rt *rt, t_xyz o, t_xyz d, int rec)
 		ft_error_rt(err_malloc, rt);
 	pixel->t = MAX_DB;
 	pixel->rgb = ft_rgb_mult_db(rt->al.rgb, rt->al.light);
-	ft_iter_obj(rt, pixel, o, d, &(t_range){0.0001, MAX_DB});
+	ft_iter_obj(rt, pixel, (t_lutch){o, d}, &(t_range){0.0001, MAX_DB});
 	if (pixel->t == MAX_DB)
 		return (pixel->rgb);
 	pixel->p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel->t * 0.9999));

@@ -14,7 +14,7 @@
 #include <ft_minirt.h>
 #include <ray_tracing.h>
 
-void        ft_intersect_cy(t_xyz o, t_xyz d, t_pixel *pixel, t_range *range,t_cylinder *cy)
+void        ft_intersect_cy(t_lutch luc, t_pixel *pixel, t_range *range,t_cylinder *cy)
 {
     //printf("1\n");
     double a;
@@ -25,6 +25,8 @@ void        ft_intersect_cy(t_xyz o, t_xyz d, t_pixel *pixel, t_range *range,t_c
     double t2;
     t_xyz minp;
     t_xyz maxp;
+    t_xyz o = luc.o;
+    t_xyz d = luc.d;
 
     t_xyz oc;
     minp = ft_xyz_minus(cy->cord,ft_xyz_mult_db(cy->normal
@@ -107,7 +109,7 @@ void        ft_intersect_cy(t_xyz o, t_xyz d, t_pixel *pixel, t_range *range,t_c
     }
 }
 
-void        ft_l_cy(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
+void        ft_l_cy(t_rt *rt,t_pixel *pixel,t_lutch luc,t_range *range)
 {
     t_list  *l_cy;
     t_cylinder *cy;
@@ -116,7 +118,7 @@ void        ft_l_cy(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
     while (l_cy)
     {
         cy = l_cy->content;
-        ft_intersect_cy(o, d, pixel,range,cy);
+        ft_intersect_cy(luc, pixel,range,cy);
         l_cy = l_cy->next;
     }
 }

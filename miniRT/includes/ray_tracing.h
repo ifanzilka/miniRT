@@ -35,7 +35,16 @@ typedef struct	s_kf_abc
 	double		t1;
 	double		t2;
 	double		discr;
+	t_xyz 		o;
+	t_xyz		d;
+	t_xyz		oc;
 }				t_kf_abc;
+
+typedef struct	s_lutch
+{
+	t_xyz	o;
+	t_xyz	d;
+}				t_lutch;
 
 /*
 **   ft_compute_lighting
@@ -69,21 +78,21 @@ t_xyz			ft_create_v(double x, double y,
 t_xyz			ft_init_d(int *cx, int *cy, t_rt *rt);
 int				cicle_for_pixel(t_rt *rt, t_vars *vars);
 int				ft_in_range(t_range *range, double a);
-void			ft_intersect_pl(t_xyz o, t_xyz d, t_pixel *pixel,
+void			ft_intersect_pl(t_lutch luc, t_pixel *pixel,
 					t_range *range, t_plane *pl);
-void			ft_l_sp(t_rt *rt, t_pixel *pixel, t_xyz o,
-					t_xyz d, t_range *range);
-void			ft_l_pl(t_rt *rt, t_pixel *pixel, t_xyz o,
-					t_xyz d, t_range *range);
-void			ft_l_tr(t_rt *rt, t_pixel *pixel, t_xyz o,
-					t_xyz d, t_range *range);
-void			ft_l_sq(t_rt *rt, t_pixel *pixel, t_xyz o,
-					t_xyz d, t_range *range);
-void			ft_l_cy(t_rt *rt, t_pixel *pixel, t_xyz o,
-					t_xyz d, t_range *range);
-void			ft_iter_obj_close(t_rt *rt, t_pixel *pixel, t_xyz o,
-					t_xyz d, t_range *range);
-void			ft_iter_obj(t_rt *rt, t_pixel *pixel, t_xyz o, t_xyz d,
+void			ft_l_sp(t_rt *rt, t_pixel *pixel, 
+					t_lutch luc, t_range *range);
+void			ft_l_pl(t_rt *rt, t_pixel *pixel,
+					t_lutch luc, t_range *range);
+void			ft_l_tr(t_rt *rt, t_pixel *pixel,
+					t_lutch luc, t_range *range);
+void			ft_l_sq(t_rt *rt, t_pixel *pixel,
+					t_lutch luc, t_range *range);
+void			ft_l_cy(t_rt *rt, t_pixel *pixel, 
+					t_lutch luc, t_range *range);
+void			ft_iter_obj_close(t_rt *rt, t_pixel *pixel,
+					t_lutch luc, t_range *range);
+void			ft_iter_obj(t_rt *rt, t_pixel *pixel, t_lutch lut,
 					t_range *range);
 t_rgb			ft_compute_lighting(t_rt *rt, t_xyz n,
 					t_xyz v, t_pixel *pixel);

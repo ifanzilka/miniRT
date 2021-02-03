@@ -46,16 +46,20 @@
 //     }
 // }
 
-void     ft_intersect_ray_square(t_xyz o,t_xyz dir,t_pixel *pixel,t_square *sq, t_range *range)
+void     ft_intersect_ray_square(t_lutch luc,t_pixel *pixel,t_square *sq, t_range *range)
 {   
     t_pixel pixel_loc;
     t_plane pl;
     double t;
+    t_xyz o;
+    t_xyz dir;
 
+    o = luc.o;
+    dir = luc.d;
     pixel_loc.t =  MAX_DB;
     pl.normal = sq->normal;
     pl.cord = sq->cord;
-    ft_intersect_pl( o, dir, &pixel_loc,range,&pl);
+    ft_intersect_pl( luc, &pixel_loc,range,&pl);
     if (pixel_loc.t == MAX_DB)
         return;  
     t = pixel_loc.t;
@@ -186,7 +190,7 @@ void     ft_intersect_ray_square(t_xyz o,t_xyz dir,t_pixel *pixel,t_square *sq, 
 }
 
 
-void    ft_l_sq(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
+void    ft_l_sq(t_rt *rt,t_pixel *pixel,t_lutch luc,t_range *range)
 {
     t_list      *l_sq;
     t_square *sq;
@@ -195,7 +199,7 @@ void    ft_l_sq(t_rt *rt,t_pixel *pixel,t_xyz o,t_xyz d,t_range *range)
     while (l_sq)
     {
         sq = l_sq->content;
-        ft_intersect_ray_square(o,d,pixel,sq, range);
+        ft_intersect_ray_square(luc,pixel,sq, range);
         l_sq = l_sq->next;
     }
 }
