@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/26 18:49:49 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/02/01 20:14:47 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/03 22:55:50 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct	s_kf_abc
 	double		t1;
 	double		t2;
 	double		discr;
-	t_xyz 		o;
+	t_xyz		o;
 	t_xyz		d;
 	t_xyz		oc;
 }				t_kf_abc;
@@ -45,56 +45,56 @@ typedef struct	s_param_tr
 	t_xyz	v1;
 	t_xyz	v2;
 	t_xyz	n;
-    t_xyz	v1d;
+	t_xyz	v1d;
 	t_xyz	vec;
-	t_xyz 	q_vec;
-    double	scal_v2_v1d;
-    double	t;
+	t_xyz	q_vec;
+	double	scal_v2_v1d;
+	double	t;
 	double	u;
 	double	v;
 }				t_param_tr;
 
 typedef struct	s_param_sq
 {
-	t_xyz p;
-	t_xyz n_r;
-    t_xyz n_up;
-    t_xyz a;
-    t_xyz b;
-    t_xyz c;
-    t_xyz d;
-    t_xyz c_d;
-    t_xyz a_b;
-	t_xyz ab;
-    t_xyz bc;
-    t_xyz cd;
-    t_xyz da;
-	t_xyz n_ab;
-    t_xyz n_bc;
-    t_xyz n_cd;
-    t_xyz n_da;
-	double ans;
+	t_xyz	p;
+	t_xyz	n_r;
+	t_xyz	n_up;
+	t_xyz	a;
+	t_xyz	b;
+	t_xyz	c;
+	t_xyz	d;
+	t_xyz	c_d;
+	t_xyz	a_b;
+	t_xyz	ab;
+	t_xyz	bc;
+	t_xyz	cd;
+	t_xyz	da;
+	t_xyz	n_ab;
+	t_xyz	n_bc;
+	t_xyz	n_cd;
+	t_xyz	n_da;
+	double	ans;
 	double	t;
 }				t_param_sq;
 
 typedef struct	s_param_cy
 {
 	double	a;
-    double	b;
-    double	c;
-    double	discr;
-    double	t1;
-    double	t2;
-    t_xyz	minp;
-    t_xyz	maxp;
-    t_xyz o;
-    t_xyz d;
-	t_xyz oc;
-	double m;
-	t_xyz n;
-    t_xyz p;
-    t_xyz p1;
-    t_xyz p2;
+	double	b;
+	double	c;
+	double	discr;
+	double	t1;
+	double	t2;
+	t_xyz	minp;
+	t_xyz	maxp;
+	t_xyz	o;
+	t_xyz	d;
+	t_xyz	oc;
+	double	m;
+	t_xyz	n;
+	t_xyz	p;
+	t_xyz	p1;
+	t_xyz	p2;
 }				t_param_cy;
 
 typedef struct	s_lutch
@@ -137,7 +137,7 @@ int				cicle_for_pixel(t_rt *rt, t_vars *vars);
 int				ft_in_range(t_range *range, double a);
 void			ft_intersect_pl(t_lutch luc, t_pixel *pixel,
 					t_range *range, t_plane *pl);
-void			ft_l_sp(t_rt *rt, t_pixel *pixel, 
+void			ft_l_sp(t_rt *rt, t_pixel *pixel,
 					t_lutch luc, t_range *range);
 void			ft_l_pl(t_rt *rt, t_pixel *pixel,
 					t_lutch luc, t_range *range);
@@ -145,7 +145,7 @@ void			ft_l_tr(t_rt *rt, t_pixel *pixel,
 					t_lutch luc, t_range *range);
 void			ft_l_sq(t_rt *rt, t_pixel *pixel,
 					t_lutch luc, t_range *range);
-void			ft_l_cy(t_rt *rt, t_pixel *pixel, 
+void			ft_l_cy(t_rt *rt, t_pixel *pixel,
 					t_lutch luc, t_range *range);
 void			ft_iter_obj_close(t_rt *rt, t_pixel *pixel,
 					t_lutch luc, t_range *range);

@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 22:25:55 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/02/03 00:44:05 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/03 22:50:04 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		ft_parse_c(t_rt *rt, char *str)
 			|| camera->direction.z == INF)
 		ft_error_rt(err_c, rt);
 	camera->direction.y *= -1;
-	camera->direction.x *= -1;	
+	camera->direction.x *= -1;
 	camera->fov = ft_atof(str + i);
 	if ((camera->fov < 0.0) || (camera->fov) > 180.0)
 		ft_error_rt(err_c, rt);
