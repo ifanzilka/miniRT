@@ -6,119 +6,85 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:52:07 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/01/25 16:52:10 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/03 22:46:04 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <ft_minirt.h>
 #include <ray_tracing.h>
 
-void        ft_intersect_cy(t_lutch luc, t_pixel *pixel, t_range *range,t_cylinder *cy)
+static void	ft_copy_param(t_param_cy *par, t_pixel *pixel,
+		t_cylinder *cy, double t)
 {
-    //printf("1\n");
-    double a;
-    double b;
-    double c;
-    double discr;
-    double t1;
-    double t2;
-    t_xyz minp;
-    t_xyz maxp;
-    t_xyz o = luc.o;
-    t_xyz d = luc.d;
-
-    t_xyz oc;
-    minp = ft_xyz_minus(cy->cord,ft_xyz_mult_db(cy->normal
-    ,cy->height / 2.0));
-    maxp = ft_xyz_plus(cy->cord,ft_xyz_mult_db(cy->normal,cy->height / 2.0));
-
-    oc = ft_xyz_minus(o,minp);
-    a = ft_xyz_scal(d,d) - pow(ft_xyz_scal(d,cy->normal),2);
-    c = ft_xyz_scal(oc,oc) - pow(ft_xyz_scal(oc,cy->normal),2) - pow(cy->diameter / 2.0,2);
-    b = 2 * (ft_xyz_scal(d,oc) - ft_xyz_scal(d,cy->normal) * ft_xyz_scal(oc,cy->normal));
-
-    if ((discr = b * b - 4 * a * c ) < 0.0)
-        return;
-    t1 = (-b + sqrt(discr)) / (2 * a);
-    t2 = (-b - sqrt(discr)) / (2 * a);
-
-
-    double m;
-
-    t_xyz p1;
-    t_xyz p2;
-
-    p1 = ft_xyz_plus(o, ft_xyz_mult_db(d, t1 * 0.999));
-    p2 = ft_xyz_plus(o, ft_xyz_mult_db(d, t2 * 0.999));
-
-
-    //ft_intersect_pl(o,d,pixel,range,&maxxx);
-
-    if (  t1 < pixel->t && ft_in_range(range,t1))
-    {
-        t_xyz n;
-        t_xyz p;
-        m = ft_xyz_scal(d,cy->normal) * t1 + ft_xyz_scal(oc,cy->normal);
-        p = ft_xyz_plus(o, ft_xyz_mult_db(d, t1 * 0.999));
-
-        n = ft_xyz_minus(p,minp);
-        n = ft_xyz_minus(n,ft_xyz_mult_db(cy->normal,m));
-        n = ft_xyz_normalaze(n);
-
-          if (m < 0  || m  > cy->height) // || m  < ft_len_vect(ft_xyz_minus(p,cy->cord)))
-        {
-            
-        }
-        else
-        {
-            pixel->t = t1;
-
-            pixel->rgb = cy->rgb;
-            pixel->normal = n;//cy->normal;
-            pixel->specular = cy->specular;
-            pixel->reflective = cy->reflective;
-           pixel->id = plane;
-        }
-    }
-    if (t2 < pixel->t && ft_in_range(range,t2))
-    {
-        t_xyz n;
-        t_xyz p;
-        m = ft_xyz_scal(d,cy->normal) * t2 + ft_xyz_scal(oc,cy->normal);
-
-        
-        p = ft_xyz_plus(o, ft_xyz_mult_db(d, t2 * 0.999));
-        n = ft_xyz_minus(p,minp);
-        n = ft_xyz_minus(n,ft_xyz_mult_db(cy->normal,m));
-        n = ft_xyz_normalaze(n);
-        if (m < 0  || m  > cy->height) // || m  < ft_len_vect(ft_xyz_minus(p,cy->cord)))
-        {
-            
-        }
-        else
-        {
-
-            pixel->t = t2;
-            pixel->rgb = cy->rgb;
-            pixel->normal = n;//cy->normal;
-            pixel->specular = cy->specular;
-            pixel->reflective = cy->reflective;
-            pixel->id = plane;
-        }
-    }
+	pixel->t = t;
+	pixel->rgb = cy->rgb;
+	pixel->normal = par->n;
+	pixel->specular = cy->specular;
+	pixel->reflective = -1;
+	pixel->id = plane;
 }
 
-void        ft_l_cy(t_rt *rt,t_pixel *pixel,t_lutch luc,t_range *range)
+static void	ft_init_mpn(t_param_cy *par, t_cylinder *cy, double t)
 {
-    t_list  *l_cy;
-    t_cylinder *cy;
-    
-    l_cy = rt->l_cy;
-    while (l_cy)
-    {
-        cy = l_cy->content;
-        ft_intersect_cy(luc, pixel,range,cy);
-        l_cy = l_cy->next;
-    }
+	par->m = ft_xyz_scal(par->d, cy->normal) * t +
+		ft_xyz_scal(par->oc, cy->normal);
+	par->p = ft_xyz_plus(par->o, ft_xyz_mult_db(par->d, t * 0.999));
+	par->n = ft_xyz_minus(par->p, par->minp);
+	par->n = ft_xyz_minus(par->n, ft_xyz_mult_db(cy->normal, par->m));
+	par->n = ft_xyz_normalaze(par->n);
+}
+
+static void	ft_init_par(t_param_cy *par, t_cylinder *cy)
+{
+	par->maxp = ft_xyz_plus(cy->cord, ft_xyz_mult_db(cy->normal,
+				cy->height / 2.0));
+	par->oc = ft_xyz_minus(par->o, par->minp);
+	par->a = ft_xyz_scal(par->d, par->d) -
+		pow(ft_xyz_scal(par->d, cy->normal), 2);
+	par->c = ft_xyz_scal(par->oc, par->oc) - pow(ft_xyz_scal(par->oc,
+				cy->normal), 2) - pow(cy->diameter / 2.0, 2);
+	par->b = 2 * (ft_xyz_scal(par->d, par->oc) - ft_xyz_scal(par->d,
+				cy->normal) * ft_xyz_scal(par->oc, cy->normal));
+}
+
+void		ft_intersect_cy(t_lutch luc, t_pixel *pixel,
+				t_range *range, t_cylinder *cy)
+{
+	t_param_cy	par;
+
+	par.o = luc.o;
+	par.d = luc.d;
+	par.minp = ft_xyz_minus(cy->cord, ft_xyz_mult_db(cy->normal
+				, cy->height / 2.0));
+	ft_init_par(&par, cy);
+	if ((par.discr = par.b * par.b - 4 * par.a * par.c) < 0.0)
+		return ;
+	par.t1 = (-par.b + sqrt(par.discr)) / (2 * par.a);
+	par.t2 = (-par.b - sqrt(par.discr)) / (2 * par.a);
+	if (par.t2 < pixel->t && ft_in_range(range, par.t1))
+	{
+		ft_init_mpn(&par, cy, par.t1);
+		if (!(par.m < 0 || par.m > cy->height))
+			ft_copy_param(&par, pixel, cy, par.t2);
+	}
+	if (par.t1 < pixel->t && ft_in_range(range, par.t2))
+	{
+		ft_init_mpn(&par, cy, par.t2);
+		if (!(par.m < 0 || par.m > cy->height))
+			ft_copy_param(&par, pixel, cy, par.t1);
+	}
+}
+
+void		ft_l_cy(t_rt *rt, t_pixel *pixel, t_lutch luc, t_range *range)
+{
+	t_list		*l_cy;
+	t_cylinder	*cy;
+
+	l_cy = rt->l_cy;
+	while (l_cy)
+	{
+		cy = l_cy->content;
+		ft_intersect_cy(luc, pixel, range, cy);
+		l_cy = l_cy->next;
+	}
 }

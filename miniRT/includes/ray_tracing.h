@@ -54,6 +54,49 @@ typedef struct	s_param_tr
 	double	v;
 }				t_param_tr;
 
+typedef struct	s_param_sq
+{
+	t_xyz p;
+	t_xyz n_r;
+    t_xyz n_up;
+    t_xyz a;
+    t_xyz b;
+    t_xyz c;
+    t_xyz d;
+    t_xyz c_d;
+    t_xyz a_b;
+	t_xyz ab;
+    t_xyz bc;
+    t_xyz cd;
+    t_xyz da;
+	t_xyz n_ab;
+    t_xyz n_bc;
+    t_xyz n_cd;
+    t_xyz n_da;
+	double ans;
+	double	t;
+}				t_param_sq;
+
+typedef struct	s_param_cy
+{
+	double	a;
+    double	b;
+    double	c;
+    double	discr;
+    double	t1;
+    double	t2;
+    t_xyz	minp;
+    t_xyz	maxp;
+    t_xyz o;
+    t_xyz d;
+	t_xyz oc;
+	double m;
+	t_xyz n;
+    t_xyz p;
+    t_xyz p1;
+    t_xyz p2;
+}				t_param_cy;
+
 typedef struct	s_lutch
 {
 	t_xyz	o;

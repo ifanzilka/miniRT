@@ -29,7 +29,6 @@ static	void	key_hk(int keycode, t_vars *vars)
 
 int				key_hook(int keycode, t_vars *vars)
 {
-	printf("Hello from key_hook!%d!\n", keycode);
 	if (keycode == 53)
 		ft_close_win(vars);
 	else if (keycode == arrow_right)
