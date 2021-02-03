@@ -24,7 +24,7 @@ CC		= gcc
 HEADER	= includes
 #depth -> recurse len
 
-FLAGS	= -Wall -Wextra -Werror -D depth=3
+FLAGS	= -Wall -Wextra -Werror -D DEPTH=3
 MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
 
 OBJS	 = $(SRCS:.c=.o)

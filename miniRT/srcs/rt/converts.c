@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 22:33:54 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/01/29 22:33:56 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/03 14:18:40 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,16 @@
 **  return -> x for decart system
 */
 
-double  ft_convert_scr_to_dec_x(int cx, int width, double xmin, double xmax)
+double	ft_convert_scr_to_dec_x(int cx, int width, double xmin, double xmax)
 {
-    double x;
-    double xsize;
-    double w;
+	double	x;
+	double	xsize;
+	double	w;
 
-    w = width;
-    xsize = xmax - xmin;
-    x = xmin + (cx / w) * xsize;
-    return (x);
-    //return ((double)cx - (double)width / 2);
+	w = width;
+	xsize = xmax - xmin;
+	x = xmin + (cx / w) * xsize;
+	return (x);
 }
 
 /*
@@ -50,16 +49,16 @@ double  ft_convert_scr_to_dec_x(int cx, int width, double xmin, double xmax)
 **  return -> y for decart system
 */
 
-double  ft_convert_scr_to_dec_y(int cy, int height, double  ymin, double  ymax)
+double	ft_convert_scr_to_dec_y(int cy, int height, double ymin, double ymax)
 {
-    double y;
-    double ysize;
-    double h;
-    
-    h = height;
-    ysize = ymax - ymin;
-    y = ymax - (cy / h) * ysize;
-    return (y);
+	double	y;
+	double	ysize;
+	double	h;
+
+	h = height;
+	ysize = ymax - ymin;
+	y = ymax - (cy / h) * ysize;
+	return (y);
 }
 
 /*
@@ -67,13 +66,15 @@ double  ft_convert_scr_to_dec_y(int cy, int height, double  ymin, double  ymax)
 ** x y in decart coodrinats
 */
 
-void  ft_rt_xy_convert(int *cx,int *cy, double *x,double *y,t_rt *rt)
-{
-    double width;
-    double height;
-
-    width = rt->reso.width;
-    height = rt->reso.height;
-    *x =  ft_convert_scr_to_dec_x(*cx, width, -(width / 2), width / 2);
-    *y =  ft_convert_scr_to_dec_y(*cy, height, -(height / 2),height / 2);
-}
+/*
+**void	ft_rt_xy_convert(int *cx, int *cy, double *x, double *y, t_rt *rt)
+**{
+**	double	width;
+**	double	height;
+**
+**	width = rt->reso.width;
+**	height = rt->reso.height;
+**	*x = ft_convert_scr_to_dec_x(*cx, width, -(width / 2), width / 2);
+**	*y = ft_convert_scr_to_dec_y(*cy, height, -(height / 2), height / 2);
+**}
+*/
