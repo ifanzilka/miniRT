@@ -17,6 +17,7 @@ LIB_NAME =	libft/libft.a
 LIB_HEADER = libft/includes
 MINILIBX = minilibx/libmlx.dylib
 MINILIBXX = libmlx.dylib
+LIB_MLX = ./minilibx/
 LIBFT = libft.a
 
 CC		= gcc
@@ -91,20 +92,23 @@ all: $(LIBFT) $(MINILIBXX) $(NAME_MINIRT)
 bonus : $(LIBFT) $(MINILIBXX) $(NAME_MINIRT)	
 
 $(MINILIBXX):
+		@echo "$(F_CYAN)Compile libmlx.dylib ...$(F_NONE)"
+		make  -C $(LIB_MLX)
+		@echo "$(F_CYAN)Compile libmlx.dylib END !...$(F_NONE)"
 		@echo "$(F_CYAN)Copy libmlx.dylib ...$(F_NONE)"
 		cp $(MINILIBX) $(MINILIBXX)
 		@echo "$(F_CYAN)Copy libmlx.dylib END !...$(F_NONE)"
-
 $(LIBFT):
 		@echo "$(F_YELLOW)START RUN Makefile in libft $(F_NONE)"
 		@$(MAKE) -C $(LIB_DIR)
 		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
 $(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN)
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
-		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN) -L. $(LIB_NAME) $(MLX_FLAGS)  $(MINILIBX) -o $(NAME_MINIRT)
+		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN) -L. $(LIB_NAME) $(MLX_FLAGS)  $(MINILIBXX) -o $(NAME_MINIRT)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
+	make clean -C $(LIB_MLX)
 	rm -rf $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR) $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN)
 	@echo "$(F_GREEN)Cleaned! $(F_NONE)"
 fclean: clean

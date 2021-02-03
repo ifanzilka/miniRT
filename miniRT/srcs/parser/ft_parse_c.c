@@ -50,8 +50,6 @@ int		ft_parse_c(t_rt *rt, char *str)
 	if (camera->direction.x == INF || camera->direction.y == INF
 			|| camera->direction.z == INF)
 		ft_error_rt(err_c, rt);
-	camera->direction.y *= -1;
-	camera->direction.x *= -1;
 	camera->fov = ft_atof(str + i);
 	if ((camera->fov < 0.0) || (camera->fov) > 180.0)
 		ft_error_rt(err_c, rt);

@@ -21,7 +21,7 @@ static void	ft_copy_param(t_param_cy *par, t_pixel *pixel,
 	pixel->normal = par->n;
 	pixel->specular = cy->specular;
 	pixel->reflective = -1;
-	pixel->id = plane;
+	pixel->id = cylinder;
 }
 
 static void	ft_init_mpn(t_param_cy *par, t_cylinder *cy, double t)
@@ -36,6 +36,8 @@ static void	ft_init_mpn(t_param_cy *par, t_cylinder *cy, double t)
 
 static void	ft_init_par(t_param_cy *par, t_cylinder *cy)
 {
+	par->minp = ft_xyz_minus(cy->cord, ft_xyz_mult_db(cy->normal
+				, cy->height / 2.0));
 	par->maxp = ft_xyz_plus(cy->cord, ft_xyz_mult_db(cy->normal,
 				cy->height / 2.0));
 	par->oc = ft_xyz_minus(par->o, par->minp);
@@ -54,8 +56,6 @@ void		ft_intersect_cy(t_lutch luc, t_pixel *pixel,
 
 	par.o = luc.o;
 	par.d = luc.d;
-	par.minp = ft_xyz_minus(cy->cord, ft_xyz_mult_db(cy->normal
-				, cy->height / 2.0));
 	ft_init_par(&par, cy);
 	if ((par.discr = par.b * par.b - 4 * par.a * par.c) < 0.0)
 		return ;
