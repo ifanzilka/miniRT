@@ -6,15 +6,15 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 18:53:28 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/01/30 18:53:29 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/03 15:27:22 by bmarilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ray_tracing.h>
 
-int     ft_in_range(t_range *range, double a)
+int	ft_in_range(t_range *range, double a)
 {
-    if (a >= range->min && a <= range->max)
-        return (1);
-    return (0);    
-} 
+	if (a >= range->min && a <= range->max)
+		return (1);
+	return (0);
+}

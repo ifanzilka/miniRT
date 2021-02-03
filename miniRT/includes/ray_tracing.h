@@ -21,6 +21,7 @@ typedef struct	s_pixel
 	double		t;
 	t_rgb		rgb;
 	t_xyz		normal;
+	t_xyz		p;
 	int			specular;
 	double		reflective;
 	int			id;
@@ -87,6 +88,6 @@ double			closestintersection(t_rt *rt, t_xyz o, t_xyz d);
 t_rgb			ft_compute_lighting(t_rt *rt, t_xyz p, t_xyz n,
 					t_xyz v, t_pixel *pixel);
 t_rgb			ft_ray_trace(t_rt *rt, t_xyz o,
-					t_xyz d, t_range range, int rec);
+					t_xyz d, int rec);
 
 #endif

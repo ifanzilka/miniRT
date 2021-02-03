@@ -13,9 +13,8 @@
 #include <ft_minirt.h>
 #include <ray_tracing.h>
 #include <bmp.h>
-
 #ifndef DEPTH
-# define DEPTH 0
+# define DEPTH 1
 #endif
 
 /*
@@ -31,8 +30,7 @@ static void	ft_trace_rgb(t_vars *vars, int cx, int cy, t_xyz *d)
 	t_rt	*rt;
 
 	rt = vars->rt;
-	rgb = ft_ray_trace(rt, rt->camera->cord, *d,
-		(t_range){0.0001, MAX_DB}, DEPTH);
+	rgb = ft_ray_trace(rt, rt->camera->cord, *d, DEPTH);
 	my_mlx_pixel_put(&(vars->img), cx, cy,
 	create_rgb(rgb.red, rgb.green, rgb.blue));
 }

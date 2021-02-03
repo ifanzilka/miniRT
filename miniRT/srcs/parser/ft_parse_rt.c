@@ -70,6 +70,7 @@ void	ft_init_t_rt(t_rt *rt)
 	rt->l_sq = NULL;
 	rt->l_cy = NULL;
 	rt->l_p = NULL;
+	rt->depth = 0;
 }
 
 int		ft_check_t_rt(t_rt *rt)

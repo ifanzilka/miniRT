@@ -258,6 +258,7 @@ typedef struct	s_rt
 	t_cnt_object		cnt;
 	t_resolution		reso;
 	t_ambient_lightning	al;
+	int					depth;
 	t_camera			*camera;
 	t_l_list			*ll_camera;
 	t_list				*l_sphere;
