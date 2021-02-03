@@ -70,7 +70,7 @@ static double	closestintersection(t_rt *rt, t_xyz o, t_xyz d)
 	range.min = 0.000001;
 	range.max = 0.999999;
 	pixel.t = MAX_DB;
-	ft_iter_obj_close(rt, &pixel, o, d, &range);
+	ft_iter_obj_close(rt, &pixel, (t_lutch){o, d}, &range);
 	return (pixel.t);
 }
 

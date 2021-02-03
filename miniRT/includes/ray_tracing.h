@@ -40,6 +40,20 @@ typedef struct	s_kf_abc
 	t_xyz		oc;
 }				t_kf_abc;
 
+typedef struct	s_param_tr
+{
+	t_xyz	v1;
+	t_xyz	v2;
+	t_xyz	n;
+    t_xyz	v1d;
+	t_xyz	vec;
+	t_xyz 	q_vec;
+    double	scal_v2_v1d;
+    double	t;
+	double	u;
+	double	v;
+}				t_param_tr;
+
 typedef struct	s_lutch
 {
 	t_xyz	o;
