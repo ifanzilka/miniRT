@@ -10,14 +10,54 @@
 #                                                                              #
 # **************************************************************************** #
 
+OS :=	$(shell uname)
+
+F_NONE		= \033[37m
+F_BOLD		= \033[1m
+F_RED		= \033[31m
+F_ORANGE	= \033[38m
+F_YELLOW	= \033[33m
+F_GREEN		= \033[32m
+F_CYAN		= \033[36m
+F_BLUE		= \033[34m
+
+
+ifeq ($(OS), Linux)
+	#@echo "$(F_GREEN) Linux Compile...$(F_NONE)"
+	MINILIBX_DIR = minilibx/minilbx_linux
+	LIB_MLX = ./minilibx/minilbx_linux
+	OPENGL = -lm -lbsd -lX11 -lXext
+	MLX_A = libmlx.a 
+endif
+ifeq ($(OS), Darwin)
+	#@echo "$(F_GREEN)MAC OS Compile...$(F_NONE)"
+	MINILIBX_DIR = minilibx/minilbx_mac
+	LIB_MLX = ./minilibx/minilbx_mac
+	OPENGL = -lz -framework OpenGL -framework AppKit
+	MLX_A = libmlx.dylib
+endif
+
 NAME_MINIRT = miniRT
 
 LIB_DIR =  ./libft/
 LIB_NAME =	libft/libft.a
 LIB_HEADER = libft/includes
+
+
 MINILIBX = minilibx/minilbx_mac/libmlx.dylib
 MINILIBXX = libmlx.dylib
-LIB_MLX = ./minilibx/minilbx_mac
+#LIB_MLX = ./minilibx/minilbx_mac
+FLAGS_MAC = -lz -framework OpenGL -framework AppKit
+
+LIB_MLX_LINUX = ./minilibx/minilbx_linux
+MINILIBX_LINUX = libmlx.a
+FLAGS_LINUX = -lm -lbsd -lX11 -lXext
+#OPENGL
+MINILIBX_A_DIR 		=	$(MINILIBX_DIR)/$(MLX_A)
+
+
+
+
 LIBFT = libft.a
 
 CC		= gcc
@@ -26,7 +66,8 @@ HEADER	= includes
 #depth -> recurse len
 
 FLAGS	= -Wall -Wextra -Werror
-MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
+
+
 
 OBJS	 = $(SRCS:.c=.o)
 OBJS_GNL = $(GNL_SRCS:.c=.o)
@@ -73,38 +114,38 @@ MLX_WIN_SRCS = $(DIR_MLX_WIN)mlx_win.c $(DIR_MLX_WIN)key_hook.c
 
 AR		= ar rc
 
-F_NONE		= \033[37m
-F_BOLD		= \033[1m
-F_RED		= \033[31m
-F_ORANGE	= \033[38m
-F_YELLOW	= \033[33m
-F_GREEN		= \033[32m
-F_CYAN		= \033[36m
-F_BLUE		= \033[34m
 
 .c.o:
 	@echo "$(F_BLUE)Created object files miniRT ! $(F_NONE)"
 	$(CC) $(FLAGS) -c  -I$(HEADER) -I$(LIB_HEADER) $< -o $(<:.c=.o)
 	@echo "$(F_BLUE)Object files miniRT in ready! $(F_NONE)"
 
-all: $(LIBFT) $(MINILIBXX) $(NAME_MINIRT) 
+all: $(LIBFT) $(MLX_A) $(NAME_MINIRT) 
 
-bonus : $(LIBFT) $(MINILIBXX) $(NAME_MINIRT)	
+bonus : $(LIBFT) $(MLX_A) $(NAME_MINIRT)	
 
-$(MINILIBXX):
-		@echo "$(F_CYAN)Compile libmlx.dylib ...$(F_NONE)"
+$(MLX_A):
+		@echo "$(F_CYAN)Compile libmlx.a ...$(F_NONE)"
 		make  -C $(LIB_MLX)
-		@echo "$(F_CYAN)Compile libmlx.dylib END !...$(F_NONE)"
-		@echo "$(F_CYAN)Copy libmlx.dylib ...$(F_NONE)"
-		cp $(MINILIBX) $(MINILIBXX)
-		@echo "$(F_CYAN)Copy libmlx.dylib END !...$(F_NONE)"
+		@echo "$(F_CYAN)Compile libmlx.a END !...$(F_NONE)"
+		@echo "$(F_CYAN)Copy libmlx.a ...$(F_NONE)"
+		cp $(MINILIBX_A_DIR) $(MLX_A)
+		@echo "$(F_CYAN)Copy libmlx.a END !...$(F_NONE)"
+
+# $(MINILIBXX):
+# 		@echo "$(F_CYAN)Compile libmlx.dylib ...$(F_NONE)"
+# 		make  -C $(LIB_MLX)
+# 		@echo "$(F_CYAN)Compile libmlx.dylib END !...$(F_NONE)"
+# 		@echo "$(F_CYAN)Copy libmlx.dylib ...$(F_NONE)"
+# 		cp $(MINILIBX) $(MINILIBXX)
+# 		@echo "$(F_CYAN)Copy libmlx.dylib END !...$(F_NONE)"
 $(LIBFT):
 		@echo "$(F_YELLOW)START RUN Makefile in libft $(F_NONE)"
 		@$(MAKE) -C $(LIB_DIR)
 		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
 $(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN)
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
-		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN) -L. $(LIB_NAME) $(MLX_FLAGS)  $(MINILIBXX) -o $(NAME_MINIRT)
+		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN) -L. $(LIB_NAME) $(OPENGL)  $(MLX_A) -o $(NAME_MINIRT)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
