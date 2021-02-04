@@ -131,3 +131,5 @@ https://ru.qaz.wiki/wiki/Ray_tracing_(graphics)
 https://elar.urfu.ru/bitstream/10995/21457/1/koptelov_1.2.2.3.pdf
 
 https://github.com/42Paris/minilibx-linux
+
+https://github.com/taelee42/mlx_example
