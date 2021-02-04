@@ -49,6 +49,7 @@ int			cicle_for_pixel(t_rt *rt, t_vars *vars)
 		{
 			d = ft_init_d(&cx, &cy, rt);
 			ft_trace_rgb(vars, cx, cy, &d);
+			ft_garbage_collector(NULL, 1);
 			ft_percent_render(cx, cy, rt->reso.width, rt->reso.height);
 			cx++;
 		}
