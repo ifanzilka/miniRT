@@ -106,6 +106,13 @@ Enjoy !
 
 # Screen
 ![This is a alt text.](https://github.com/ifanzilka/miniRT/blob/main/miniRT/screen/1.png)
+![This is a alt text.](https://github.com/ifanzilka/miniRT/blob/main/miniRT/screen/21.png)
+![This is a alt text.](https://github.com/ifanzilka/miniRT/blob/main/miniRT/screen/21_2.png)
+![This is a alt text.](https://github.com/ifanzilka/miniRT/blob/main/miniRT/screen/4.png)
+![This is a alt text.](https://github.com/ifanzilka/miniRT/blob/main/miniRT/screen/all.png)
+![This is a alt text.](https://github.com/ifanzilka/miniRT/blob/main/miniRT/screen/sciense1.png)
+![This is a alt text.](https://github.com/ifanzilka/miniRT/blob/main/miniRT/screen/whitesphere.png)
+![This is a alt text.](https://github.com/ifanzilka/miniRT/blob/main/miniRT/screen/wolf.png)
 
 
 
