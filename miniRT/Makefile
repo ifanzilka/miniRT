@@ -27,14 +27,14 @@ ifeq ($(OS), Linux)
 	MINILIBX_DIR = minilibx/minilbx_linux
 	LIB_MLX = ./minilibx/minilbx_linux
 	OPENGL = -lm -lbsd -lX11 -lXext
-	MLX_A = libmlx.a 
+	MLX_A = libmlx_Linux.a  
 endif
 ifeq ($(OS), Darwin)
 	#@echo "$(F_GREEN)MAC OS Compile...$(F_NONE)"
 	MINILIBX_DIR = minilibx/minilbx_mac
 	LIB_MLX = ./minilibx/minilbx_mac
 	OPENGL = -lz -framework OpenGL -framework AppKit
-	MLX_A = libmlx.dylib
+	MLX_A = libmlx.a
 endif
 
 NAME_MINIRT = miniRT
@@ -65,7 +65,7 @@ CC		= gcc
 HEADER	= includes
 #depth -> recurse len
 
-FLAGS	= -Wall -Wextra -Werror
+FLAGS	= -Wall -Wextra -Werror -g
 
 
 
@@ -145,7 +145,7 @@ $(LIBFT):
 		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
 $(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN)
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
-		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN) -L. $(LIB_NAME) $(OPENGL)  $(MINILIBX_A_DIR) -o $(NAME_MINIRT)
+		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN) -L. $(LIB_NAME)  $(MINILIBX_A_DIR) $(OPENGL)  -o $(NAME_MINIRT)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
