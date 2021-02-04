@@ -15,7 +15,7 @@ We need :
 
 Clone this repo :  
 ```bash
-git clone https://github.com/davidarbib/miniRT.git
+git clone https://github.com/ifanzilka/miniRT
 ```
 
 Compile :
