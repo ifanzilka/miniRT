@@ -53,7 +53,7 @@ The output image resolution is no longer limited by your display size in this mo
 ### About .rt format
 
 We have to run miniRT with a valid .rt file. Here is an example of valid *(and ugly)* .rt file.  
-![This is a alt text.](https://github.com/ifanzilka/miniRT/blob/main/miniRT/screen/1.png)
+
 The school project subject defines how the input file must be formatted.
 
 Each line defines one property or scene object, lines begin with uppercase letter  
@@ -104,8 +104,8 @@ Enjoy !
 
 
 
-
-
+# Screen
+![This is a alt text.](https://github.com/ifanzilka/miniRT/blob/main/miniRT/screen/1.png)
 
 
 
