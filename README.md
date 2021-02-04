@@ -36,8 +36,8 @@ The program takes a .rt file. More information about this format below...
 
 Zoom | Translation | Change camera | Rotation
 --- | --- | --- | ---
-**Q** : Zoom in | **W** : Move up | **Arrow left** : Previous camera | **Mouse** : Click on the desire direction you want the camera to look at. 
-**E** : Zoom out | **S** : Move down | **Arrow right** : Next camera
+**Move_up** : Zoom in | **W** : Move up | **Arrow left** : Previous camera | **Mouse** : Click on the desire direction you want the camera to look at. 
+**Move_down** : Zoom out | **S** : Move down | **Arrow right** : Next camera
  | **A** : Move left
  | **D** : Move right
 ### BMP mode
