@@ -96,5 +96,6 @@ t_rgb			ft_compute_lighting(t_rt *rt, t_xyz n, t_xyz v, t_pixel *pixel)
 		ft_add_color_li_sp(cp_l, &v, li, &n);
 		l_light = l_light->next;
 	}
+	free_gc(cp_l);
 	return (cp_l->color_pix);
 }

@@ -15,9 +15,9 @@ NAME_MINIRT = miniRT
 LIB_DIR =  ./libft/
 LIB_NAME =	libft/libft.a
 LIB_HEADER = libft/includes
-MINILIBX = minilibx/libmlx.dylib
+MINILIBX = minilibx/minilbx_mac/libmlx.dylib
 MINILIBXX = libmlx.dylib
-LIB_MLX = ./minilibx/
+LIB_MLX = ./minilibx/minilbx_mac
 LIBFT = libft.a
 
 CC		= gcc
