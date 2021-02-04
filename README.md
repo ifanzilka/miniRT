@@ -38,8 +38,8 @@ Zoom | Translation | Change camera | Rotation
 --- | --- | --- | ---
 **Move_up** : Zoom in | **W** : Move up | **Arrow left** : Previous camera | **Mouse** : Click on the desire direction you want the camera to look at. 
 **Move_down** : Zoom out | **S** : Move down | **Arrow right** : Next camera
- | **A** : Move left  |**X** : Orientir_Back 	|**-** light plus
- | **D** : Move right |**N** : Normalizate_cam 	|**+** light minus
+ | **A** : Move left  |**X** : Orientir_Back 	|**-** : light plus	|**[** : FOV +
+ | **D** : Move right |**N** : Normalizate_cam 	|**+** : light minus	|**]** : FOV -
 ### BMP mode
 
 You can just save the generated image of scene (RT.bmp) with :  
