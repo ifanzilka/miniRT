@@ -4,7 +4,7 @@ This 42 school project is a preview of the graphic programming world.
 Here, we learned to compute visibility and color of 3D objects, casting rays
 on a 3D scene.
 
-![This is a alt text.](/RT.bmp "A sphere, two planes and spotlight")
+
 
 ## Installation
 
