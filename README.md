@@ -32,6 +32,8 @@ The program takes a .rt file. More information about this format below...
 ```bash
 ./miniRT [a format .rt scene file]
 ```
+
+##BUTTONS DON t JOB in LINUX!!!
 ## :wrench: BASIC INSTRUCTIONS
 
 Zoom | Translation | Change camera | Rotation
