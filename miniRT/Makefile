@@ -23,6 +23,7 @@ F_BLUE		= \033[34m
 
 
 ifeq ($(OS), Linux)
+	COMPILE = Linux Compile...
 	#@echo "$(F_GREEN) Linux Compile...$(F_NONE)"
 	MINILIBX_DIR = minilibx/minilbx_linux
 	LIB_MLX = ./minilibx/minilbx_linux
@@ -30,6 +31,7 @@ ifeq ($(OS), Linux)
 	MLX_A = libmlx_Linux.a  
 endif
 ifeq ($(OS), Darwin)
+	COMPILE = MAC OS Compile...
 	#@echo "$(F_GREEN)MAC OS Compile...$(F_NONE)"
 	MINILIBX_DIR = minilibx/minilbx_mac
 	LIB_MLX = ./minilibx/minilbx_mac
@@ -44,14 +46,14 @@ LIB_NAME =	libft/libft.a
 LIB_HEADER = libft/includes
 
 
-MINILIBX = minilibx/minilbx_mac/libmlx.dylib
-MINILIBXX = libmlx.dylib
-#LIB_MLX = ./minilibx/minilbx_mac
-FLAGS_MAC = -lz -framework OpenGL -framework AppKit
-
-LIB_MLX_LINUX = ./minilibx/minilbx_linux
-MINILIBX_LINUX = libmlx.a
-FLAGS_LINUX = -lm -lbsd -lX11 -lXext
+# MINILIBX = minilibx/minilbx_mac/libmlx.dylib
+# MINILIBXX = libmlx.dylib
+# LIB_MLX = ./minilibx/minilbx_mac
+# FLAGS_MAC = -lz -framework OpenGL -framework AppKit
+# 
+# LIB_MLX_LINUX = ./minilibx/minilbx_linux
+# MINILIBX_LINUX = libmlx.a
+# FLAGS_LINUX = -lm -lbsd -lX11 -lXext
 #OPENGL
 MINILIBX_A_DIR 		=	$(MINILIBX_DIR)/$(MLX_A)
 
@@ -132,19 +134,13 @@ $(MLX_A):
 		cp $(MINILIBX_A_DIR) $(MLX_A)
 		@echo "$(F_CYAN)Copy libmlx.a END !...$(F_NONE)"
 
-# $(MINILIBXX):
-# 		@echo "$(F_CYAN)Compile libmlx.dylib ...$(F_NONE)"
-# 		make  -C $(LIB_MLX)
-# 		@echo "$(F_CYAN)Compile libmlx.dylib END !...$(F_NONE)"
-# 		@echo "$(F_CYAN)Copy libmlx.dylib ...$(F_NONE)"
-# 		cp $(MINILIBX) $(MINILIBXX)
-# 		@echo "$(F_CYAN)Copy libmlx.dylib END !...$(F_NONE)"
 $(LIBFT):
 		@echo "$(F_YELLOW)START RUN Makefile in libft $(F_NONE)"
 		@$(MAKE) -C $(LIB_DIR)
 		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
 $(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN)
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
+		@echo "$(F_GREEN)$(COMPILE) $(F_NONE)"
 		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN) -L. $(LIB_NAME)  $(MINILIBX_A_DIR) $(OPENGL)  -o $(NAME_MINIRT)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
