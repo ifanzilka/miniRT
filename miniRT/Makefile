@@ -34,7 +34,7 @@ ifeq ($(OS), Darwin)
 	MINILIBX_DIR = minilibx/minilbx_mac
 	LIB_MLX = ./minilibx/minilbx_mac
 	OPENGL = -lz -framework OpenGL -framework AppKit
-	MLX_A = libmlx.a
+	MLX_A = libmlx.dylib
 endif
 
 NAME_MINIRT = miniRT
