@@ -32,6 +32,8 @@ The program takes a .rt file. More information about this format below...
 ```bash
 ./miniRT [a format .rt scene file]
 ```
+## :wrench: BASIC INSTRUCTIONS
+
 Zoom | Translation | Change camera | Rotation
 --- | --- | --- | ---
 **Q** : Zoom in | **W** : Move up | **Arrow left** : Previous camera | **Mouse** : Click on the desire direction you want the camera to look at. 
