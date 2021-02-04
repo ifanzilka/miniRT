@@ -145,7 +145,7 @@ $(LIBFT):
 		@echo "$(F_YELLOW)END RUN Makefile in libft $(F_NONE)"
 $(NAME_MINIRT): $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing) $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN)
 		@echo "$(F_CYAN)Compile miniRT ...$(F_NONE)"
-		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN) -L. $(LIB_NAME) $(OPENGL)  $(MLX_A) -o $(NAME_MINIRT)
+		$(CC) $(FLAGS)  -I$(HEADER) $(OBJS) $(OBJS_GNL) $(OBJS_PARSER) $(OBJS_ERROR)  $(OBJS_RayTracing)  $(OBJS_RGB) $(OBJS_VEC) $(OBJS_KEYS) $(OBJS_BMP) $(OBJS_MLX_WIN) -L. $(LIB_NAME) $(OPENGL)  $(MINILIBX_A_DIR) -o $(NAME_MINIRT)
 		@echo "$(F_GREEN)minRT is Ready! GOOD LUCK:) $(F_NONE)"		
 clean:
 	make clean -C $(LIB_DIR)
@@ -155,7 +155,7 @@ clean:
 fclean: clean
 	make fclean -C $(LIB_DIR)
 	rm -rf $(NAME_MINIRT)
-	rm -rf $(MINILIBXX)
+	rm -rf $(MLX_A)
 	@echo "$(F_GREEN)FCleaned! $(F_NONE)"
 
 re: fclean all
