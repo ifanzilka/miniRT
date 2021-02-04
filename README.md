@@ -32,15 +32,12 @@ The program takes a .rt file. More information about this format below...
 ```bash
 ./miniRT [a format .rt scene file]
 ```
-
-Keybinds :  
-- In qwerty layout, **L** enable low-resolution mode to load the scene quickly.  
-Hit this an other time to deactivate.  
-- **AWSD** for horizontal moving, and **Q/E** for Down/Up move
-- **Arrows** to turn camera up/down and left/right, **N/M** for rolling camera ccw/cw.  
-- **Tab** switch camera if you define more than one.  
-- Finally, **Esc** to quit.  
-
+Zoom | Translation | Change camera | Rotation
+--- | --- | --- | ---
+**Q** : Zoom in | **W** : Move up | **Arrow left** : Previous camera | **Mouse** : Click on the desire direction you want the camera to look at. 
+**E** : Zoom out | **S** : Move down | **Arrow right** : Next camera
+ | **A** : Move left
+ | **D** : Move right
 ### BMP mode
 
 You can just save the generated image of scene (RT.bmp) with :  
