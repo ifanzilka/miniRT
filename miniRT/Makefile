@@ -6,7 +6,7 @@
 #    By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/10 19:15:54 by bmarilli          #+#    #+#              #
-#    Updated: 2021/02/18 02:03:35 by ifanzilka        ###   ########.fr        #
+#    Updated: 2021/02/18 02:55:48 by ifanzilka        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,7 @@ CC		= gcc
 HEADER	= includes
 #depth -> recurse len
 
-FLAGS	= -Wall -Wextra -Werror -g# -pthread
+FLAGS	= -Wall -Wextra -Werror -g -pthread -D TH=512
 
 
 
