@@ -33,7 +33,12 @@ The program takes a .rt file. More information about this format below...
 ./miniRT [a format .rt scene file]
 ```
 
-##BUTTONS DON t JOB in LINUX!!!
+## USE THREAD 
+```
+in MAKEFILE
+add FLAGS = -D TH="CNT THREAD"
+```
+
 ## :wrench: BASIC INSTRUCTIONS
 
 Zoom | Translation | Change camera | Rotation
