@@ -43,19 +43,29 @@ t_rgb	ft_ray_trace(t_rt *rt, t_xyz o, t_xyz d, int rec)
 	t_pixel	*pixel;
 	t_rgb	ref_color;
 
-	if (!(pixel = malloc_gc(sizeof(t_pixel))))
+	if (!(pixel = malloc(sizeof(t_pixel))))
 		ft_error_rt(err_malloc, rt);
 	pixel->t = MAX_DB;
 	pixel->rgb = ft_rgb_mult_db(rt->al.rgb, rt->al.light);
 	ft_iter_obj(rt, pixel, (t_lutch){o, d}, &(t_range){0.0001, MAX_DB});
 	if (pixel->t == MAX_DB)
+	{
+        ref_color = pixel->rgb;
+        free(pixel);
 		return (pixel->rgb);
+	}
 	pixel->p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel->t * 0.9999));
 	pixel->rgb = ft_compute_lighting(rt, pixel->normal,
 			ft_xyz_mult_db(d, -1.0), pixel);
 	if (rec <= 0 || pixel->reflective <= 0.01)
+	{
+        ref_color = pixel->rgb;
+        free(pixel);
 		return (pixel->rgb);
+	}
 	r = ft_reflect_ray(ft_xyz_mult_db(d, -1.0), pixel->normal);
 	ref_color = ft_ray_trace(rt, pixel->p, r, rec - 1);
-	return (ft_recurse_color(ref_color, pixel->rgb, pixel->reflective));
+	ref_color = ft_recurse_color(ref_color, pixel->rgb, pixel->reflective);
+	free(pixel);
+	return (ref_color);
 }

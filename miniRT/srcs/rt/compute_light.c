@@ -80,7 +80,7 @@ t_rgb			ft_compute_lighting(t_rt *rt, t_xyz n, t_xyz v, t_pixel *pixel)
 	t_light	*li;
 	t_cp_l	*cp_l;
 
-	if (!(cp_l = malloc_gc(sizeof(t_cp_l))))
+	if (!(cp_l = malloc(sizeof(t_cp_l)) ))//|| !(ft_lst_cr_front(&rt->l_p, cp_l)))
 		ft_error_rt(err_malloc, rt);
 	ft_init_color(rt, cp_l, pixel);
 	l_light = rt->l_light;
@@ -96,6 +96,6 @@ t_rgb			ft_compute_lighting(t_rt *rt, t_xyz n, t_xyz v, t_pixel *pixel)
 		ft_add_color_li_sp(cp_l, &v, li, &n);
 		l_light = l_light->next;
 	}
-	free_gc(cp_l);
+	free(cp_l);
 	return (cp_l->color_pix);
 }

@@ -17,6 +17,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <stdint.h>
+# include <pthread.h>
 # include <libft.h>
 # include <math.h>
 # include <get_next_line.h>
@@ -255,6 +256,7 @@ typedef struct	s_cnt_object
 
 typedef struct	s_rt
 {
+	pthread_mutex_t		mutex;
 	t_cnt_object		cnt;
 	t_resolution		reso;
 	t_ambient_lightning	al;
@@ -269,7 +271,7 @@ typedef struct	s_rt
 	t_list				*l_cy;
 	t_list				*l_p;
 }				t_rt;
-
+void	        del_obj(void *p);
 void			ft_clear_rt(t_rt *rt);
 void			ft_error_rt(int n, t_rt *rt);
 

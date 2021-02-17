@@ -19,7 +19,8 @@ static int		pointer_compare(void *ptr1, void *ptr2)
 
 static void		pointer_free(void *ptr)
 {
-	free(ptr);
+    if (ptr)
+        free(ptr);
 }
 
 /*
@@ -41,5 +42,5 @@ void			ft_garbage_collector(void *ptr, int action)
 	else if (action == M_ADD)
 		ft_lstadd_front(&collector, ft_lstnew(ptr));
 	else if (action == M_REMOVE)
-		ft_lstdelel(&collector, ptr, pointer_compare, pointer_free);
+        ft_lstdelel(&collector, ptr, pointer_compare, pointer_free);
 }

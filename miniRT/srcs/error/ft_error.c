@@ -50,5 +50,7 @@ void	ft_error_rt(int n, t_rt *rt)
 		ft_putstr_fd("MLX ERROR\n", 1);
 	else if (n == err_malloc)
 		ft_putstr_fd("MALLOC ERROR\n", 1);
+	else  
+		ft_putstr_fd("ERROR\n", 1);	
 	exit(n);
 }

@@ -14,5 +14,6 @@
 
 void	free_gc(void *ptr)
 {
+    (void) ptr;
 	ft_garbage_collector(ptr, M_REMOVE);
 }

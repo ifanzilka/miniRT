@@ -122,8 +122,15 @@ typedef struct	s_cp_l
 	int			spec;
 }				t_cp_l;
 
+typedef struct	s_th_argv
+{
+	int		id;
+	t_vars	*vars;
+	t_rt	*rt;
+}				t_th_argv;
+
 void			ft_percent_render(int x, int y, int width,
-					int height);
+					int height , int id);
 double			ft_convert_scr_to_dec_x(int cx, int width,
 					double xmin, double xmax);
 double			ft_convert_scr_to_dec_y(int cy, int height,
