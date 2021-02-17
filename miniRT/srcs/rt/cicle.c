@@ -55,7 +55,7 @@ void		*ft_cicle_th(void *argvs)
 		{
 			d = ft_init_d(&cx, &cy, rt);
 			ft_trace_rgb(vars, cx, cy, &d);
-			ft_percent_render(cx, cy, rt->reso.width, rt->reso.height, argv.id);
+			//ft_percent_render(cx, cy, rt->reso.width, rt->reso.height, argv.id);
 			cx++;
 		}
 		cy++;
@@ -101,41 +101,48 @@ void		ft_cr_thread(t_rt *rt, t_vars *vars)
 
 int			cicle_for_pixel(t_rt *rt, t_vars *vars)
 {
-	clock_t begin;
-	clock_t end;
-	double	time_spent;
+//	clock_t begin;
+//	clock_t end;
+//	double	time_spent;
+//
+//	begin = clock();
+//	ft_cr_thread(rt, vars);
+//	if (vars->bmp)
+//		ft_create_bmp(rt, &(vars->img));
+//	else
+//		mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+//	end = clock();
+//	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+//	printf("time : %f\n",time_spent);
+	 int		cx;
+	 int		cy;
+	 clock_t    begin;
+	 clock_t    end;
+	 double	    time_spent;
+	 t_xyz      d;
 
-	begin = clock();
-	ft_cr_thread(rt, vars);
-	if (vars->bmp)
-		ft_create_bmp(rt, &(vars->img));
-	else
-		mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-	end = clock();
-	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("time : %f\n",time_spent);
-	// int		cx;
-	// int		cy;
-	// t_xyz	d;
-
-	// cx = 0;
-	// cy = 0;
-	// while (cy < rt->reso.height)
-	// {
-	// 	while (cx < rt->reso.width)
-	// 	{
-	// 		d = ft_init_d(&cx, &cy, rt);
-	// 		ft_trace_rgb(vars, cx, cy, &d);
-	// 		ft_garbage_collector(NULL, 1);
-	// 		ft_percent_render(cx, cy, rt->reso.width, rt->reso.height);
-	// 		cx++;
-	// 	}
-	// 	cx = 0;
-	// 	cy++;
-	// }
-	// if (vars->bmp)
-	// 	ft_create_bmp(rt, &(vars->img));
-	// else
-	// 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+	 begin = clock();
+	 cx = 0;
+	 cy = 0;
+	 while (cy < rt->reso.height)
+	 {
+	 	while (cx < rt->reso.width)
+	 	{
+	 		d = ft_init_d(&cx, &cy, rt);
+	 		ft_trace_rgb(vars, cx, cy, &d);
+	 		//ft_percent_render(cx, cy, rt->reso.width, rt->reso.height);
+	 		cx++;
+	 	}
+	 	cx = 0;
+	 	cy++;
+	 }
+    //ft_garbage_collector(NULL, 1);
+	 if (vars->bmp)
+	 	ft_create_bmp(rt, &(vars->img));
+	 else
+	 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+    end = clock();
+    time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("time : %f\n",time_spent);
 	return (1);
 }
