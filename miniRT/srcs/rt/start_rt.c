@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/26 18:24:42 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/02/03 13:46:42 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/18 02:11:11 by ifanzilka        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		ft_init_img(t_rt *rt)
 	t_img		*img;
 
 	vars = NULL;
-	if (!(vars = malloc_gc(sizeof(t_vars))) )//|| !(ft_lst_cr_front(&rt->l_p, vars)))
+	if (!(vars = malloc(sizeof(t_vars))) || !(ft_lst_cr_front(&rt->l_p, vars)))
 		ft_error_rt(err_malloc, rt);
 	if (!(vars->mlx = mlx_init()) || !(ft_lst_cr_front(&(rt->l_p), vars->mlx)))
 		ft_error_rt(err_mlx, rt);

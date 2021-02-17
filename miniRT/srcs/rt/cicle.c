@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 11:16:21 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/02/17 15:41:20 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/18 02:04:35 by ifanzilka        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	ft_trace_rgb(t_vars *vars, int cx, int cy, t_xyz *d)
 	my_mlx_pixel_put(&(vars->img), cx, cy,
 	create_rgb(rgb.red, rgb.green, rgb.blue));
 }
-
+/*
 void		*ft_cicle_th(void *argvs)
 {
 	t_th_argv	argv;
@@ -97,7 +97,7 @@ void		ft_cr_thread(t_rt *rt, t_vars *vars)
 		i++;
 	}
     //ft_garbage_collector(NULL, 1);
-}
+}*/
 
 int			cicle_for_pixel(t_rt *rt, t_vars *vars)
 {

@@ -6,7 +6,7 @@
 #    By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/10 19:15:54 by bmarilli          #+#    #+#              #
-#    Updated: 2020/12/26 18:18:24 by bmarilli         ###   ########.fr        #
+#    Updated: 2021/02/18 02:03:35 by ifanzilka        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ ifeq ($(OS), Linux)
 	#@echo "$(F_GREEN) Linux Compile...$(F_NONE)"
 	MINILIBX_DIR = minilibx/minilbx_linux
 	LIB_MLX = ./minilibx/minilbx_linux
-	OPENGL = -lm -lbsd -lX11 -lXext
+	OPENGL = -lm -lbsd -lX11 -lXext 
 	MLX_A = libmlx_Linux.a  
 endif
 ifeq ($(OS), Darwin)
@@ -67,7 +67,7 @@ CC		= gcc
 HEADER	= includes
 #depth -> recurse len
 
-FLAGS	= -Wall -Wextra -Werror -g
+FLAGS	= -Wall -Wextra -Werror -g# -pthread
 
 
 

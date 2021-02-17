@@ -6,7 +6,7 @@
 /*   By: bmarilli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:04:28 by bmarilli          #+#    #+#             */
-/*   Updated: 2021/02/03 18:07:04 by bmarilli         ###   ########.fr       */
+/*   Updated: 2021/02/18 02:13:13 by ifanzilka        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,18 @@ t_rgb	ft_ray_trace(t_rt *rt, t_xyz o, t_xyz d, int rec)
 	ft_iter_obj(rt, pixel, (t_lutch){o, d}, &(t_range){0.0001, MAX_DB});
 	if (pixel->t == MAX_DB)
 	{
-        ref_color = pixel->rgb;
-        free(pixel);
-		return (pixel->rgb);
+        	ref_color = pixel->rgb;
+		free(pixel);
+		return (ref_color);
 	}
 	pixel->p = ft_xyz_plus(o, ft_xyz_mult_db(d, pixel->t * 0.9999));
 	pixel->rgb = ft_compute_lighting(rt, pixel->normal,
 			ft_xyz_mult_db(d, -1.0), pixel);
 	if (rec <= 0 || pixel->reflective <= 0.01)
 	{
-        ref_color = pixel->rgb;
-        free(pixel);
-		return (pixel->rgb);
+        	ref_color = pixel->rgb;
+        	free(pixel);
+		return (ref_color);
 	}
 	r = ft_reflect_ray(ft_xyz_mult_db(d, -1.0), pixel->normal);
 	ref_color = ft_ray_trace(rt, pixel->p, r, rec - 1);
