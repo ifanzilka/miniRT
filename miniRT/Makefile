@@ -30,6 +30,7 @@ ifeq ($(OS), Linux)
 	LIB_MLX = ./minilibx/minilbx_linux
 	OPENGL = -lm -lbsd -lX11 -lXext 
 	MLX_A = libmlx_Linux.a  
+	adds = sudo apt-get install gcc make xorg libxext-dev libbsd-dev
 endif
 ifeq ($(OS), Darwin)
 	COMPILE = MAC OS Compile...
@@ -128,7 +129,7 @@ all: $(LIBFT) $(MLX_A) $(NAME_MINIRT)
 bonus : $(LIBFT) $(MLX_A) $(NAME_MINIRT)	
 
 $(MLX_A):
-		sudo apt-get update && sudo apt-get install xorg libxext-dev zlib1g-dev
+		$(adds)
 		@echo "$(F_CYAN)Compile libmlx.a ...$(F_NONE)"
 		make  -C $(LIB_MLX)
 		@echo "$(F_CYAN)Compile libmlx.a END !...$(F_NONE)"
