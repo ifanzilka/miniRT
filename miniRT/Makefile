@@ -21,6 +21,7 @@ F_GREEN		= \033[32m
 F_CYAN		= \033[36m
 F_BLUE		= \033[34m
 
+adds =
 
 ifeq ($(OS), Linux)
 	COMPILE = Linux Compile...
@@ -127,6 +128,7 @@ all: $(LIBFT) $(MLX_A) $(NAME_MINIRT)
 bonus : $(LIBFT) $(MLX_A) $(NAME_MINIRT)	
 
 $(MLX_A):
+		sudo apt-get update && sudo apt-get install xorg libxext-dev zlib1g-dev
 		@echo "$(F_CYAN)Compile libmlx.a ...$(F_NONE)"
 		make  -C $(LIB_MLX)
 		@echo "$(F_CYAN)Compile libmlx.a END !...$(F_NONE)"
