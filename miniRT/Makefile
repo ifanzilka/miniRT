@@ -26,11 +26,11 @@ adds =
 ifeq ($(OS), Linux)
 	COMPILE = Linux Compile...
 	#@echo "$(F_GREEN) Linux Compile...$(F_NONE)"
-	MINILIBX_DIR = minilibx/minilbx_linux
-	LIB_MLX = ./minilibx/minilbx_linux
+	MINILIBX_DIR = minilibx/minilibx-linux
+	LIB_MLX = ./minilibx/minilibx-linux
 	OPENGL = -lm -lbsd -lX11 -lXext 
 	MLX_A = libmlx_Linux.a  
-	adds = sudo apt-get install gcc make xorg libxext-dev libbsd-dev
+	#adds = sudo apt-get install gcc make xorg libxext-dev libbsd-dev
 endif
 ifeq ($(OS), Darwin)
 	COMPILE = MAC OS Compile...
